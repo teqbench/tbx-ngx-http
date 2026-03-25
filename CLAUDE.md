@@ -40,7 +40,7 @@ This is `@teqbench/tbx-ngx-http`, an Angular library providing base HTTP communi
 
 - Packages are published to GitHub Packages (`@teqbench` scope) via the release workflow.
 - Coverage thresholds are enforced in CI: 80% lines/functions/statements, 75% branches, per file.
-- **Build tooling:** ng-packagr is used to build Angular Package Format (APF) output. It uses bundler module resolution internally, so source files use extensionless relative imports (e.g., `'./foo.service'`). The `ng-package.json` at the repo root configures the entry point and output directory. ng-packagr generates its own `package.json` inside `dist/` with the correct APF entry points (`module`, `types`, `exports`). The release workflow publishes from `dist/` (`npm publish dist`) so consumers resolve against ng-packagr's `package.json` directly — the root `package.json` does not need `main`, `types`, or `exports` fields.
+- **Build tooling:** ng-packagr is used to build Angular Package Format (APF) output. It uses bundler module resolution internally, so source files use extensionless relative imports (e.g., `'./foo.service'`). The `ng-package.json` at the repo root configures the entry point and output directory. ng-packagr generates its own `package.json` inside `dist/` with the correct APF entry points (`module`, `types`, `exports`). The release workflow publishes from `dist/` (`npm publish ./dist`) so consumers resolve against ng-packagr's `package.json` directly — the root `package.json` does not need `main`, `types`, or `exports` fields.
 
 ## Commit Convention
 
