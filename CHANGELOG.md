@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2](https://github.com/teqbench/tbx-ngx-http/compare/v0.1.1...v0.1.2) (2026-03-25)
+
+
+### Bug Fixes
+
+* **ci:** use ./dist path prefix in npm publish command ([232bea4](https://github.com/teqbench/tbx-ngx-http/commit/232bea436a68b6380321d77eb5b10407930530b1))
+* **ci:** use ./dist path prefix in npm publish command ([a719fcd](https://github.com/teqbench/tbx-ngx-http/commit/a719fcd3ef805c9de694815ea225f851f508494e))
+
 ## [0.1.1](https://github.com/teqbench/tbx-ngx-http/compare/v0.1.0...v0.1.1) (2026-03-25)
 
 
