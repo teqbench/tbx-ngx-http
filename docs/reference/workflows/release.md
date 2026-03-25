@@ -149,7 +149,7 @@ When the Release PR is merged:
     "release-type": "node",
     "packages": {
         ".": {
-            "package-name": "TODO-package-name",
+            "package-name": "@teqbench/tbx-ngx-http",
             "initial-version": "0.1.0",
             "extra-files": [
                 "package.json",

@@ -4,9 +4,7 @@ This file provides guidance for Claude Code when working in this repository.
 
 ## Package Overview
 
-<!-- TODO: Describe what this package does and its primary use case -->
-
-This is a `@teqbench` npm package built with TypeScript.
+This is `@teqbench/tbx-ngx-http`, an Angular library providing base HTTP communication services and resilience constants. It offers an abstract `BaseHttpService` that feature services extend to get automatic retries with exponential backoff on GET requests, timeout handling, consistent URL resolution, and default headers. Resilience constants (`HTTP_DEFAULT_TIMEOUT_MS`, `HTTP_RETRY_COUNT`, `HTTP_RETRY_DELAY_MS`, `HTTP_RETRYABLE_STATUSES`) are exported for direct use.
 
 ## Tech Stack
 
@@ -80,4 +78,10 @@ Follow **Conventional Commits** strictly:
 - Never modify CI workflow files without explicit instruction.
 - Never modify `release-please-config.json`, `.release-please-manifest.json`, or `CHANGELOG.md`.
 
-<!-- TODO: Add package-specific guidance below -->
+## Package-Specific Guidance
+
+- `BaseHttpService` is abstract — it cannot be instantiated directly. Feature services extend it and provide a `baseUrl`.
+- Only GET requests include the retry operator. Mutating methods (POST, PUT, PATCH, DELETE) intentionally skip retries.
+- The retry operator uses exponential backoff: `RETRY_DELAY * 2^(attempt - 1)`.
+- `HTTP_RETRYABLE_STATUSES` defines which HTTP status codes trigger retries (0, 408, 429, 500, 502, 503, 504).
+- Dependencies: `@angular/common` (HttpClient), `@angular/core` (inject), `rxjs`, `http-status-codes`.

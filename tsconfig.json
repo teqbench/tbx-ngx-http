@@ -12,7 +12,9 @@
     "module": "ES2022",
     "moduleResolution": "bundler",
     "types": ["node", "vitest/globals"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "angularCompilerOptions": {
     "compilationMode": "partial"

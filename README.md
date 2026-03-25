@@ -1,8 +1,8 @@
-# @teqbench/TODO-package-name
+# @teqbench/tbx-ngx-http
 
-![Build Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/teqbench.dev.templates.tbx-package-main-build-status.json) ![Tests](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/teqbench.dev.templates.tbx-package-main-tests.json) ![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/teqbench.dev.templates.tbx-package-main-coverage.json) ![Version](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/teqbench.dev.templates.tbx-package-main-version.json) ![Build Number](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/teqbench.dev.templates.tbx-package-main-build-number.json)
+![Build Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-ngx-http-main-build-status.json) ![Tests](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-ngx-http-main-tests.json) ![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-ngx-http-main-coverage.json) ![Version](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-ngx-http-main-version.json) ![Build Number](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-ngx-http-main-build-number.json)
 
-> TODO: Package description (1-2 sentences explaining what this package provides).
+> Base HTTP communication services and resilience constants for Angular. Provides automatic retries with exponential backoff, timeout handling, and consistent URL resolution for feature services.
 
 ## Installation
 
@@ -15,26 +15,61 @@ echo "@teqbench:registry=https://npm.pkg.github.com" >> .npmrc
 Install the package:
 
 ```bash
-npm install @teqbench/TODO-package-name
+npm install @teqbench/tbx-ngx-http
 ```
 
 ## Usage
 
 ```typescript
-// TODO: Add usage example
-import {} from '@teqbench/TODO-package-name';
+import { Injectable } from '@angular/core';
+import { BaseHttpService } from '@teqbench/tbx-ngx-http';
+import { environment } from '../environments/environment';
+
+@Injectable({ providedIn: 'root' })
+export class UserService extends BaseHttpService {
+    protected override readonly baseUrl = environment.apiUrl;
+
+    getUser(id: string) {
+        return this.get<User>(`users/${id}`);
+    }
+
+    createUser(data: CreateUserDto) {
+        return this.post<User>('users', data);
+    }
+}
 ```
 
 ## API Reference
 
-<!-- TODO: Document the public API -->
+### `BaseHttpService` (abstract class)
+
+Abstract base class for feature services. Provides typed HTTP methods with built-in resilience.
+
+| Method   | Signature                                                                                | Retries |
+| -------- | ---------------------------------------------------------------------------------------- | ------- |
+| `get`    | `get<T>(path: string, options?: HttpRequestOptions): Observable<T>`                      | Yes     |
+| `post`   | `post<T>(path: string, body: unknown, options?: HttpBodyRequestOptions): Observable<T>`  | No      |
+| `put`    | `put<T>(path: string, body: unknown, options?: HttpBodyRequestOptions): Observable<T>`   | No      |
+| `patch`  | `patch<T>(path: string, body: unknown, options?: HttpBodyRequestOptions): Observable<T>` | No      |
+| `delete` | `delete<T>(path: string, options?: HttpRequestOptions): Observable<T>`                   | No      |
+
+### Constants
+
+| Constant                  | Default  | Description                                        |
+| ------------------------- | -------- | -------------------------------------------------- |
+| `HTTP_DEFAULT_TIMEOUT_MS` | `10_000` | Request timeout in milliseconds                    |
+| `HTTP_RETRY_COUNT`        | `2`      | Number of retry attempts for GET requests          |
+| `HTTP_RETRY_DELAY_MS`     | `1_000`  | Base delay for exponential backoff                 |
+| `HTTP_RETRYABLE_STATUSES` | `Set`    | Status codes eligible for retry (0, 408, 429, 5xx) |
 
 ## Compatibility
 
-| Dependency | Version  |
-| ---------- | -------- |
-| TypeScript | ~5.9.0   |
-| Node.js    | >=24.0.0 |
+| Dependency | Version                       |
+| ---------- | ----------------------------- |
+| Angular    | ^19.0.0 \| ^20.0.0 \| ^21.0.0 |
+| RxJS       | ^7.0.0                        |
+| TypeScript | ~5.9.0                        |
+| Node.js    | >=24.0.0                      |
 
 ## License
 
