@@ -1,6 +1,6 @@
 {
   "name": "@teqbench/tbx-ngx-http",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Base HTTP communication services and resilience constants for Angular. Provides automatic retries with exponential backoff, timeout handling, and consistent URL resolution for feature services.",
   "type": "module",
   "license": "Apache-2.0",
