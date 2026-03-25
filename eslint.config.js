@@ -1,10 +1,12 @@
 import tseslint from 'typescript-eslint';
+import angular from 'angular-eslint';
 
 export default tseslint.config(
     {
         ignores: ['coverage/', 'dist/', 'node_modules/'],
     },
     ...tseslint.configs.recommended,
+    ...angular.configs.tsRecommended,
     {
         languageOptions: {
             parserOptions: {
@@ -13,6 +15,16 @@ export default tseslint.config(
                 },
                 tsconfigRootDir: import.meta.dirname,
             },
+        },
+        rules: {
+            '@angular-eslint/directive-selector': [
+                'error',
+                { type: 'attribute', prefix: 'tbx', style: 'camelCase' },
+            ],
+            '@angular-eslint/component-selector': [
+                'error',
+                { type: 'element', prefix: 'tbx', style: 'kebab-case' },
+            ],
         },
     }
 );
