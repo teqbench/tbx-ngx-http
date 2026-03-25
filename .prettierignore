@@ -1,0 +1,24 @@
+# Build outputs
+dist/
+out-tsc/
+
+# Test & coverage artifacts
+coverage/
+html/
+report.json
+
+# Auto-generated files — do not format
+CHANGELOG.md
+.badges/
+.release-please-manifest.json
+package-lock.json
+
+# Dependencies
+node_modules/
+
+# Vercel
+.vercel/
+
+# The submodule files are owned by the skills repo, not the foundation template.
+# The foundation's Prettier shouldn't be reformatting files from another repository.
+.claude/skills

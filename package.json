@@ -1,0 +1,52 @@
+{
+  "name": "@teqbench/TODO-package-name",
+  "version": "0.6.0",
+  "description": "TODO: Package description",
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json -c tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
+  },
+  "devDependenciesPinned": {
+    "//": [
+      "typescript-eslint is pinned without ^ because patch releases have historically introduced",
+      "breaking rule changes. Pin to a known-good version and update deliberately after testing.",
+      "@types/node is pinned to the major version matching the Node runtime (24). Auto-updating",
+      "to 25 pulls in type definitions for APIs not available on the target runtime, which can",
+      "mask compatibility issues. Re-evaluate when the project moves to the next even-numbered Node LTS."
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "~24.12.0",
+    "@vitest/coverage-v8": "^4.1.1",
+    "eslint": "^9.39.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.3",
+    "ng-packagr": "^21.2.1",
+    "prettier": "^3.8.1",
+    "typescript": "~5.9.0",
+    "typescript-eslint": "8.57.2",
+    "vitest": "^4.0.18"
+  },
+  "lint-staged": {
+    "*.{ts,json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  }
+}

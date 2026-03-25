@@ -1,0 +1,61 @@
+# ─────────────────────────────────────────────────────────────
+# Dependabot — Automated Dependency Update PRs
+# ─────────────────────────────────────────────────────────────
+# Opens PRs against dev (not main) on a weekly schedule.
+# Related packages are grouped into single PRs to reduce noise.
+# ─────────────────────────────────────────────────────────────
+
+version: 2
+
+updates:
+  # npm ecosystem
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    target-branch: "dev"
+    commit-message:
+      prefix: "chore(deps):"
+    labels:
+      - "dependencies"
+    ignore:
+      - dependency-name: "eslint"
+        # Ignore major updates to ESLint until Angular ESLint supports them
+        versions: ["10.x", "11.x"]
+      - dependency-name: "@types/node"
+        # @types/node is pinned to the Node runtime major (24). Odd-numbered
+        # Node releases (25, 27, …) are short-lived current releases, not LTS —
+        # never a valid target. Update this ignore rule when the project moves
+        # to the next even-numbered Node LTS (e.g. 26).
+        versions: ["25.x"]
+    groups:
+      typescript:
+        patterns:
+          - "typescript"
+      tooling:
+        patterns:
+          - "prettier"
+          - "prettier-*"
+          - "@prettier/*"
+          - "husky"
+          - "lint-staged"
+          - "vitest"
+          - "@vitest/*"
+          - "eslint"
+          - "eslint-*"
+          - "@eslint/*"
+          - "typescript-eslint"
+
+  # GitHub Actions versions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    target-branch: "dev"
+    commit-message:
+      prefix: "chore(ci):"
+    labels:
+      - "dependencies"
+      - "ci"

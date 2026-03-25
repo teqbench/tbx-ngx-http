@@ -1,0 +1,211 @@
+name: TeqBench Package - CI Workflow
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+env:
+  GIST_OWNER: teqbench-shields-bot
+  REPO_NAME: ${{ github.event.repository.name }}
+
+concurrency:
+  group: ci-${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  check:
+    name: Lint, Typecheck & Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - name: Enforce source branch for main
+        if: github.event_name == 'pull_request' && github.base_ref == 'main'
+        run: |
+          if [[ ! "${{ github.head_ref }}" =~ ^(release/|hotfix/|release-please--) ]]; then
+            echo "::error::PRs to main must come from release/*, hotfix/*, or release-please branches, not '${{ github.head_ref }}'"
+            exit 1
+          fi
+
+      - name: Generate app token
+        id: app-token
+        if: github.actor != 'dependabot[bot]'
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: teqbench
+
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          submodules: ${{ github.actor != 'dependabot[bot]' }}
+          token: ${{ steps.app-token.outputs.token || github.token }}
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@teqbench"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: TypeScript check
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run Tests with Coverage
+        run: npx vitest run --coverage --coverage.reporter=json-summary --reporter=default --reporter=json --outputFile=report.json
+
+      - name: Evaluate Metrics
+        id: eval_metrics
+        if: always()
+        run: |
+          # 1. Coverage Logic
+          COV_PATH="./coverage/coverage-summary.json"
+          if [ -f "$COV_PATH" ]; then
+            COV_PCT=$(jq '.total.lines.pct' $COV_PATH)
+            echo "COV_MSG=${COV_PCT}%" >> $GITHUB_ENV
+            if (( $(echo "$COV_PCT < 80" | bc -l) )); then
+              echo "COV_COLOR=yellow" >> $GITHUB_ENV
+            else
+              echo "COV_COLOR=brightgreen" >> $GITHUB_ENV
+            fi
+          else
+            echo "COV_MSG=unknown" >> $GITHUB_ENV
+            echo "COV_COLOR=yellow" >> $GITHUB_ENV
+          fi
+
+          # 2. Test Results Logic
+          TEST_PATH="./report.json"
+          if [ -f "$TEST_PATH" ]; then
+            PASSED=$(jq '.numPassedTests // 0' $TEST_PATH)
+            TOTAL=$(jq '.numTotalTests // 0' $TEST_PATH)
+            FAILED=$(jq '.numFailedTests // 0' $TEST_PATH)
+
+            [ -z "$PASSED" ] && PASSED=0
+            [ -z "$TOTAL" ] && TOTAL=0
+
+            echo "TEST_MSG=${PASSED}/${TOTAL} passed" >> $GITHUB_ENV
+            if [ "$FAILED" -gt 0 ] || [ "$TOTAL" -eq 0 ]; then
+              echo "TEST_COLOR=red" >> $GITHUB_ENV
+            else
+              echo "TEST_COLOR=brightgreen" >> $GITHUB_ENV
+            fi
+          else
+            echo "❌ Error: report.json NOT found at $TEST_PATH"
+            find . -name "report.json" -maxdepth 3
+          fi
+
+          # 3. Version
+          if [ -f ".release-please-manifest.json" ]; then
+            VERSION=$(jq -r '."."' .release-please-manifest.json)
+          else
+            VERSION=$(jq -r '.version' package.json)
+          fi
+          echo "PKG_VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Check README version drift
+        run: |
+          TS_PKG=$(jq -r '.devDependencies.typescript' package.json)
+          NODE_PKG=$(jq -r '.engines.node' package.json)
+
+          TS_README=$(grep -oP '^\| TypeScript\s+\| \K\S+' README.md)
+          NODE_README=$(grep -oP '^\| Node\.js\s+\| \K\S+' README.md)
+
+          FAIL=0
+          if [ "$TS_PKG" != "$TS_README" ]; then
+            echo "::error::README TypeScript version ($TS_README) does not match package.json ($TS_PKG)"
+            FAIL=1
+          fi
+          if [ "$NODE_PKG" != "$NODE_README" ]; then
+            echo "::error::README Node.js version ($NODE_README) does not match package.json ($NODE_PKG)"
+            FAIL=1
+          fi
+          exit $FAIL
+
+      - name: Build
+        run: npm run build
+
+      # ── Badge data → Gist ──────────────────────────────────────
+
+      - name: Push Coverage Badge
+        if: always() && github.event_name == 'push' && env.COV_MSG != ''
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: ${{ vars.GIST_ID }}
+          filename: ${{ env.REPO_NAME }}-${{ github.ref_name }}-coverage.json
+          label: coverage
+          message: ${{ env.COV_MSG }}
+          color: ${{ env.COV_COLOR }}
+          style: for-the-badge
+
+      - name: Push Tests Badge
+        if: always() && github.event_name == 'push' && env.TEST_MSG != ''
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: ${{ vars.GIST_ID }}
+          filename: ${{ env.REPO_NAME }}-${{ github.ref_name }}-tests.json
+          label: tests
+          message: ${{ env.TEST_MSG }}
+          color: ${{ env.TEST_COLOR }}
+          style: for-the-badge
+
+      - name: Push Build Status Badge
+        if: always() && github.event_name == 'push'
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: ${{ vars.GIST_ID }}
+          filename: ${{ env.REPO_NAME }}-${{ github.ref_name }}-build-status.json
+          label: build
+          message: ${{ job.status }}
+          color: ${{ job.status == 'success' && 'brightgreen' || 'red' }}
+          style: for-the-badge
+
+      - name: Push Build Number Badge
+        if: always() && github.event_name == 'push'
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: ${{ vars.GIST_ID }}
+          filename: ${{ env.REPO_NAME }}-${{ github.ref_name }}-build-number.json
+          label: "build #"
+          message: ${{ github.run_number }}
+          color: blue
+          style: for-the-badge
+
+      - name: Push Version Badge
+        if: always() && github.event_name == 'push'
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: ${{ vars.GIST_ID }}
+          filename: ${{ env.REPO_NAME }}-${{ github.ref_name }}-version.json
+          label: version
+          message: ${{ env.PKG_VERSION }}
+          color: blue
+          style: for-the-badge
