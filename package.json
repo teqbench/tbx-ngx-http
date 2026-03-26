@@ -28,9 +28,6 @@
     "@angular/core": "^19.0.0 || ^20.0.0 || ^21.0.0",
     "rxjs": "^7.0.0"
   },
-  "overrides": {
-    "undici": ">=7.24.0"
-  },
   "devDependenciesPinned": {
     "//": [
       "typescript-eslint is pinned without ^ because patch releases have historically introduced",
