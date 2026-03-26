@@ -28,9 +28,6 @@
     "@angular/core": "^19.0.0 || ^20.0.0 || ^21.0.0",
     "rxjs": "^7.0.0"
   },
-  "overrides": {
-    "undici": ">=7.24.0"
-  },
   "devDependenciesPinned": {
     "//": [
       "typescript-eslint is pinned without ^ because patch releases have historically introduced",
@@ -44,15 +41,15 @@
     "@analogjs/vite-plugin-angular": "^2.3.0",
     "@analogjs/vitest-angular": "^2.3.0",
     "@angular/build": "^21.0.0",
-    "@angular/common": "^21.0.0",
-    "@angular/compiler": "^21.0.0",
-    "@angular/compiler-cli": "^21.0.0",
-    "@angular/core": "^21.0.0",
-    "@angular/platform-browser": "^21.0.0",
+    "@angular/common": "^21.2.6",
+    "@angular/compiler": "^21.2.6",
+    "@angular/compiler-cli": "^21.2.6",
+    "@angular/core": "^21.2.6",
+    "@angular/platform-browser": "^21.2.6",
     "@types/node": "~24.12.0",
     "@vitest/coverage-v8": "^4.1.1",
-    "angular-eslint": "^19.6.0",
-    "eslint": "^9.39.2",
+    "angular-eslint": "^21.3.1",
+    "eslint": "^10.1.0",
     "husky": "^9.1.7",
     "jsdom": "^26.1.0",
     "lint-staged": "^16.3.3",

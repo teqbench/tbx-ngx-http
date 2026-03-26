@@ -1,17 +1,5 @@
-# ─────────────────────────────────────────────────────────────
-# Sync — Merge main back to dev after every push to main
-# ─────────────────────────────────────────────────────────────
-# Keeps dev in sync with main after every merge — release PRs
-# and non-release merges alike. Without this, non-release merges
-# (docs, CI changes) leave dev behind main until the next release
-# cycle.
-#
-# Uses the teqbench-automation GitHub App to generate a token
-# that can bypass the dev ruleset's status check requirement.
-#
-# If dev is already up to date, the merge is a no-op and the
-# push has nothing to send.
-# ─────────────────────────────────────────────────────────────
+# Thin caller — delegates to the org-wide reusable Sync workflow.
+# See: https://github.com/teqbench/.github/.github/workflows/sync.yml
 
 name: TeqBench Package - Sync (Main into Dev) Workflow
 
@@ -23,39 +11,7 @@ concurrency:
   group: sync-${{ github.repository }}
   cancel-in-progress: false
 
-permissions: {}
-
 jobs:
   sync:
-    name: Merge main → dev
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: write
-
-    steps:
-      - name: Generate app token
-        id: app-token
-        uses: actions/create-github-app-token@v3
-        with:
-          app-id: ${{ secrets.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
-
-      - name: Checkout repository
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          token: ${{ steps.app-token.outputs.token }}
-
-      - name: Merge main into dev
-        run: |
-          git config user.name "teqbench-automation[bot]"
-          git config user.email "263536528+teqbench-automation[bot]@users.noreply.github.com"
-
-          git checkout dev
-          git pull origin dev
-
-          git merge origin/main --no-edit -m "chore: sync main into dev [skip ci]"
-
-          git pull --rebase origin dev || true
-          git push origin dev
+    uses: teqbench/.github/.github/workflows/sync.yml@main
+    secrets: inherit
