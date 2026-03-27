@@ -3,20 +3,20 @@ import { inject } from '@angular/core';
 import { Observable, retry, throwError, timer, timeout } from 'rxjs';
 
 import {
-    HTTP_DEFAULT_TIMEOUT_MS,
-    HTTP_RETRY_COUNT,
-    HTTP_RETRY_DELAY_MS,
-    HTTP_RETRYABLE_STATUSES,
+    TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS,
+    TBX_NGX_HTTP_RETRY_COUNT,
+    TBX_NGX_HTTP_RETRY_DELAY_MS,
+    TBX_NGX_HTTP_RETRYABLE_STATUSES,
 } from '../constants/http.constants';
 
 /** Options accepted by non-body methods (GET, DELETE). */
-export interface HttpRequestOptions {
+export interface TbxNgxHttpRequestOptions {
     params?: HttpParams;
     headers?: HttpHeaders;
 }
 
 /** Options accepted by body methods (POST, PUT, PATCH). */
-export interface HttpBodyRequestOptions {
+export interface TbxNgxHttpBodyRequestOptions {
     headers?: HttpHeaders;
 }
 
@@ -32,7 +32,7 @@ export interface HttpBodyRequestOptions {
  * @example
  * ```typescript
  * @Injectable({ providedIn: 'root' })
- * export class UserService extends BaseHttpService {
+ * export class UserService extends TbxNgxBaseHttpService {
  *     protected override readonly baseUrl = environment.apiUrl;
  *
  *     getUser(id: string) {
@@ -45,13 +45,13 @@ export interface HttpBodyRequestOptions {
  *
  * @example
  * ```typescript
- * export class SlowApiService extends BaseHttpService {
+ * export class SlowApiService extends TbxNgxBaseHttpService {
  *     protected override readonly baseUrl = environment.apiUrl;
  *     protected override readonly DEFAULT_TIMEOUT = 30_000;
  * }
  * ```
  */
-export abstract class BaseHttpService {
+export abstract class TbxNgxBaseHttpService {
     protected readonly http = inject(HttpClient);
 
     /** Base API URL — must be provided by the consuming application. */
@@ -62,9 +62,9 @@ export abstract class BaseHttpService {
      * Subclasses override by redeclaring the property; they do not need
      * to import the constants file directly.
      */
-    protected readonly DEFAULT_TIMEOUT: number = HTTP_DEFAULT_TIMEOUT_MS;
-    protected readonly RETRY_COUNT: number = HTTP_RETRY_COUNT;
-    protected readonly RETRY_DELAY: number = HTTP_RETRY_DELAY_MS;
+    protected readonly DEFAULT_TIMEOUT: number = TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS;
+    protected readonly RETRY_COUNT: number = TBX_NGX_HTTP_RETRY_COUNT;
+    protected readonly RETRY_DELAY: number = TBX_NGX_HTTP_RETRY_DELAY_MS;
 
     /**
      * Default headers applied to every request unless overridden per-call.
@@ -87,7 +87,7 @@ export abstract class BaseHttpService {
      * Includes retries with exponential backoff because GET is idempotent
      * and safe to repeat on transient failure (5xx, network errors).
      */
-    protected get<T>(path: string, options?: HttpRequestOptions): Observable<T> {
+    protected get<T>(path: string, options?: TbxNgxHttpRequestOptions): Observable<T> {
         return this.http
             .get<T>(this.url(path), {
                 params: options?.params,
@@ -103,7 +103,7 @@ export abstract class BaseHttpService {
     protected post<T>(
         path: string,
         body: unknown,
-        options?: HttpBodyRequestOptions
+        options?: TbxNgxHttpBodyRequestOptions
     ): Observable<T> {
         return this.http
             .post<T>(this.url(path), body, {
@@ -117,7 +117,11 @@ export abstract class BaseHttpService {
      * Retries are disabled by default to maintain strict idempotency safety
      * across varying backend implementations.
      */
-    protected put<T>(path: string, body: unknown, options?: HttpBodyRequestOptions): Observable<T> {
+    protected put<T>(
+        path: string,
+        body: unknown,
+        options?: TbxNgxHttpBodyRequestOptions
+    ): Observable<T> {
         return this.http
             .put<T>(this.url(path), body, {
                 headers: options?.headers ?? this.defaultHeaders,
@@ -132,7 +136,7 @@ export abstract class BaseHttpService {
     protected patch<T>(
         path: string,
         body: unknown,
-        options?: HttpBodyRequestOptions
+        options?: TbxNgxHttpBodyRequestOptions
     ): Observable<T> {
         return this.http
             .patch<T>(this.url(path), body, {
@@ -146,7 +150,7 @@ export abstract class BaseHttpService {
      * Retries are disabled to avoid 404/410 errors on subsequent automated
      * attempts if the first request actually succeeded but the response was lost.
      */
-    protected delete<T>(path: string, options?: HttpRequestOptions): Observable<T> {
+    protected delete<T>(path: string, options?: TbxNgxHttpRequestOptions): Observable<T> {
         return this.http
             .delete<T>(this.url(path), {
                 params: options?.params,
@@ -162,7 +166,7 @@ export abstract class BaseHttpService {
 
     /**
      * Returns a custom RxJS operator configured with exponential backoff that
-     * only retries transient errors (status codes in HTTP_RETRYABLE_STATUSES).
+     * only retries transient errors (status codes in TBX_NGX_HTTP_RETRYABLE_STATUSES).
      *
      * Non-retryable errors (4xx client errors except 408/429) are re-thrown
      * immediately — repeating a malformed request will not produce a
@@ -193,7 +197,7 @@ export abstract class BaseHttpService {
                     delay: (error: unknown, attempt: number) => {
                         if (
                             error instanceof HttpErrorResponse &&
-                            !HTTP_RETRYABLE_STATUSES.has(error.status)
+                            !TBX_NGX_HTTP_RETRYABLE_STATUSES.has(error.status)
                         ) {
                             return throwError(() => error);
                         }

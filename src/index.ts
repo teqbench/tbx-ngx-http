@@ -9,7 +9,7 @@
  */
 export * from './constants/http.constants';
 export {
-    BaseHttpService,
-    type HttpRequestOptions,
-    type HttpBodyRequestOptions,
+    TbxNgxBaseHttpService,
+    type TbxNgxHttpRequestOptions,
+    type TbxNgxHttpBodyRequestOptions,
 } from './services/base-http.service';

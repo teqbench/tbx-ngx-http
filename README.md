@@ -22,11 +22,11 @@ npm install @teqbench/tbx-ngx-http
 
 ```typescript
 import { Injectable } from '@angular/core';
-import { BaseHttpService } from '@teqbench/tbx-ngx-http';
+import { TbxNgxBaseHttpService } from '@teqbench/tbx-ngx-http';
 import { environment } from '../environments/environment';
 
 @Injectable({ providedIn: 'root' })
-export class UserService extends BaseHttpService {
+export class UserService extends TbxNgxBaseHttpService {
     protected override readonly baseUrl = environment.apiUrl;
 
     getUser(id: string) {
@@ -41,26 +41,26 @@ export class UserService extends BaseHttpService {
 
 ## API Reference
 
-### `BaseHttpService` (abstract class)
+### `TbxNgxBaseHttpService` (abstract class)
 
 Abstract base class for feature services. Provides typed HTTP methods with built-in resilience.
 
-| Method   | Signature                                                                                | Retries |
-| -------- | ---------------------------------------------------------------------------------------- | ------- |
-| `get`    | `get<T>(path: string, options?: HttpRequestOptions): Observable<T>`                      | Yes     |
-| `post`   | `post<T>(path: string, body: unknown, options?: HttpBodyRequestOptions): Observable<T>`  | No      |
-| `put`    | `put<T>(path: string, body: unknown, options?: HttpBodyRequestOptions): Observable<T>`   | No      |
-| `patch`  | `patch<T>(path: string, body: unknown, options?: HttpBodyRequestOptions): Observable<T>` | No      |
-| `delete` | `delete<T>(path: string, options?: HttpRequestOptions): Observable<T>`                   | No      |
+| Method   | Signature                                                                                      | Retries |
+| -------- | ---------------------------------------------------------------------------------------------- | ------- |
+| `get`    | `get<T>(path: string, options?: TbxNgxHttpRequestOptions): Observable<T>`                      | Yes     |
+| `post`   | `post<T>(path: string, body: unknown, options?: TbxNgxHttpBodyRequestOptions): Observable<T>`  | No      |
+| `put`    | `put<T>(path: string, body: unknown, options?: TbxNgxHttpBodyRequestOptions): Observable<T>`   | No      |
+| `patch`  | `patch<T>(path: string, body: unknown, options?: TbxNgxHttpBodyRequestOptions): Observable<T>` | No      |
+| `delete` | `delete<T>(path: string, options?: TbxNgxHttpRequestOptions): Observable<T>`                   | No      |
 
 ### Constants
 
-| Constant                  | Default  | Description                                        |
-| ------------------------- | -------- | -------------------------------------------------- |
-| `HTTP_DEFAULT_TIMEOUT_MS` | `10_000` | Request timeout in milliseconds                    |
-| `HTTP_RETRY_COUNT`        | `2`      | Number of retry attempts for GET requests          |
-| `HTTP_RETRY_DELAY_MS`     | `1_000`  | Base delay for exponential backoff                 |
-| `HTTP_RETRYABLE_STATUSES` | `Set`    | Status codes eligible for retry (0, 408, 429, 5xx) |
+| Constant                          | Default  | Description                                        |
+| --------------------------------- | -------- | -------------------------------------------------- |
+| `TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS` | `10_000` | Request timeout in milliseconds                    |
+| `TBX_NGX_HTTP_RETRY_COUNT`        | `2`      | Number of retry attempts for GET requests          |
+| `TBX_NGX_HTTP_RETRY_DELAY_MS`     | `1_000`  | Base delay for exponential backoff                 |
+| `TBX_NGX_HTTP_RETRYABLE_STATUSES` | `Set`    | Status codes eligible for retry (0, 408, 429, 5xx) |
 
 ## Compatibility
 
