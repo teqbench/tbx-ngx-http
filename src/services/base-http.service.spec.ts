@@ -5,38 +5,38 @@ import { Injectable } from '@angular/core';
 import { Observable, of, catchError, firstValueFrom } from 'rxjs';
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 
-import { BaseHttpService } from './base-http.service';
-import type { HttpRequestOptions, HttpBodyRequestOptions } from './base-http.service';
+import { TbxNgxBaseHttpService } from './base-http.service';
+import type { TbxNgxHttpRequestOptions, TbxNgxHttpBodyRequestOptions } from './base-http.service';
 import {
-    HTTP_DEFAULT_TIMEOUT_MS,
-    HTTP_RETRY_COUNT,
-    HTTP_RETRY_DELAY_MS,
+    TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS,
+    TBX_NGX_HTTP_RETRY_COUNT,
+    TBX_NGX_HTTP_RETRY_DELAY_MS,
 } from '../constants/http.constants';
 
 const TEST_BASE_URL = 'https://api.test.com';
 
 /**
- * Concrete test harness that exposes BaseHttpService's protected methods.
+ * Concrete test harness that exposes TbxNgxBaseHttpService's protected methods.
  * Each public method delegates directly to the corresponding base method
  * with the same signature, adding no logic of its own.
  */
 @Injectable()
-class TestDataService extends BaseHttpService {
+class TestDataService extends TbxNgxBaseHttpService {
     protected override readonly baseUrl = TEST_BASE_URL;
 
-    public testGet(options?: HttpRequestOptions) {
+    public testGet(options?: TbxNgxHttpRequestOptions) {
         return this.get<{ success: boolean }>('test', options);
     }
-    public testPost(body: unknown, options?: HttpBodyRequestOptions) {
+    public testPost(body: unknown, options?: TbxNgxHttpBodyRequestOptions) {
         return this.post<{ success: boolean }>('test', body, options);
     }
-    public testPut(body: unknown, options?: HttpBodyRequestOptions) {
+    public testPut(body: unknown, options?: TbxNgxHttpBodyRequestOptions) {
         return this.put<{ success: boolean }>('test', body, options);
     }
-    public testPatch(body: unknown, options?: HttpBodyRequestOptions) {
+    public testPatch(body: unknown, options?: TbxNgxHttpBodyRequestOptions) {
         return this.patch<{ success: boolean }>('test', body, options);
     }
-    public testDelete(options?: HttpRequestOptions) {
+    public testDelete(options?: TbxNgxHttpRequestOptions) {
         return this.delete<{ success: boolean }>('test', options);
     }
 }
@@ -50,10 +50,10 @@ class TestDataService extends BaseHttpService {
  * for multi-cycle retry verification.
  *
  * This also validates the subclass override pattern documented in
- * BaseHttpService's JSDoc.
+ * TbxNgxBaseHttpService's JSDoc.
  */
 @Injectable()
-class RetryTestService extends BaseHttpService {
+class RetryTestService extends TbxNgxBaseHttpService {
     protected override readonly baseUrl = TEST_BASE_URL;
     protected override readonly RETRY_DELAY = 0;
 
@@ -67,7 +67,7 @@ class RetryTestService extends BaseHttpService {
  * Variant with a trailing-slash baseUrl to verify URL normalization.
  */
 @Injectable()
-class TrailingSlashService extends BaseHttpService {
+class TrailingSlashService extends TbxNgxBaseHttpService {
     protected override readonly baseUrl = `${TEST_BASE_URL}/`;
 
     public testGet(path: string) {
@@ -77,7 +77,7 @@ class TrailingSlashService extends BaseHttpService {
 
 const TEST_URL = `${TEST_BASE_URL}/test`;
 
-describe('BaseHttpService', () => {
+describe('TbxNgxBaseHttpService', () => {
     let service: TestDataService;
     let httpMock: HttpTestingController;
 
@@ -103,16 +103,16 @@ describe('BaseHttpService', () => {
     // ── Constants alignment ────────────────────────────────────────────────
 
     describe('Constants alignment', () => {
-        it('should source DEFAULT_TIMEOUT from HTTP_DEFAULT_TIMEOUT_MS', () => {
-            expect(service['DEFAULT_TIMEOUT']).toBe(HTTP_DEFAULT_TIMEOUT_MS);
+        it('should source DEFAULT_TIMEOUT from TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS', () => {
+            expect(service['DEFAULT_TIMEOUT']).toBe(TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS);
         });
 
-        it('should source RETRY_COUNT from HTTP_RETRY_COUNT', () => {
-            expect(service['RETRY_COUNT']).toBe(HTTP_RETRY_COUNT);
+        it('should source RETRY_COUNT from TBX_NGX_HTTP_RETRY_COUNT', () => {
+            expect(service['RETRY_COUNT']).toBe(TBX_NGX_HTTP_RETRY_COUNT);
         });
 
-        it('should source RETRY_DELAY from HTTP_RETRY_DELAY_MS', () => {
-            expect(service['RETRY_DELAY']).toBe(HTTP_RETRY_DELAY_MS);
+        it('should source RETRY_DELAY from TBX_NGX_HTTP_RETRY_DELAY_MS', () => {
+            expect(service['RETRY_DELAY']).toBe(TBX_NGX_HTTP_RETRY_DELAY_MS);
         });
     });
 
@@ -314,7 +314,7 @@ describe('BaseHttpService', () => {
             );
 
             // 1 initial + 2 retries = 3 total attempts
-            expect(attempts).toBe(HTTP_RETRY_COUNT + 1);
+            expect(attempts).toBe(TBX_NGX_HTTP_RETRY_COUNT + 1);
         });
 
         it('should NOT retry non-retryable errors (4xx)', async () => {
@@ -492,7 +492,7 @@ describe('BaseHttpService', () => {
                     statusText: ReasonPhrases.BAD_GATEWAY,
                 });
 
-                vi.advanceTimersByTime(HTTP_RETRY_DELAY_MS);
+                vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS);
                 const retry = httpMock.expectOne(TEST_URL);
                 retry.flush({ success: true });
             });
@@ -505,7 +505,7 @@ describe('BaseHttpService', () => {
                     statusText: ReasonPhrases.SERVICE_UNAVAILABLE,
                 });
 
-                vi.advanceTimersByTime(HTTP_RETRY_DELAY_MS);
+                vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS);
                 httpMock.expectOne(TEST_URL).flush({ success: true });
             });
 
@@ -517,7 +517,7 @@ describe('BaseHttpService', () => {
                     statusText: ReasonPhrases.GATEWAY_TIMEOUT,
                 });
 
-                vi.advanceTimersByTime(HTTP_RETRY_DELAY_MS);
+                vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS);
                 httpMock.expectOne(TEST_URL).flush({ success: true });
             });
 
@@ -529,7 +529,7 @@ describe('BaseHttpService', () => {
                     statusText: ReasonPhrases.REQUEST_TIMEOUT,
                 });
 
-                vi.advanceTimersByTime(HTTP_RETRY_DELAY_MS);
+                vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS);
                 httpMock.expectOne(TEST_URL).flush({ success: true });
             });
 
@@ -541,7 +541,7 @@ describe('BaseHttpService', () => {
                     statusText: ReasonPhrases.TOO_MANY_REQUESTS,
                 });
 
-                vi.advanceTimersByTime(HTTP_RETRY_DELAY_MS);
+                vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS);
                 httpMock.expectOne(TEST_URL).flush({ success: true });
             });
 
@@ -550,7 +550,7 @@ describe('BaseHttpService', () => {
 
                 httpMock.expectOne(TEST_URL).error(new ProgressEvent('error'));
 
-                vi.advanceTimersByTime(HTTP_RETRY_DELAY_MS);
+                vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS);
                 httpMock.expectOne(TEST_URL).flush({ success: true });
             });
         });
@@ -565,7 +565,7 @@ describe('BaseHttpService', () => {
                     statusText: ReasonPhrases.BAD_REQUEST,
                 });
 
-                vi.advanceTimersByTime(HTTP_RETRY_DELAY_MS * 10);
+                vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS * 10);
                 httpMock.expectNone(TEST_URL);
                 expect(error).toBeDefined();
             });
@@ -579,7 +579,7 @@ describe('BaseHttpService', () => {
                     statusText: ReasonPhrases.UNAUTHORIZED,
                 });
 
-                vi.advanceTimersByTime(HTTP_RETRY_DELAY_MS * 10);
+                vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS * 10);
                 httpMock.expectNone(TEST_URL);
                 expect(error).toBeDefined();
             });
@@ -593,7 +593,7 @@ describe('BaseHttpService', () => {
                     statusText: ReasonPhrases.FORBIDDEN,
                 });
 
-                vi.advanceTimersByTime(HTTP_RETRY_DELAY_MS * 10);
+                vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS * 10);
                 httpMock.expectNone(TEST_URL);
                 expect(error).toBeDefined();
             });
@@ -607,7 +607,7 @@ describe('BaseHttpService', () => {
                     statusText: ReasonPhrases.NOT_FOUND,
                 });
 
-                vi.advanceTimersByTime(HTTP_RETRY_DELAY_MS * 10);
+                vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS * 10);
                 httpMock.expectNone(TEST_URL);
                 expect(error).toBeDefined();
             });
@@ -633,7 +633,7 @@ describe('BaseHttpService', () => {
             httpMock.expectOne(TEST_URL);
 
             // Advance past the timeout threshold
-            vi.advanceTimersByTime(HTTP_DEFAULT_TIMEOUT_MS + 1);
+            vi.advanceTimersByTime(TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS + 1);
 
             expect(error).toBeDefined();
             expect((error as Error).name).toBe('TimeoutError');
@@ -673,7 +673,7 @@ describe('BaseHttpService', () => {
                 statusText: ReasonPhrases.INTERNAL_SERVER_ERROR,
             });
 
-            vi.advanceTimersByTime(HTTP_RETRY_DELAY_MS * 10);
+            vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS * 10);
             httpMock.expectNone(TEST_URL);
             expect(error).toBeDefined();
         });
@@ -687,7 +687,7 @@ describe('BaseHttpService', () => {
                 statusText: ReasonPhrases.INTERNAL_SERVER_ERROR,
             });
 
-            vi.advanceTimersByTime(HTTP_RETRY_DELAY_MS * 10);
+            vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS * 10);
             httpMock.expectNone(TEST_URL);
             expect(error).toBeDefined();
         });
@@ -701,7 +701,7 @@ describe('BaseHttpService', () => {
                 statusText: ReasonPhrases.INTERNAL_SERVER_ERROR,
             });
 
-            vi.advanceTimersByTime(HTTP_RETRY_DELAY_MS * 10);
+            vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS * 10);
             httpMock.expectNone(TEST_URL);
             expect(error).toBeDefined();
         });
@@ -715,7 +715,7 @@ describe('BaseHttpService', () => {
                 statusText: ReasonPhrases.INTERNAL_SERVER_ERROR,
             });
 
-            vi.advanceTimersByTime(HTTP_RETRY_DELAY_MS * 10);
+            vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS * 10);
             httpMock.expectNone(TEST_URL);
             expect(error).toBeDefined();
         });
