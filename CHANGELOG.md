@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.0.0](https://github.com/teqbench/tbx-ngx-http/compare/v0.1.2...v1.0.0) (2026-03-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** All public exports have been renamed with the TbxNgx/TBX_NGX_ prefix. Consumers must update all imports:
+    - BaseHttpService → TbxNgxBaseHttpService
+    - HttpRequestOptions → TbxNgxHttpRequestOptions
+    - HttpBodyRequestOptions → TbxNgxHttpBodyRequestOptions
+    - HTTP_DEFAULT_TIMEOUT_MS → TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS
+    - HTTP_RETRY_COUNT → TBX_NGX_HTTP_RETRY_COUNT
+    - HTTP_RETRY_DELAY_MS → TBX_NGX_HTTP_RETRY_DELAY_MS
+    - HTTP_RETRYABLE_STATUSES → TBX_NGX_HTTP_RETRYABLE_STATUSES
+
+### Code Refactoring
+
+* **api:** rename all public exports with TbxNgx prefix ([4f848bd](https://github.com/teqbench/tbx-ngx-http/commit/4f848bdd0652f91656d375e33693fb5d6cc2331b))
+
 ## [0.1.2](https://github.com/teqbench/tbx-ngx-http/compare/v0.1.1...v0.1.2) (2026-03-25)
 
 
