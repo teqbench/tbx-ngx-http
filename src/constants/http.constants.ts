@@ -4,12 +4,12 @@ import { StatusCodes } from 'http-status-codes';
  * Default request timeout in milliseconds
  *
  * @remarks
- * Applied to every HTTP request made through {@link TbxNgxBaseHttpService}.
+ * Applied to every HTTP request made through {@link TbxNgxHttpService}.
  * Subclasses override by redeclaring the `DEFAULT_TIMEOUT` class property.
  *
  * @usage
  * Import directly when building a custom retry or timeout strategy outside of
- * TbxNgxBaseHttpService.
+ * TbxNgxHttpService.
  *
  * @example
  * ```typescript
@@ -20,7 +20,7 @@ import { StatusCodes } from 'http-status-codes';
  * @displayName Default Timeout
  * @order 1
  * @since 1.0.0
- * @related TbxNgxBaseHttpService
+ * @related TbxNgxHttpService
  *
  * @public
  */
@@ -31,12 +31,12 @@ export const TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS = 10_000;
  *
  * @remarks
  * Controls how many times a failed GET request is retried before the error
- * propagates to the caller. Subclasses of {@link TbxNgxBaseHttpService} override
+ * propagates to the caller. Subclasses of {@link TbxNgxHttpService} override
  * by redeclaring the `RETRY_COUNT` class property.
  *
  * @usage
  * Import directly when building a custom retry strategy outside of
- * TbxNgxBaseHttpService.
+ * TbxNgxHttpService.
  *
  * @example
  * ```typescript
@@ -47,7 +47,7 @@ export const TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS = 10_000;
  * @displayName Retry Count
  * @order 2
  * @since 1.0.0
- * @related TbxNgxBaseHttpService
+ * @related TbxNgxHttpService
  *
  * @public
  */
@@ -58,12 +58,12 @@ export const TBX_NGX_HTTP_RETRY_COUNT = 2;
  *
  * @remarks
  * The actual delay follows the formula `RETRY_DELAY * 2^(attempt - 1)`.
- * Subclasses of {@link TbxNgxBaseHttpService} override by redeclaring the
+ * Subclasses of {@link TbxNgxHttpService} override by redeclaring the
  * `RETRY_DELAY` class property.
  *
  * @usage
  * Import directly when building a custom backoff strategy outside of
- * TbxNgxBaseHttpService.
+ * TbxNgxHttpService.
  *
  * @example
  * ```typescript
@@ -74,7 +74,7 @@ export const TBX_NGX_HTTP_RETRY_COUNT = 2;
  * @displayName Retry Delay
  * @order 3
  * @since 1.0.0
- * @related TbxNgxBaseHttpService
+ * @related TbxNgxHttpService
  *
  * @public
  */
@@ -106,7 +106,7 @@ export const TBX_NGX_HTTP_RETRY_DELAY_MS = 1_000;
  *
  * @usage
  * Import directly when implementing a custom retry predicate that needs to
- * reference the same set of retryable statuses used by TbxNgxBaseHttpService.
+ * reference the same set of retryable statuses used by TbxNgxHttpService.
  *
  * @example
  * ```typescript
@@ -121,7 +121,7 @@ export const TBX_NGX_HTTP_RETRY_DELAY_MS = 1_000;
  * @displayName Retryable Statuses
  * @order 4
  * @since 1.0.0
- * @related TbxNgxBaseHttpService
+ * @related TbxNgxHttpService
  *
  * @public
  */

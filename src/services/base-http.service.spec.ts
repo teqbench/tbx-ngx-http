@@ -5,8 +5,10 @@ import { Injectable } from '@angular/core';
 import { Observable, of, catchError, firstValueFrom } from 'rxjs';
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 
-import { TbxNgxBaseHttpService } from './base-http.service';
-import type { TbxNgxHttpRequestOptions, TbxNgxHttpBodyRequestOptions } from './base-http.service';
+import { TbxNgxHttpService } from './base-http.service';
+import type { TbxNgxHttpRequestOptions } from '../models/http-request-options.model';
+import type { TbxNgxHttpBodyRequestOptions } from '../models/http-body-request-options.model';
+
 import {
     TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS,
     TBX_NGX_HTTP_RETRY_COUNT,
@@ -16,12 +18,12 @@ import {
 const TEST_BASE_URL = 'https://api.test.com';
 
 /**
- * Concrete test harness that exposes TbxNgxBaseHttpService's protected methods.
+ * Concrete test harness that exposes TbxNgxHttpService's protected methods.
  * Each public method delegates directly to the corresponding base method
  * with the same signature, adding no logic of its own.
  */
 @Injectable()
-class TestDataService extends TbxNgxBaseHttpService {
+class TestDataService extends TbxNgxHttpService {
     protected override readonly baseUrl = TEST_BASE_URL;
 
     public testGet(options?: TbxNgxHttpRequestOptions) {
@@ -50,10 +52,10 @@ class TestDataService extends TbxNgxBaseHttpService {
  * for multi-cycle retry verification.
  *
  * This also validates the subclass override pattern documented in
- * TbxNgxBaseHttpService's JSDoc.
+ * TbxNgxHttpService's JSDoc.
  */
 @Injectable()
-class RetryTestService extends TbxNgxBaseHttpService {
+class RetryTestService extends TbxNgxHttpService {
     protected override readonly baseUrl = TEST_BASE_URL;
     protected override readonly RETRY_DELAY = 0;
 
@@ -67,7 +69,7 @@ class RetryTestService extends TbxNgxBaseHttpService {
  * Variant with a trailing-slash baseUrl to verify URL normalization.
  */
 @Injectable()
-class TrailingSlashService extends TbxNgxBaseHttpService {
+class TrailingSlashService extends TbxNgxHttpService {
     protected override readonly baseUrl = `${TEST_BASE_URL}/`;
 
     public testGet(path: string) {
@@ -77,7 +79,7 @@ class TrailingSlashService extends TbxNgxBaseHttpService {
 
 const TEST_URL = `${TEST_BASE_URL}/test`;
 
-describe('TbxNgxBaseHttpService', () => {
+describe('TbxNgxHttpService', () => {
     let service: TestDataService;
     let httpMock: HttpTestingController;
 

@@ -22,11 +22,11 @@ npm install @teqbench/tbx-ngx-http
 
 ```typescript
 import { Injectable } from '@angular/core';
-import { TbxNgxBaseHttpService } from '@teqbench/tbx-ngx-http';
+import { TbxNgxHttpService } from '@teqbench/tbx-ngx-http';
 import { environment } from '../environments/environment';
 
 @Injectable({ providedIn: 'root' })
-export class UserService extends TbxNgxBaseHttpService {
+export class UserService extends TbxNgxHttpService {
     protected override readonly baseUrl = environment.apiUrl;
 
     getUser(id: string) {
@@ -41,7 +41,7 @@ export class UserService extends TbxNgxBaseHttpService {
 
 ## API Reference
 
-### `TbxNgxBaseHttpService` (abstract class)
+### `TbxNgxHttpService` (abstract class)
 
 Abstract base class for feature services. Provides typed HTTP methods with built-in resilience.
 

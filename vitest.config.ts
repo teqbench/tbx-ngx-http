@@ -16,6 +16,17 @@ export default defineConfig({
                 branches: 75,
                 perFile: true,
             },
+            exclude: [
+                '**/test-setup.ts',
+                '**/*.spec.ts',
+                '**/vitest.config.ts',
+                '**/src/index.ts',
+                // Exclude constants from coverage since they contain no logic
+                '**/src/constants/http.constants.ts',
+                // Exclude interfaces from coverage since they contain no logic
+                '**/src/models/http-request-options.model.ts',
+                '**/src/models/http-body-requestion-options.model.ts',
+            ],
         },
     },
 });

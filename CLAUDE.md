@@ -4,7 +4,7 @@ This file provides guidance for Claude Code when working in this repository.
 
 ## Package Overview
 
-This is `@teqbench/tbx-ngx-http`, an Angular library providing base HTTP communication services and resilience constants. It offers an abstract `TbxNgxBaseHttpService` that feature services extend to get automatic retries with exponential backoff on GET requests, timeout handling, consistent URL resolution, and default headers. Resilience constants (`TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS`, `TBX_NGX_HTTP_RETRY_COUNT`, `TBX_NGX_HTTP_RETRY_DELAY_MS`, `TBX_NGX_HTTP_RETRYABLE_STATUSES`) are exported for direct use.
+This is `@teqbench/tbx-ngx-http`, an Angular library providing base HTTP communication services and resilience constants. It offers an abstract `TbxNgxHttpService` that feature services extend to get automatic retries with exponential backoff on GET requests, timeout handling, consistent URL resolution, and default headers. Resilience constants (`TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS`, `TBX_NGX_HTTP_RETRY_COUNT`, `TBX_NGX_HTTP_RETRY_DELAY_MS`, `TBX_NGX_HTTP_RETRYABLE_STATUSES`) are exported for direct use.
 
 ## Tech Stack
 
@@ -182,7 +182,7 @@ Follow **Conventional Commits** strictly:
 
 ## Package-Specific Guidance
 
-- `TbxNgxBaseHttpService` is abstract — it cannot be instantiated directly. Feature services extend it and provide a `baseUrl`.
+- `TbxNgxHttpService` is abstract — it cannot be instantiated directly. Feature services extend it and provide a `baseUrl`.
 - Only GET requests include the retry operator. Mutating methods (POST, PUT, PATCH, DELETE) intentionally skip retries.
 - The retry operator uses exponential backoff: `RETRY_DELAY * 2^(attempt - 1)`.
 - `TBX_NGX_HTTP_RETRYABLE_STATUSES` defines which HTTP status codes trigger retries (0, 408, 429, 500, 502, 503, 504).

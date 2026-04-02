@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Observable, retry, throwError, timer, timeout } from 'rxjs';
 
@@ -9,66 +9,8 @@ import {
     TBX_NGX_HTTP_RETRYABLE_STATUSES,
 } from '../constants/http.constants';
 
-/**
- * Options accepted by non-body HTTP methods (GET, DELETE)
- *
- * @remarks
- * Passed as the optional second argument to
- * {@link TbxNgxBaseHttpService.get | get} and
- * {@link TbxNgxBaseHttpService.delete | delete}. When `headers` is provided,
- * the service's default headers are replaced entirely (not merged).
- *
- * @category Interfaces
- * @displayName HTTP Request Options
- * @order 2
- * @since 1.0.0
- * @related TbxNgxBaseHttpService
- * @related TbxNgxHttpBodyRequestOptions
- *
- * @public
- */
-export interface TbxNgxHttpRequestOptions {
-    /**
-     * Query parameters appended to the request URL
-     *
-     * @public
-     */
-    params?: HttpParams;
-    /**
-     * HTTP headers for the request, replaces default headers when provided
-     *
-     * @public
-     */
-    headers?: HttpHeaders;
-}
-
-/**
- * Options accepted by body HTTP methods (POST, PUT, PATCH)
- *
- * @remarks
- * Passed as the optional third argument to
- * {@link TbxNgxBaseHttpService.post | post},
- * {@link TbxNgxBaseHttpService.put | put}, and
- * {@link TbxNgxBaseHttpService.patch | patch}. When `headers` is provided,
- * the service's default headers are replaced entirely (not merged).
- *
- * @category Interfaces
- * @displayName HTTP Body Request Options
- * @order 3
- * @since 1.0.0
- * @related TbxNgxBaseHttpService
- * @related TbxNgxHttpRequestOptions
- *
- * @public
- */
-export interface TbxNgxHttpBodyRequestOptions {
-    /**
-     * HTTP headers for the request, replaces default headers when provided
-     *
-     * @public
-     */
-    headers?: HttpHeaders;
-}
+import type { TbxNgxHttpRequestOptions } from '../models/http-request-options.model';
+import type { TbxNgxHttpBodyRequestOptions } from '../models/http-body-request-options.model';
 
 /**
  * Abstract base class for feature services that interact with the API
@@ -91,7 +33,7 @@ export interface TbxNgxHttpBodyRequestOptions {
  * @example
  * ```typescript
  * @Injectable({ providedIn: 'root' })
- * export class UserService extends TbxNgxBaseHttpService {
+ * export class UserService extends TbxNgxHttpService {
  *     protected override readonly baseUrl = environment.apiUrl;
  *
  *     getUser(id: string) {
@@ -102,7 +44,7 @@ export interface TbxNgxHttpBodyRequestOptions {
  *
  * @example
  * ```typescript
- * export class SlowApiService extends TbxNgxBaseHttpService {
+ * export class SlowApiService extends TbxNgxHttpService {
  *     protected override readonly baseUrl = environment.apiUrl;
  *     protected override readonly DEFAULT_TIMEOUT = 30_000;
  * }
@@ -121,7 +63,7 @@ export interface TbxNgxHttpBodyRequestOptions {
  *
  * @public
  */
-export abstract class TbxNgxBaseHttpService {
+export abstract class TbxNgxHttpService {
     /**
      * Angular HttpClient instance injected via `inject()`
      *
@@ -195,7 +137,7 @@ export abstract class TbxNgxBaseHttpService {
      * and safe to repeat on transient failure (5xx, network errors).
      *
      * @typeParam T - Expected response body type.
-     * @param path - Relative path appended to {@link TbxNgxBaseHttpService.baseUrl | baseUrl}.
+     * @param path - Relative path appended to {@link TbxNgxHttpService.baseUrl | baseUrl}.
      * @param options - Optional query parameters and headers.
      * @returns An Observable emitting the typed response body.
      *
@@ -217,7 +159,7 @@ export abstract class TbxNgxBaseHttpService {
      * Retries are disabled to prevent duplicate record creation (non-idempotent).
      *
      * @typeParam T - Expected response body type.
-     * @param path - Relative path appended to {@link TbxNgxBaseHttpService.baseUrl | baseUrl}.
+     * @param path - Relative path appended to {@link TbxNgxHttpService.baseUrl | baseUrl}.
      * @param body - Request payload.
      * @param options - Optional headers.
      * @returns An Observable emitting the typed response body.
@@ -244,7 +186,7 @@ export abstract class TbxNgxBaseHttpService {
      * across varying backend implementations.
      *
      * @typeParam T - Expected response body type.
-     * @param path - Relative path appended to {@link TbxNgxBaseHttpService.baseUrl | baseUrl}.
+     * @param path - Relative path appended to {@link TbxNgxHttpService.baseUrl | baseUrl}.
      * @param body - Request payload.
      * @param options - Optional headers.
      * @returns An Observable emitting the typed response body.
@@ -270,7 +212,7 @@ export abstract class TbxNgxBaseHttpService {
      * Retries are disabled as concurrent partial updates can lead to race conditions.
      *
      * @typeParam T - Expected response body type.
-     * @param path - Relative path appended to {@link TbxNgxBaseHttpService.baseUrl | baseUrl}.
+     * @param path - Relative path appended to {@link TbxNgxHttpService.baseUrl | baseUrl}.
      * @param body - Request payload.
      * @param options - Optional headers.
      * @returns An Observable emitting the typed response body.
@@ -297,7 +239,7 @@ export abstract class TbxNgxBaseHttpService {
      * attempts if the first request actually succeeded but the response was lost.
      *
      * @typeParam T - Expected response body type.
-     * @param path - Relative path appended to {@link TbxNgxBaseHttpService.baseUrl | baseUrl}.
+     * @param path - Relative path appended to {@link TbxNgxHttpService.baseUrl | baseUrl}.
      * @param options - Optional query parameters and headers.
      * @returns An Observable emitting the typed response body.
      *
