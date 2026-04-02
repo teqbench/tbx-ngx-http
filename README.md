@@ -80,4 +80,4 @@ Found a bug or have an idea for a new feature? Open an issue using one of the pr
 
 ## License
 
-[Apache-2.0](LICENSE) — Copyright 2025 TeqBench
+[AGPL-3.0](LICENSE) — Copyright 2026 TeqBench
