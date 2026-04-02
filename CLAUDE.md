@@ -8,13 +8,13 @@ This is `@teqbench/tbx-ngx-http`, an Angular library providing base HTTP communi
 
 ## Tech Stack
 
-- **Language:** TypeScript 5.9+ (strict mode, ES2022 target, bundler module resolution)
-- **Testing:** Vitest (globals enabled)
-- **Linting:** ESLint flat config with typescript-eslint
-- **Formatting:** Prettier (enforced via pre-commit hook and CI)
-- **Git Hooks:** Husky + lint-staged
-- **Versioning:** Release Please (Conventional Commits)
-- **Registry:** GitHub Packages (`@teqbench` scope)
+- **Language:** [TypeScript ↗](https://www.typescriptlang.org/) 5.9+ (strict mode, [ES2022 ↗](https://262.ecma-international.org/13.0/) target, bundler module resolution)
+- **Testing:** [Vitest ↗](https://vitest.dev/) (globals enabled)
+- **Linting:** [ESLint ↗](https://eslint.org/) flat config with typescript-eslint
+- **Formatting:** [Prettier ↗](https://prettier.io/) (enforced via pre-commit hook and CI)
+- **Git Hooks:** [Husky ↗](https://typicode.github.io/husky/) + [lint-staged ↗](https://github.com/okonet/lint-staged)
+- **Versioning:** [Release Please ↗](https://github.com/googleapis/release-please) ([Conventional Commits ↗](https://conventionalcommits.org/))
+- **Registry:** [GitHub Packages ↗](https://docs.github.com/en/packages/learn-github-packages/introduction-to-github-packages) (`@teqbench` scope)
 
 ## Key Commands
 
@@ -40,11 +40,11 @@ This is `@teqbench/tbx-ngx-http`, an Angular library providing base HTTP communi
 
 - Packages are published to GitHub Packages (`@teqbench` scope) via the release workflow.
 - Coverage thresholds are enforced in CI: 80% lines/functions/statements, 75% branches, per file.
-- **Build tooling:** ng-packagr is used to build Angular Package Format (APF) output. It uses bundler module resolution internally, so source files use extensionless relative imports (e.g., `'./foo.service'`). The `ng-package.json` at the repo root configures the entry point and output directory. ng-packagr generates its own `package.json` inside `dist/` with the correct APF entry points (`module`, `types`, `exports`). The release workflow publishes from `dist/` (`npm publish ./dist`) so consumers resolve against ng-packagr's `package.json` directly — the root `package.json` does not need `main`, `types`, or `exports` fields.
+- **Build tooling:** [ng-packagr ↗](https://github.com/ng-packagr/ng-packagr) is used to build [Angular Package Format ↗](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/edit) (APF) output. It uses bundler module resolution internally, so source files use extensionless relative imports (e.g., `'./foo.service'`). The `ng-package.json` at the repo root configures the entry point and output directory. ng-packagr generates its own `package.json` inside `dist/` with the correct APF entry points (`module`, `types`, `exports`). The release workflow publishes from `dist/` (`npm publish ./dist`) so consumers resolve against ng-packagr's `package.json` directly — the root `package.json` does not need `main`, `types`, or `exports` fields.
 
-## TSDoc Convention
+## [TSDoc ↗](https://tsdoc.org/) Convention
 
-All exported TypeScript declarations must have TSDoc comments validated by `eslint-plugin-tsdoc`. Custom tags are defined in `tsdoc.json` and consumed downstream by API Extractor and the AI HTML documentation generator.
+All exported TypeScript declarations must have TSDoc comments validated by `eslint-plugin-tsdoc`. Custom tags are defined in `tsdoc.json` and consumed downstream by [API Extractor ↗](https://api-extractor.com/) and the AI HTML documentation generator.
 
 ### Standard Tags (always use)
 
@@ -147,7 +147,7 @@ Members (properties, methods): summary line → `@remarks` → `@param` / `@retu
 
 ## Commit Convention
 
-Follow **Conventional Commits** strictly:
+Follow **[Conventional Commits ↗](https://conventionalcommits.org/)** strictly:
 
 - `feat(scope): ...` — New feature (minor bump)
 - `fix(scope): ...` — Bug fix (patch bump)

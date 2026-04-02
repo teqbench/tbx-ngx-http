@@ -64,13 +64,13 @@ Abstract base class for feature services. Provides typed HTTP methods with built
 
 ## Compatibility
 
-| Dependency | Version                       |
-| ---------- | ----------------------------- |
-| Angular    | ^19.0.0 \| ^20.0.0 \| ^21.0.0 |
-| RxJS       | ^7.0.0                        |
-| TypeScript | ~5.9.0                        |
-| Node.js    | >=24.0.0                      |
+| Dependency                                      | Version                       |
+| ----------------------------------------------- | ----------------------------- |
+| [Angular ↗](https://angular.dev/)               | ^19.0.0 \| ^20.0.0 \| ^21.0.0 |
+| [RxJS ↗](https://rxjs.dev/)                     | ^7.0.0                        |
+| [TypeScript ↗](https://www.typescriptlang.org/) | ~5.9.0                        |
+| [Node.js ↗](https://nodejs.org/)                | >=24.0.0                      |
 
 ## License
 
-[Apache-2.0](LICENSE) — Copyright 2025 TeqBench
+[Apache-2.0 ↗](https://www.apache.org/licenses/LICENSE-2.0) — Copyright 2025 TeqBench

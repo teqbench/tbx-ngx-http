@@ -119,9 +119,9 @@ Fails the build on high or critical severity vulnerabilities. Runs immediately a
 npm run format:check
 ```
 
-Runs `prettier --check .` against all tracked files. Also enforced locally via the Husky `pre-commit` hook — the CI step is the safety net.
+Runs `[Prettier ↗](https://prettier.io/) --check .` against all tracked files. Also enforced locally via the [Husky ↗](https://typicode.github.io/husky/) `pre-commit` hook — the CI step is the safety net.
 
-#### 8. TypeScript Check
+#### 8. [TypeScript ↗](https://www.typescriptlang.org/) Check
 
 ```bash
 npm run typecheck
@@ -135,7 +135,7 @@ Full type-check (`tsc --noEmit`) without emitting output.
 npm run lint
 ```
 
-Runs ESLint with the flat config (`eslint.config.js`).
+Runs [ESLint ↗](https://eslint.org/) with the flat config (`eslint.config.js`).
 
 #### 10. Run Tests with Coverage
 
@@ -143,7 +143,7 @@ Runs ESLint with the flat config (`eslint.config.js`).
 npm run test:coverage
 ```
 
-Runs `vitest run --coverage`, enforcing the coverage thresholds configured in `vitest.config.ts`:
+Runs `[Vitest ↗](https://vitest.dev/) run --coverage`, enforcing the coverage thresholds configured in `vitest.config.ts`:
 
 - 80% lines, functions, and statements
 - 75% branches
@@ -159,7 +159,7 @@ Extracts badge data from test output for the gist push steps:
 
 #### 12. Check README Version Drift
 
-Compares the TypeScript and Node.js versions in `README.md`'s compatibility table against `package.json`. Fails the build if they don't match, preventing documentation drift after dependency updates.
+Compares the [TypeScript ↗](https://www.typescriptlang.org/) and [Node.js ↗](https://nodejs.org/) versions in `README.md`'s compatibility table against `package.json`. Fails the build if they don't match, preventing documentation drift after dependency updates.
 
 #### 13. Build
 

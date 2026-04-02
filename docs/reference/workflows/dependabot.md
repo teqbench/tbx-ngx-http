@@ -61,7 +61,7 @@ Updates action versions used in all workflow files (e.g., `actions/checkout@v4` 
 
 Some dependencies are intentionally pinned without caret ranges (see `devDependenciesPinned` in `package.json`):
 
-- **`typescript-eslint`** — pinned without `^` because patch releases have introduced breaking rule changes
+- **`[typescript-eslint ↗](https://typescript-eslint.io/)`** — pinned without `^` because patch releases have introduced breaking rule changes
 - **`@types/node`** — pinned to `~24.0.0` to match the Node 24 runtime
 
 Dependabot will still open PRs for these packages. Review them carefully and test before merging — the pinning is intentional and documented.
