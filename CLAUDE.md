@@ -145,6 +145,78 @@ Top-level exports: summary line → `@remarks` → `@typeParam` / `@param` / `@r
 
 Members (properties, methods): summary line → `@remarks` → `@param` / `@returns` (methods only) → `@order` → `@public` / `@internal`
 
+### Reference Implementation
+
+`@teqbench/tbx-models` (a separate repository) `src/base-model.ts` is the reference for a fully migrated [TSDoc ↗](https://tsdoc.org) comment on an interface with member-level docs including `@order` tags. `src/index.ts` in that same package is the reference for a `@packageDocumentation` barrel file [TSDoc ↗](https://tsdoc.org) comment. These files are not accessible from this repository — clone `@teqbench/tbx-models` separately to view them.
+
+### Verification
+
+After migration, run `npm run lint` and confirm no `tsdoc/syntax` warnings. Run `npm run format:check` and `npm test` to ensure nothing broke.
+
+## External Linking Convention
+
+Every prose mention of an external specification, standard, or technology in documentation must be hyperlinked to its official source. This applies to all markdown files (.md) and all [TSDoc ↗](https://tsdoc.org) comments in [TypeScript ↗](https://www.typescriptlang.org) source files (.ts). Exclude CHANGELOG.md, git submodules, and build output directories.
+
+### Format
+
+- **Markdown:** `[Name ↗](url)` with the ↗ (U+2197) character inside the link text for external resources. Internal/relative links do not use ↗.
+- **TSDoc:** `{@link url | Name}` inline syntax in every section where an external technology appears — summary, `@remarks`, `@usage`, `@param`, `@returns`, and member-level docs. For each distinct external resource referenced in a top-level export's summary, add a `@see {@link url | Name}` tag in the tag section.
+
+### Rules
+
+- Link to the official specification or project homepage, not Wikipedia or third-party summaries.
+- Use canonical names (e.g., "ISO 8601" not "ISO-8601").
+- Internal references and cross-references to other `@teqbench` packages use relative links or `{@link ExportName}` without ↗.
+- Link every prose mention, not just the first occurrence per document.
+- Do not place links inside backtick code spans or section headings.
+- License references link to the project's own LICENSE file using a relative path, without ↗.
+- [GitHub Packages ↗](https://github.com/orgs/teqbench/packages) links use the org packages page, not the generic feature page.
+- Project-specific service instances (badge gist, org packages page, issue templates) link to the actual instance URL, not the generic service homepage. Discover URLs from README badge URLs, workflow files, `package.json`, and config files.
+
+### SECURITY.md Reporting Channel
+
+- **Private repository:** Email link (`[info@teqbench.dev](mailto:info@teqbench.dev)`). GitHub Private vulnerability reporting is not available without GitHub Advanced Security.
+- **Public repository:** [GitHub Private vulnerability reporting ↗](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability) via `/security/advisories/new`. Enable at the org level if available, otherwise at the repo level.
+- When transitioning a repo from private to public, update SECURITY.md to switch from email to the advisory URL.
+
+### README Requirements
+
+The README must have a "Feedback" section immediately above "License" with links to Bug Report and Feature Request issue templates using the `issues/new?template=` URL pattern.
+
+## AI Friendliness Convention
+
+All [TSDoc ↗](https://tsdoc.org) comments, inline code comments, and markdown files must be written for AI consumption — documentation generators, code assistants, and retrieval-augmented generation systems parse these to answer questions, generate docs, or suggest code.
+
+### Disambiguation
+
+- Every `{@link ExportName}` must resolve to an export in the current package. References to external types must include a full URL: `{@link https://angular.dev/api/core/ClassName | ClassName}`.
+- Barrel file grouping comments (e.g., `// Models`, `// Services`) must match the `@category` tags on the exports they group.
+- `@category Interface` is reserved for [TypeScript ↗](https://www.typescriptlang.org) `interface` declarations. Abstract classes serving as DI tokens or extension points use `@category Contract`.
+
+### Context Completeness
+
+- Do not imply auto-registration. If consumers must explicitly provide an implementation via DI, say so. Do not write "default implementation" without clarifying that no provider is registered automatically.
+- Optional fields the pipeline never populates must state that explicitly (e.g., "the pipeline never sets this field; set it when constructing a context manually").
+- Methods with error-handling behavior (try/catch, swallowing, fallback) must document it in `@remarks`.
+- Hypothetical class names in `@example` blocks must include a comment identifying them as consumer-defined placeholders (e.g., `// SentryErrorLogger is a hypothetical consumer-defined subclass`).
+- References to files or configurations in other repositories must note they are external and not accessible from the current repo.
+
+### Structural Consistency
+
+- Every exported class and function must have an `@example` tag.
+- Do not duplicate the same URL in both an inline `{@link}` and a `@see` tag on the same member.
+- `@internal` members must have a summary line before the tag.
+- `@returns` is required for non-void returns; omit for `void`.
+- Summary lines must lead with the primary action matching the export name (e.g., `logClientError` summarizes as "Log a manually caught error..." not "Build a structured error context...").
+
+### Semantic Clarity
+
+- Do not use terms with established technical meanings in unintended ways (e.g., "side-effect pattern" for fan-out, "structured output" for human-readable console logging).
+- Do not reference concepts or patterns that do not exist in the codebase.
+- Coverage pragmas (`/* v8 ignore next */`) and other non-obvious annotations must be documented in this file (see Publishing section).
+- Configuration snapshots in documentation must note they are examples that may not reflect the current state.
+- Custom `package.json` metadata fields (not defined by the [npm ↗](https://www.npmjs.com) spec) must be identified as custom where referenced.
+
 ## Commit Convention
 
 Follow **[Conventional Commits ↗](https://conventionalcommits.org/)** strictly:

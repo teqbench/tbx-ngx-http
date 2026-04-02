@@ -9,7 +9,21 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
  * {@link TbxNgxHttpService.delete | delete}. When `headers` is provided,
  * the service's default headers are replaced entirely (not merged).
  *
- * @category Interfaces
+ * @usage
+ * Pass an instance of this interface to customize query parameters or headers
+ * on GET and DELETE requests made through {@link TbxNgxHttpService}.
+ *
+ * @example
+ * ```typescript
+ * import { HttpParams } from '@angular/common/http';
+ * import { TbxNgxHttpRequestOptions } from '@teqbench/tbx-ngx-http';
+ *
+ * const options: TbxNgxHttpRequestOptions = {
+ *     params: new HttpParams().set('page', '1'),
+ * };
+ * ```
+ *
+ * @category Interface
  * @displayName HTTP Request Options
  * @order 2
  * @since 1.0.0
@@ -26,7 +40,7 @@ export interface TbxNgxHttpRequestOptions {
      */
     params?: HttpParams;
     /**
-     * HTTP headers for the request, replaces default headers when provided
+     * {@link https://angular.dev/api/common/http/HttpHeaders | HttpHeaders} for the request, replaces default headers when provided
      *
      * @public
      */

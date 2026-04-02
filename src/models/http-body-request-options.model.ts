@@ -10,7 +10,21 @@ import { HttpHeaders } from '@angular/common/http';
  * {@link TbxNgxHttpService.patch | patch}. When `headers` is provided,
  * the service's default headers are replaced entirely (not merged).
  *
- * @category Interfaces
+ * @usage
+ * Pass an instance of this interface to customize headers on POST, PUT, and
+ * PATCH requests made through {@link TbxNgxHttpService}.
+ *
+ * @example
+ * ```typescript
+ * import { HttpHeaders } from '@angular/common/http';
+ * import { TbxNgxHttpBodyRequestOptions } from '@teqbench/tbx-ngx-http';
+ *
+ * const options: TbxNgxHttpBodyRequestOptions = {
+ *     headers: new HttpHeaders({ Authorization: 'Bearer token' }),
+ * };
+ * ```
+ *
+ * @category Interface
  * @displayName HTTP Body Request Options
  * @order 3
  * @since 1.0.0
@@ -21,7 +35,7 @@ import { HttpHeaders } from '@angular/common/http';
  */
 export interface TbxNgxHttpBodyRequestOptions {
     /**
-     * HTTP headers for the request, replaces default headers when provided
+     * {@link https://angular.dev/api/common/http/HttpHeaders | HttpHeaders} for the request, replaces default headers when provided
      *
      * @public
      */
