@@ -178,6 +178,8 @@ Key settings:
 }
 ```
 
+> The version shown above is an example; the actual value reflects the current release.
+
 Tracks the current released version. Updated automatically by release-please. CI reads this file to generate the version badge.
 
 ---

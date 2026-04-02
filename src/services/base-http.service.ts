@@ -32,6 +32,7 @@ import type { TbxNgxHttpBodyRequestOptions } from '../models/http-body-request-o
  *
  * @example
  * ```typescript
+ * // UserService is a hypothetical consumer-defined subclass
  * @Injectable({ providedIn: 'root' })
  * export class UserService extends TbxNgxHttpService {
  *     protected override readonly baseUrl = environment.apiUrl;
@@ -44,6 +45,7 @@ import type { TbxNgxHttpBodyRequestOptions } from '../models/http-body-request-o
  *
  * @example
  * ```typescript
+ * // SlowApiService is a hypothetical consumer-defined subclass
  * export class SlowApiService extends TbxNgxHttpService {
  *     protected override readonly baseUrl = environment.apiUrl;
  *     protected override readonly DEFAULT_TIMEOUT = 30_000;

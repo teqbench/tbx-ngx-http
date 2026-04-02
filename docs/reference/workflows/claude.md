@@ -204,4 +204,4 @@ Claude will:
 - **Max turns:** 10 — prevents runaway sessions
 - **Timeout:** 30 minutes — hard cap on execution time
 - **No workflow edits** — Claude should not modify `.github/workflows/*` without explicit instruction (enforced by `CLAUDE.md` conventions)
-- **No release file edits** — Claude should not modify `release-please-config.json`, `.release-please-manifest.json`, `CHANGELOG.md`, or `.badges/*` (enforced by `CLAUDE.md` conventions)
+- **No release file edits** — Claude should not modify `release-please-config.json`, `.release-please-manifest.json`, or `CHANGELOG.md` (enforced by `CLAUDE.md` conventions)

@@ -45,7 +45,7 @@ No app token needed — this workflow only reads the [npm ↗](https://www.npmjs
 
 ### Configuration
 
-The workflow uses a tracking epic issue. The `EPIC` constant in the workflow file must be set to the issue number during repository setup (see SETUP.md step 8).
+The workflow uses a tracking epic issue. The `EPIC` constant in the workflow file must be set to the issue number during repository setup. Setup documentation is maintained in the foundation repository and is not accessible from this repo.
 
 ### Issue Metadata Format
 

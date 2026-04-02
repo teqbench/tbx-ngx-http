@@ -59,7 +59,7 @@ Updates action versions used in all workflow files (e.g., `actions/checkout@v4` 
 
 ## Interaction with Pinned Dependencies
 
-Some dependencies are intentionally pinned without caret ranges (see `devDependenciesPinned` in `package.json`):
+Some dependencies are intentionally pinned without caret ranges (see `devDependenciesPinned`, a custom metadata field not consumed by [npm ↗](https://www.npmjs.com/), in `package.json`):
 
 - **[typescript-eslint ↗](https://typescript-eslint.io/)** — pinned without `^` because patch releases have introduced breaking rule changes
 - **`@types/node`** — pinned to `~24.0.0` to match the Node 24 runtime
