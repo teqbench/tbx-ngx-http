@@ -73,4 +73,4 @@ Abstract base class for feature services. Provides typed HTTP methods with built
 
 ## License
 
-[Apache-2.0 ↗](https://www.apache.org/licenses/LICENSE-2.0) — Copyright 2025 TeqBench
+[Apache-2.0](LICENSE) — Copyright 2025 TeqBench

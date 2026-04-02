@@ -14,7 +14,7 @@ This is `@teqbench/tbx-ngx-http`, an Angular library providing base HTTP communi
 - **Formatting:** [Prettier ↗](https://prettier.io/) (enforced via pre-commit hook and CI)
 - **Git Hooks:** [Husky ↗](https://typicode.github.io/husky/) + [lint-staged ↗](https://github.com/okonet/lint-staged)
 - **Versioning:** [Release Please ↗](https://github.com/googleapis/release-please) ([Conventional Commits ↗](https://conventionalcommits.org/))
-- **Registry:** [GitHub Packages ↗](https://docs.github.com/en/packages/learn-github-packages/introduction-to-github-packages) (`@teqbench` scope)
+- **Registry:** [GitHub Packages ↗](https://github.com/orgs/teqbench/packages) (`@teqbench` scope)
 
 ## Key Commands
 
