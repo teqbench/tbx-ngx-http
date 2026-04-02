@@ -71,6 +71,13 @@ Abstract base class for feature services. Provides typed HTTP methods with built
 | [TypeScript ↗](https://www.typescriptlang.org/) | ~5.9.0                        |
 | [Node.js ↗](https://nodejs.org/)                | >=24.0.0                      |
 
+## Feedback
+
+Found a bug or have an idea for a new feature? Open an issue using one of the provided templates:
+
+- [Bug Report](https://github.com/teqbench/tbx-ngx-http/issues/new?template=bug_report.md)
+- [Feature Request](https://github.com/teqbench/tbx-ngx-http/issues/new?template=feature_request.md)
+
 ## License
 
 [Apache-2.0](LICENSE) — Copyright 2025 TeqBench
