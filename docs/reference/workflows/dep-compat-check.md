@@ -7,7 +7,7 @@
 
 ## Purpose
 
-Tracks pinned dependencies that are waiting for a new version — for example, waiting for a package to release a compatible major version before it can be adopted. The workflow checks the npm registry daily, evaluates resolution conditions, and posts status updates to a tracking issue.
+Tracks pinned dependencies that are waiting for a new version — for example, waiting for a package to release a compatible major version before it can be adopted. The workflow checks the [npm ↗](https://www.npmjs.com/) registry daily, evaluates resolution conditions, and posts status updates to a tracking issue.
 
 ---
 
@@ -78,7 +78,7 @@ also-track: @angular/cli, @angular/compiler
 ### Evaluation Flow
 
 1. Finds open issues with `Part of #<EPIC>` and `<!-- dep-compat ... -->` metadata.
-2. For each, queries the npm registry for the latest version.
+2. For each, queries the [npm ↗](https://www.npmjs.com/) registry for the latest version.
 3. Evaluates the resolution condition against the current version.
 4. Compares version fingerprints with the last bot comment to detect changes.
 5. Posts a summary comment if: versions changed, it's Monday, or the workflow was triggered manually.
