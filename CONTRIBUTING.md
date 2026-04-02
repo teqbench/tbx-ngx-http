@@ -97,7 +97,7 @@ Follow **[Conventional Commits ↗](https://conventionalcommits.org/)** strictly
 2. Merge `main` into the release branch to resolve any conflicts (especially badge files)
 3. Open a PR from the release branch to `main`
 4. After merge, [Release Please ↗](https://github.com/googleapis/release-please) opens a version bump PR on `main`
-5. Merge the Release Please PR to trigger a GitHub Release and publish to [GitHub Packages ↗](https://github.com/orgs/teqbench/packages)
+5. Merge the [Release Please ↗](https://github.com/googleapis/release-please) PR to trigger a GitHub Release and publish to [GitHub Packages ↗](https://github.com/orgs/teqbench/packages)
 6. The sync workflow automatically merges `main` back into `dev`
 
 For details on how the CI/CD pipelines work, see [docs/reference/workflows/](docs/reference/workflows/).

@@ -1,13 +1,13 @@
 # Claude Code Workflow — `claude.yml`
 
-**Full name:** TeqBench Package - Claude Code Workflow
+**Full name:** TeqBench Package - [Claude Code ↗](https://github.com/anthropics/claude-code) Workflow
 **File:** `.github/workflows/claude.yml`
 
 ---
 
 ## Purpose
 
-The Claude Code workflow provides AI-powered assistance directly in GitHub issues and pull requests. When a user mentions `@claude` in a comment or issue body, Claude reads the codebase, analyzes the request, and can implement features, fix bugs, review code, or create pull requests — all within the GitHub UI.
+The [Claude Code ↗](https://github.com/anthropics/claude-code) workflow provides AI-powered assistance directly in GitHub issues and pull requests. When a user mentions `@claude` in a comment or issue body, Claude reads the codebase, analyzes the request, and can implement features, fix bugs, review code, or create pull requests — all within the GitHub UI.
 
 ---
 
@@ -56,7 +56,7 @@ jobs:
 | `APP_PRIVATE_KEY`   | GitHub App private key                                                                      |
 | `ANTHROPIC_API_KEY` | Authenticates with the [Anthropic API ↗](https://docs.anthropic.com/en/api/getting-started) |
 
-The app token is used for checkout with submodules (Claude Code skills) and for full repository access.
+The app token is used for checkout with submodules ([Claude Code ↗](https://github.com/anthropics/claude-code) skills) and for full repository access.
 
 ---
 
@@ -173,7 +173,7 @@ Claude reads the `CLAUDE.md` file in the repo root for project-specific context.
 - Branching rules and workflow expectations
 - Explicit do's and don'ts for Claude's behavior
 
-Both the GitHub Action and the Claude Code CLI read the same `CLAUDE.md`, ensuring consistent behavior across local and CI environments.
+Both the GitHub Action and the [Claude Code ↗](https://github.com/anthropics/claude-code) CLI read the same `CLAUDE.md`, ensuring consistent behavior across local and CI environments.
 
 ---
 

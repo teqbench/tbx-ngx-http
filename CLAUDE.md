@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance for Claude Code when working in this repository.
+This file provides guidance for [Claude Code ↗](https://github.com/anthropics/claude-code) when working in this repository.
 
 ## Package Overview
 
@@ -160,7 +160,7 @@ Every prose mention of an external specification, standard, or technology in doc
 ### Format
 
 - **Markdown:** `[Name ↗](url)` with the ↗ (U+2197) character inside the link text for external resources. Internal/relative links do not use ↗.
-- **TSDoc:** `{@link url | Name}` inline syntax in every section where an external technology appears — summary, `@remarks`, `@usage`, `@param`, `@returns`, and member-level docs. For each distinct external resource referenced in a top-level export's summary, add a `@see {@link url | Name}` tag in the tag section.
+- **[TSDoc ↗](https://tsdoc.org/):** `{@link url | Name}` inline syntax in every section where an external technology appears — summary, `@remarks`, `@usage`, `@param`, `@returns`, and member-level docs. For each distinct external resource referenced in a top-level export's summary, add a `@see {@link url | Name}` tag in the tag section.
 
 ### Rules
 
