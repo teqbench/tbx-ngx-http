@@ -167,7 +167,7 @@ Compares the [TypeScript ↗](https://www.typescriptlang.org/) and [Node.js ↗]
 npm run build
 ```
 
-Compiles TypeScript to `dist/` using `tsconfig.build.json`.
+Compiles [TypeScript ↗](https://www.typescriptlang.org/) to `dist/` using `tsconfig.build.json`.
 
 #### 14–18. Push Badge Data to Gist
 
