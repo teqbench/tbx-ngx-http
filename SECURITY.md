@@ -13,7 +13,7 @@ The latest version on `main` is the only supported version.
 
 **Please do not report security vulnerabilities through public GitHub issues.**
 
-To report a vulnerability, open a [GitHub Security Advisory ↗](https://github.com/teqbench/tbx-ngx-http/security/advisories/new) via the **Security** tab of this repository. This keeps the report private until a fix is available.
+To report a vulnerability, email [info@teqbench.dev](mailto:info@teqbench.dev). This keeps the report private until a fix is available. GitHub Private vulnerability reporting is not available on private repositories without GitHub Advanced Security.
 
 Include as much of the following as possible:
 
@@ -34,4 +34,4 @@ To check locally:
 npm audit --audit-level=high
 ```
 
-If you discover a vulnerability in a transitive dependency that `npm audit` does not flag, please report it via the advisory process above.
+If you discover a vulnerability in a transitive dependency that `npm audit` does not flag, please report it via email to [info@teqbench.dev](mailto:info@teqbench.dev).
