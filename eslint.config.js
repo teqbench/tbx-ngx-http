@@ -1,5 +1,6 @@
 import tseslint from 'typescript-eslint';
 import angular from 'angular-eslint';
+import tsdoc from 'eslint-plugin-tsdoc';
 
 export default tseslint.config(
     {
@@ -8,6 +9,7 @@ export default tseslint.config(
     ...tseslint.configs.recommended,
     ...angular.configs.tsRecommended,
     {
+        plugins: { tsdoc },
         languageOptions: {
             parserOptions: {
                 projectService: {
@@ -25,6 +27,7 @@ export default tseslint.config(
                 'error',
                 { type: 'element', prefix: 'tbx', style: 'kebab-case' },
             ],
+            'tsdoc/syntax': 'warn',
         },
     }
 );
