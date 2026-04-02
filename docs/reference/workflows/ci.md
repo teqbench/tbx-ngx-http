@@ -20,8 +20,6 @@ The CI workflow is the quality gate for the repository. It runs formatting check
 
 ---
 
----
-
 ## Concurrency
 
 ```yaml
