@@ -4,7 +4,7 @@
 
 ### Node.js
 
-Install the version specified in `.nvmrc` (Node 24+). If you use nvm:
+Install the version specified in `.nvmrc` ([Node.js ↗](https://nodejs.org/) 24+). If you use nvm:
 
 ```bash
 nvm install
@@ -13,7 +13,7 @@ nvm use
 
 ### GitHub Packages Authentication
 
-This package depends on `@teqbench` scoped packages hosted on GitHub Packages. To install them locally, you need a GitHub personal access token (PAT) with `read:packages` scope.
+This package depends on `@teqbench` scoped packages hosted on [GitHub Packages ↗](https://github.com/orgs/teqbench/packages). To install them locally, you need a GitHub personal access token (PAT) with `read:packages` scope.
 
 1. Create a PAT at **GitHub > Settings > Developer settings > Personal access tokens** with `read:packages` scope
 2. Add it to your shell profile (`~/.zshrc` or `~/.bashrc`):
@@ -26,20 +26,20 @@ This package depends on `@teqbench` scoped packages hosted on GitHub Packages. T
     ```
 4. Open a new terminal (or `source ~/.zshrc`) and verify: `npm ci`
 
-The repo `.npmrc` already configures the `@teqbench` scope to use GitHub Packages. The `~/.npmrc` auth line tells npm how to authenticate. CI handles this separately via `actions/setup-node`.
+The repo `.npmrc` already configures the `@teqbench` scope to use [GitHub Packages ↗](https://github.com/orgs/teqbench/packages). The `~/.npmrc` auth line tells npm how to authenticate. CI handles this separately via `actions/setup-node`.
 
 #### Cross-repo package access (CI)
 
-If this package depends on other `@teqbench` packages, each package in the entire dependency tree (direct and transitive) must grant this repository read access on GitHub. For each `@teqbench` package, go to **github.com/orgs/teqbench/packages/npm/\<package-name\>/settings → Manage access**, add this repository, and set the role to **Read**. GitHub Packages has its own access control layer — repository and app permissions alone are not sufficient. Without this, CI will fail with `403 Forbidden` during `npm ci`. For example, if this package depends on `tbx-mat-severity-icons` which depends on `tbx-mat-icons`, you must grant read access on both packages.
+If this package depends on other `@teqbench` packages, each package in the entire dependency tree (direct and transitive) must grant this repository read access on GitHub. For each `@teqbench` package, go to **github.com/orgs/teqbench/packages/npm/\<package-name\>/settings → Manage access**, add this repository, and set the role to **Read**. [GitHub Packages ↗](https://github.com/orgs/teqbench/packages) has its own access control layer — repository and app permissions alone are not sufficient. Without this, CI will fail with `403 Forbidden` during `npm ci`. For example, if this package depends on `tbx-mat-severity-icons` which depends on `tbx-mat-icons`, you must grant read access on both packages.
 
 ## Tech Stack
 
-- **Language:** [TypeScript](https://www.typescriptlang.org) 5.9+
-- **Testing:** [Vitest](https://vitest.dev)
-- **Linting:** [ESLint](https://eslint.org) (Flat Config)
-- **Formatting:** [Prettier](https://prettier.io) (enforced via pre-commit hook and CI)
-- **Git Hooks:** Husky + lint-staged (runs Prettier on staged files before every commit)
-- **Versioning:** [Release Please](https://github.com/googleapis/release-please) (Conventional Commits)
+- **Language:** [TypeScript ↗](https://www.typescriptlang.org) 5.9+
+- **Testing:** [Vitest ↗](https://vitest.dev)
+- **Linting:** [ESLint ↗](https://eslint.org) (Flat Config)
+- **Formatting:** [Prettier ↗](https://prettier.io) (enforced via pre-commit hook and CI)
+- **Git Hooks:** [Husky ↗](https://typicode.github.io/husky/) + [lint-staged ↗](https://github.com/lint-staged/lint-staged) (runs Prettier on staged files before every commit)
+- **Versioning:** [Release Please ↗](https://github.com/googleapis/release-please) ([Conventional Commits ↗](https://conventionalcommits.org/))
 
 ## Key Commands
 
@@ -54,7 +54,7 @@ If this package depends on other `@teqbench` packages, each package in the entir
 
 ## Commit Convention
 
-Follow **[Conventional Commits](https://www.conventionalcommits.org)** strictly. Release Please uses these to determine version bumps.
+Follow **[Conventional Commits ↗](https://conventionalcommits.org/)** strictly. Release Please uses these to determine version bumps.
 
 - `feat(scope): ...` — New feature (minor version bump)
 - `fix(scope): ...` — Bug fix (patch version bump)
@@ -97,7 +97,7 @@ Follow **[Conventional Commits](https://www.conventionalcommits.org)** strictly.
 2. Merge `main` into the release branch to resolve any conflicts (especially badge files)
 3. Open a PR from the release branch to `main`
 4. After merge, Release Please opens a version bump PR on `main`
-5. Merge the Release Please PR to trigger a GitHub Release and publish to GitHub Packages
+5. Merge the Release Please PR to trigger a GitHub Release and publish to [GitHub Packages ↗](https://github.com/orgs/teqbench/packages)
 6. The sync workflow automatically merges `main` back into `dev`
 
 For details on how the CI/CD pipelines work, see [docs/reference/workflows/](docs/reference/workflows/).

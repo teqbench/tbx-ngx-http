@@ -65,7 +65,7 @@ import type { TbxNgxHttpBodyRequestOptions } from '../models/http-body-request-o
  */
 export abstract class TbxNgxHttpService {
     /**
-     * Angular HttpClient instance injected via `inject()`
+     * {@link https://angular.dev/api/common/http/HttpClient | HttpClient} instance injected via {@link https://angular.dev/api/core/inject | inject()}
      *
      * @public
      */
@@ -115,7 +115,7 @@ export abstract class TbxNgxHttpService {
      * Default headers applied to every request unless overridden per-call
      *
      * @remarks
-     * Angular's HttpClient sets `Content-Type: application/json` automatically
+     * {@link https://angular.dev/api/common/http/HttpClient | HttpClient} sets `Content-Type: application/json` automatically
      * when the body is a JavaScript object. `Accept` is not set by default —
      * this header signals that the service speaks JSON.
      *

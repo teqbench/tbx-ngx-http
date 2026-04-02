@@ -6,7 +6,7 @@
 
 ## Installation
 
-Configure npm to use GitHub Packages for the `@teqbench` scope:
+Configure npm to use [GitHub Packages ↗](https://github.com/orgs/teqbench/packages) for the `@teqbench` scope:
 
 ```bash
 echo "@teqbench:registry=https://npm.pkg.github.com" >> .npmrc
