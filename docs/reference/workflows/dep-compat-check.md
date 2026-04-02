@@ -37,7 +37,7 @@ Only needs write access to issues for posting status comments.
 | -------------- | --------------------------- |
 | `GITHUB_TOKEN` | Default token for API calls |
 
-No app token needed — this workflow only reads the npm registry and writes issue comments.
+No app token needed — this workflow only reads the [npm ↗](https://www.npmjs.com/) registry and writes issue comments.
 
 ---
 
@@ -62,7 +62,7 @@ also-track: @angular/cli, @angular/compiler
 
 | Field         | Required | Description                                                       |
 | ------------- | -------- | ----------------------------------------------------------------- |
-| `package`     | Yes      | npm package name to check                                         |
+| `package`     | Yes      | [npm ↗](https://www.npmjs.com/) package name to check             |
 | `resolution`  | No       | Resolution condition (see below). Defaults to `manual`.           |
 | `description` | No       | Human-readable context for status reports                         |
 | `also-track`  | No       | Comma-separated list of additional packages to show in the report |

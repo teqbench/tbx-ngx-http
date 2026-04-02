@@ -265,7 +265,7 @@ export abstract class TbxNgxHttpService {
     }
 
     /**
-     * Return a custom RxJS retry operator with exponential backoff
+     * Return a custom {@link https://rxjs.dev | RxJS} retry operator with exponential backoff
      *
      * @remarks
      * Only retries transient errors (status codes in
@@ -282,7 +282,7 @@ export abstract class TbxNgxHttpService {
      * Backoff formula: `RETRY_DELAY * 2^(attempt - 1)`
      *
      * @typeParam T - Observable element type.
-     * @returns An RxJS operator function that applies the retry strategy.
+     * @returns An {@link https://rxjs.dev | RxJS} operator function that applies the retry strategy.
      *
      * @public
      */
