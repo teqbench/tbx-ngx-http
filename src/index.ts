@@ -15,6 +15,6 @@
  * @packageDocumentation
  */
 export * from './constants/http.constants';
-export { TbxNgxHttpService } from './services/base-http.service';
+export { TbxNgxHttpService } from './services/http.service';
 export { type TbxNgxHttpRequestOptions } from './models/http-request-options.model';
 export { type TbxNgxHttpBodyRequestOptions } from './models/http-body-request-options.model';
