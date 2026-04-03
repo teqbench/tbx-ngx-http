@@ -2,11 +2,11 @@
 
 ![Build Status](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-ngx-http-main-build-status.json) ![Tests](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-ngx-http-main-tests.json) ![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-ngx-http-main-coverage.json) ![Version](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-ngx-http-main-version.json) ![Build Number](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4/raw/tbx-ngx-http-main-build-number.json)
 
-> Base HTTP communication services and resilience constants for Angular. Provides automatic retries with exponential backoff, timeout handling, and consistent URL resolution for feature services.
+> Base HTTP communication services and resilience constants for [Angular ↗](https://angular.dev/). Provides automatic retries with exponential backoff, timeout handling, and consistent URL resolution for feature services.
 
 ## Installation
 
-Configure npm to use GitHub Packages for the `@teqbench` scope:
+Configure npm to use [GitHub Packages ↗](https://github.com/orgs/teqbench/packages) for the `@teqbench` scope:
 
 ```bash
 echo "@teqbench:registry=https://npm.pkg.github.com" >> .npmrc
@@ -22,11 +22,11 @@ npm install @teqbench/tbx-ngx-http
 
 ```typescript
 import { Injectable } from '@angular/core';
-import { TbxNgxBaseHttpService } from '@teqbench/tbx-ngx-http';
+import { TbxNgxHttpService } from '@teqbench/tbx-ngx-http';
 import { environment } from '../environments/environment';
 
 @Injectable({ providedIn: 'root' })
-export class UserService extends TbxNgxBaseHttpService {
+export class UserService extends TbxNgxHttpService {
     protected override readonly baseUrl = environment.apiUrl;
 
     getUser(id: string) {
@@ -41,7 +41,7 @@ export class UserService extends TbxNgxBaseHttpService {
 
 ## API Reference
 
-### `TbxNgxBaseHttpService` (abstract class)
+### `TbxNgxHttpService` (abstract class)
 
 Abstract base class for feature services. Provides typed HTTP methods with built-in resilience.
 
@@ -64,13 +64,20 @@ Abstract base class for feature services. Provides typed HTTP methods with built
 
 ## Compatibility
 
-| Dependency | Version                       |
-| ---------- | ----------------------------- |
-| Angular    | ^19.0.0 \| ^20.0.0 \| ^21.0.0 |
-| RxJS       | ^7.0.0                        |
-| TypeScript | ~5.9.0                        |
-| Node.js    | >=24.0.0                      |
+| Dependency                                      | Version                       |
+| ----------------------------------------------- | ----------------------------- |
+| [Angular ↗](https://angular.dev/)               | ^19.0.0 \| ^20.0.0 \| ^21.0.0 |
+| [RxJS ↗](https://rxjs.dev/)                     | ^7.0.0                        |
+| [TypeScript ↗](https://www.typescriptlang.org/) | ~5.9.0                        |
+| [Node.js ↗](https://nodejs.org/)                | >=24.0.0                      |
+
+## Feedback
+
+Found a bug or have an idea for a new feature? Open an issue using one of the provided templates:
+
+- [Bug Report](https://github.com/teqbench/tbx-ngx-http/issues/new?template=bug_report.md)
+- [Feature Request](https://github.com/teqbench/tbx-ngx-http/issues/new?template=feature_request.md)
 
 ## License
 
-[Apache-2.0](LICENSE) — Copyright 2025 TeqBench
+[AGPL-3.0](LICENSE) — Copyright 2026 TeqBench

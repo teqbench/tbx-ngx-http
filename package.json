@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "Base HTTP communication services and resilience constants for Angular. Provides automatic retries with exponential backoff, timeout handling, and consistent URL resolution for feature services.",
   "type": "module",
-  "license": "Apache-2.0",
+  "license": "AGPL-3.0-only",
+  "keywords": [
+    "angular"
+  ],
   "engines": {
     "node": ">=24.0.0"
   },
@@ -50,6 +53,7 @@
     "@vitest/coverage-v8": "^4.1.1",
     "angular-eslint": "^21.3.1",
     "eslint": "^10.1.0",
+    "eslint-plugin-tsdoc": "^0.5.2",
     "husky": "^9.1.7",
     "jsdom": "^26.1.0",
     "lint-staged": "^16.3.3",

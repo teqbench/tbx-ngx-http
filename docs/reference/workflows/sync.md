@@ -7,7 +7,7 @@
 
 ## Purpose
 
-After release-please merges a Release PR to `main`, the `dev` branch falls behind — it's missing the version bump in `package.json`, the updated `CHANGELOG.md`, and the new `.release-please-manifest.json`. This workflow automatically merges `main` back into `dev` to keep the branches in sync.
+After [Release Please ↗](https://github.com/googleapis/release-please) merges a Release PR to `main`, the `dev` branch falls behind — it's missing the version bump in `package.json`, the updated `CHANGELOG.md`, and the new `.release-please-manifest.json`. This workflow automatically merges `main` back into `dev` to keep the branches in sync.
 
 ---
 
@@ -113,7 +113,7 @@ git push origin dev
 
 ## Interaction with Other Workflows
 
-| What Happens                 | Result                                                                                                                                          |
-| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| Sync pushes to `dev`         | CI on `dev` is **skipped** — the `[skip ci]` tag in the merge commit message suppresses the `push` trigger per the GitHub Actions specification |
-| Sync races with another push | Handled by `git pull --rebase` before pushing                                                                                                   |
+| What Happens                 | Result                                                                                                                                                                                  |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sync pushes to `dev`         | CI on `dev` is **skipped** — the `[skip ci]` tag in the merge commit message suppresses the `push` trigger per the [GitHub Actions ↗](https://docs.github.com/en/actions) specification |
+| Sync races with another push | Handled by `git pull --rebase` before pushing                                                                                                                                           |

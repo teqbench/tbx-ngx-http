@@ -7,7 +7,7 @@
 
 ## Purpose
 
-The CI workflow is the quality gate for the repository. It runs formatting checks, type checking, linting, tests with coverage enforcement, dependency auditing, and README version drift detection on every push and pull request to `main` and `dev`. After a successful push (not PR), it pushes badge data to a shared GitHub Gist and updates the README with branch-specific Shields.io badge URLs.
+The CI workflow is the quality gate for the repository. It runs formatting checks, type checking, linting, tests with coverage enforcement, dependency auditing, and README version drift detection on every push and pull request to `main` and `dev`. After a successful push (not PR), it pushes badge data to a shared [GitHub Gist ↗](https://gist.github.com/teqbench-shields-bot/a69600f4ed4ebed89ffb35d808e05eb4) and updates the README with branch-specific [Shields.io ↗](https://shields.io) badge URLs.
 
 ---
 
@@ -17,8 +17,6 @@ The CI workflow is the quality gate for the repository. It runs formatting check
 | -------------- | ------------- | ------------------------------- |
 | `push`         | `main`, `dev` | Full pipeline + badge gist push |
 | `pull_request` | `main`, `dev` | Full pipeline, no badge updates |
-
----
 
 ---
 
@@ -77,7 +75,7 @@ PRs to `main` must come from `release/*`, `hotfix/*`, or `release-please--*` bra
 
 Uses `actions/create-github-app-token@v3` to create a short-lived token from the `teqbench-automation` GitHub App.
 
-This step is conditioned on `github.actor != 'dependabot[bot]'` and is **skipped entirely** on Dependabot PRs. The app secrets are intentionally unavailable to Dependabot — GitHub isolates Dependabot from repository secrets as a security boundary.
+This step is conditioned on `github.actor != 'dependabot[bot]'` and is **skipped entirely** on [Dependabot ↗](https://docs.github.com/en/code-security/dependabot) PRs. The app secrets are intentionally unavailable to Dependabot — GitHub isolates Dependabot from repository secrets as a security boundary.
 
 #### 3. Checkout Code
 
@@ -89,11 +87,11 @@ with:
     fetch-depth: 0
 ```
 
-Uses the app token when available. Falls back to `GITHUB_TOKEN` for Dependabot PRs. Submodules (Claude Code skills) are checked out for non-Dependabot runs. `fetch-depth: 0` fetches full history.
+Uses the app token when available. Falls back to `GITHUB_TOKEN` for [Dependabot ↗](https://docs.github.com/en/code-security/dependabot) PRs. Submodules ([Claude Code ↗](https://github.com/anthropics/claude-code) skills) are checked out for non-Dependabot runs. `fetch-depth: 0` fetches full history.
 
 #### 4. Setup Node
 
-Reads the Node version from `.nvmrc` with npm cache enabled.
+Reads the Node version from `.nvmrc` with [npm ↗](https://www.npmjs.com/) cache enabled.
 
 #### 5. Install Dependencies
 
@@ -101,9 +99,9 @@ Reads the Node version from `.nvmrc` with npm cache enabled.
 npm ci
 ```
 
-Clean install from `package-lock.json` for deterministic builds. `GITHUB_TOKEN` is used with `packages: read` permission (inherited from the job's `contents: read` scope) to authenticate with GitHub Packages.
+Clean install from `package-lock.json` for deterministic builds. `GITHUB_TOKEN` is used with `packages: read` permission (inherited from the job's `contents: read` scope) to authenticate with [GitHub Packages ↗](https://github.com/orgs/teqbench/packages).
 
-> **Cross-repo `@teqbench` dependencies:** For packages that depend on other `@teqbench` packages, each dependency package must grant the consuming repository read access in its package settings (**GitHub Packages → Manage access**). This applies to the entire transitive dependency tree, not just direct dependencies. Without this, `npm ci` will fail with `403 Forbidden`.
+> **Cross-repo `@teqbench` dependencies:** For packages that depend on other `@teqbench` packages, each dependency package must grant the consuming repository read access in its package settings (**[GitHub Packages ↗](https://github.com/orgs/teqbench/packages) → Manage access**). This applies to the entire transitive dependency tree, not just direct dependencies. Without this, `npm ci` will fail with `403 Forbidden`.
 
 #### 6. Audit Dependencies
 
@@ -119,7 +117,7 @@ Fails the build on high or critical severity vulnerabilities. Runs immediately a
 npm run format:check
 ```
 
-Runs `prettier --check .` against all tracked files. Also enforced locally via the Husky `pre-commit` hook — the CI step is the safety net.
+Runs `prettier --check .` against all tracked files. Also enforced locally via the [Husky ↗](https://typicode.github.io/husky/) `pre-commit` hook — the CI step is the safety net.
 
 #### 8. TypeScript Check
 
@@ -135,7 +133,7 @@ Full type-check (`tsc --noEmit`) without emitting output.
 npm run lint
 ```
 
-Runs ESLint with the flat config (`eslint.config.js`).
+Runs [ESLint ↗](https://eslint.org/) with the flat config (`eslint.config.js`).
 
 #### 10. Run Tests with Coverage
 
@@ -159,7 +157,7 @@ Extracts badge data from test output for the gist push steps:
 
 #### 12. Check README Version Drift
 
-Compares the TypeScript and Node.js versions in `README.md`'s compatibility table against `package.json`. Fails the build if they don't match, preventing documentation drift after dependency updates.
+Compares the [TypeScript ↗](https://www.typescriptlang.org/) and [Node.js ↗](https://nodejs.org/) versions in `README.md`'s compatibility table against `package.json`. Fails the build if they don't match, preventing documentation drift after dependency updates.
 
 #### 13. Build
 
@@ -167,11 +165,11 @@ Compares the TypeScript and Node.js versions in `README.md`'s compatibility tabl
 npm run build
 ```
 
-Compiles TypeScript to `dist/` using `tsconfig.build.json`.
+Compiles [TypeScript ↗](https://www.typescriptlang.org/) to `dist/` using `tsconfig.build.json`.
 
 #### 14–18. Push Badge Data to Gist
 
-Five badges are pushed as JSON to a shared public GitHub Gist using `schneegans/dynamic-badges-action@v1.7.0`. [Shields.io](https://shields.io) reads the JSON and renders the badges dynamically. Only runs on **push events** (not PRs).
+Five badges are pushed as JSON to a shared public GitHub Gist using `schneegans/dynamic-badges-action@v1.7.0`. [Shields.io ↗](https://shields.io) reads the JSON and renders the badges dynamically. Only runs on **push events** (not PRs).
 
 | Badge        | Style         | Source                                            | Gist Filename                       |
 | ------------ | ------------- | ------------------------------------------------- | ----------------------------------- |
@@ -196,13 +194,13 @@ All badge steps run with `if: always()` so badges update even on failure. The `s
 
 ## Badge Rendering
 
-Badges are rendered by [Shields.io endpoint badges](https://shields.io/badges/endpoint-badge). The URL format is:
+Badges are rendered by [Shields.io ↗](https://shields.io) endpoint badges. The URL format is:
 
 ```
 https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/{GIST_OWNER}/{GIST_ID}/raw/{REPO_NAME}-{BRANCH}-{badge}.json
 ```
 
-The gist stores JSON files matching the [Shields.io endpoint schema](https://shields.io/badges/endpoint-badge):
+The gist stores JSON files matching the [Shields.io ↗](https://shields.io) endpoint schema:
 
 ```json
 {
@@ -214,4 +212,4 @@ The gist stores JSON files matching the [Shields.io endpoint schema](https://shi
 }
 ```
 
-Shields.io caches responses for ~5 minutes. After a CI run, badges may take a few minutes to reflect new data.
+[Shields.io ↗](https://shields.io) caches responses for ~5 minutes. After a CI run, badges may take a few minutes to reflect new data.

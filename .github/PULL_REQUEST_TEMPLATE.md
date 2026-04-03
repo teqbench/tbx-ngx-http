@@ -23,7 +23,7 @@ Closes #
 ## Checklist
 
 - [ ] My branch is based on `dev` (or `main` for hotfixes)
-- [ ] Commit messages follow [Conventional Commits](https://www.conventionalcommits.org)
+- [ ] Commit messages follow [Conventional Commits ↗](https://conventionalcommits.org/)
 - [ ] `npm run format:check` passes
 - [ ] `npm run typecheck` passes
 - [ ] `npm run lint` passes

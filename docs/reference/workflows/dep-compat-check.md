@@ -7,7 +7,7 @@
 
 ## Purpose
 
-Tracks pinned dependencies that are waiting for a new version — for example, waiting for a package to release a compatible major version before it can be adopted. The workflow checks the npm registry daily, evaluates resolution conditions, and posts status updates to a tracking issue.
+Tracks pinned dependencies that are waiting for a new version — for example, waiting for a package to release a compatible major version before it can be adopted. The workflow checks the [npm ↗](https://www.npmjs.com/) registry daily, evaluates resolution conditions, and posts status updates to a tracking issue.
 
 ---
 
@@ -37,7 +37,7 @@ Only needs write access to issues for posting status comments.
 | -------------- | --------------------------- |
 | `GITHUB_TOKEN` | Default token for API calls |
 
-No app token needed — this workflow only reads the npm registry and writes issue comments.
+No app token needed — this workflow only reads the [npm ↗](https://www.npmjs.com/) registry and writes issue comments.
 
 ---
 
@@ -45,7 +45,7 @@ No app token needed — this workflow only reads the npm registry and writes iss
 
 ### Configuration
 
-The workflow uses a tracking epic issue. The `EPIC` constant in the workflow file must be set to the issue number during repository setup (see SETUP.md step 8).
+The workflow uses a tracking epic issue. The `EPIC` constant in the workflow file must be set to the issue number during repository setup. Setup documentation is maintained in the foundation repository and is not accessible from this repo.
 
 ### Issue Metadata Format
 
@@ -62,7 +62,7 @@ also-track: @angular/cli, @angular/compiler
 
 | Field         | Required | Description                                                       |
 | ------------- | -------- | ----------------------------------------------------------------- |
-| `package`     | Yes      | npm package name to check                                         |
+| `package`     | Yes      | [npm ↗](https://www.npmjs.com/) package name to check             |
 | `resolution`  | No       | Resolution condition (see below). Defaults to `manual`.           |
 | `description` | No       | Human-readable context for status reports                         |
 | `also-track`  | No       | Comma-separated list of additional packages to show in the report |
@@ -78,7 +78,7 @@ also-track: @angular/cli, @angular/compiler
 ### Evaluation Flow
 
 1. Finds open issues with `Part of #<EPIC>` and `<!-- dep-compat ... -->` metadata.
-2. For each, queries the npm registry for the latest version.
+2. For each, queries the [npm ↗](https://www.npmjs.com/) registry for the latest version.
 3. Evaluates the resolution condition against the current version.
 4. Compares version fingerprints with the last bot comment to detect changes.
 5. Posts a summary comment if: versions changed, it's Monday, or the workflow was triggered manually.
