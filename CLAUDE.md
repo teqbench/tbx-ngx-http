@@ -147,7 +147,7 @@ Members (properties, methods): summary line → `@remarks` → `@param` / `@retu
 
 ### Reference Implementation
 
-`@teqbench/tbx-models` (a separate repository) `src/base-model.ts` is the reference for a fully migrated [TSDoc ↗](https://tsdoc.org) comment on an interface with member-level docs including `@order` tags. `src/index.ts` in that same package is the reference for a `@packageDocumentation` barrel file [TSDoc ↗](https://tsdoc.org) comment. These files are not accessible from this repository — clone `@teqbench/tbx-models` separately to view them.
+`@teqbench/tbx-models` (a separate repository) `src/model.ts` is the reference for a fully migrated [TSDoc ↗](https://tsdoc.org) comment on an interface with member-level docs including `@order` tags. `src/index.ts` in that same package is the reference for a `@packageDocumentation` barrel file [TSDoc ↗](https://tsdoc.org) comment. These files are not accessible from this repository — clone `@teqbench/tbx-models` separately to view them.
 
 ### Verification
 

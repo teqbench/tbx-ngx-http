@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, catchError, firstValueFrom } from 'rxjs';
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 
-import { TbxNgxHttpService } from './base-http.service';
+import { TbxNgxHttpService } from './http.service';
 import type { TbxNgxHttpRequestOptions } from '../models/http-request-options.model';
 import type { TbxNgxHttpBodyRequestOptions } from '../models/http-body-request-options.model';
 
