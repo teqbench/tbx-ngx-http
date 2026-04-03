@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1](https://github.com/teqbench/tbx-ngx-http/compare/v1.0.0...v1.0.1) (2026-04-03)
+
+
+### Bug Fixes
+
+* **security:** switch reporting channel from advisory URL to email ([9d52682](https://github.com/teqbench/tbx-ngx-http/commit/9d526829f41154a16e2a04ed8db2ddc2c86698d3))
+* **security:** switch reporting channel from advisory URL to email ([22d1fa1](https://github.com/teqbench/tbx-ngx-http/commit/22d1fa1dce9a77c1b5f78795c658710e3add978b))
+
 ## [1.0.0](https://github.com/teqbench/tbx-ngx-http/compare/v0.1.2...v1.0.0) (2026-03-27)
 
 
