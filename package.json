@@ -63,7 +63,7 @@
     "typescript": "~5.9.0",
     "typescript-eslint": "8.57.2",
     "vitest": "^4.0.18",
-    "zone.js": "^0.15.0"
+    "zone.js": "^0.16.0"
   },
   "lint-staged": {
     "*.{ts,json,md,yml,yaml}": [
