@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/teqbench/tbx-ngx-http/compare/v1.0.1...v1.0.2) (2026-04-06)
+
+
+### Bug Fixes
+
+* **deps:** update vite to 7.3.2/8.0.5 to resolve CVEs ([9a4cfbb](https://github.com/teqbench/tbx-ngx-http/commit/9a4cfbb5ca2511c68a1bd8e087dc016aea19495f))
+* **deps:** update vite to 7.3.2/8.0.5 to resolve CVEs ([b4977b8](https://github.com/teqbench/tbx-ngx-http/commit/b4977b8b328aa84e9da8b7fc7ae186d226bff39a))
+
 ## [1.0.1](https://github.com/teqbench/tbx-ngx-http/compare/v1.0.0...v1.0.1) (2026-04-03)
 
 
