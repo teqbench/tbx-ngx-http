@@ -4,7 +4,7 @@ import tsdoc from 'eslint-plugin-tsdoc';
 
 export default tseslint.config(
     {
-        ignores: ['.claude/', 'coverage/', 'dist/', 'node_modules/'],
+        ignores: ['.claude/', '.shared-skills/', 'coverage/', 'dist/', 'node_modules/'],
     },
     ...tseslint.configs.recommended,
     ...angular.configs.tsRecommended,
