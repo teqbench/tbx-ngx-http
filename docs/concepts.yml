@@ -1,0 +1,15 @@
+# Glossary rendered in the README "Concepts" section.
+- term: Base HTTP service
+  definition: The abstract TbxNgxHttpService that consumers extend to gain timeout, retry, URL resolution, and default-header behavior over Angular HttpClient.
+- term: Feature service
+  definition: A consumer-defined subclass of TbxNgxHttpService that provides a baseUrl and exposes typed methods for a specific backend surface.
+- term: Resilience constants
+  definition: Exported default values for timeout, retry count, retry delay, and the set of retryable statuses; can be imported directly when building custom pipelines.
+- term: Retryable status
+  definition: One of 0 (network error), 408, 429, 500, 502, 503, 504 — transient failures worth retrying with backoff.
+- term: Idempotency-aware retry
+  definition: The rule that only GET requests retry automatically; POST, PUT, PATCH, and DELETE skip retry to prevent duplicate writes on transient failure.
+- term: Exponential backoff
+  definition: A retry delay strategy where the wait doubles on each attempt — delay = RETRY_DELAY * 2^(attempt - 1).
+- term: Per-subclass override
+  definition: The pattern of redeclaring a protected class property (DEFAULT_TIMEOUT, RETRY_COUNT, RETRY_DELAY) in a subclass to change resilience behavior for one feature service.
