@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/teqbench/tbx-ngx-http/compare/v1.0.2...v1.1.0) (2026-04-13)
+
+
+### Features
+
+* **docs:** onboard tbx-ngx-http to the per-package docs pipeline ([2e46394](https://github.com/teqbench/tbx-ngx-http/commit/2e4639402e1db556e8cec5f406bde572d2dc8f0c))
+* **docs:** onboard tbx-ngx-http to the per-package docs pipeline ([444e84f](https://github.com/teqbench/tbx-ngx-http/commit/444e84f661eedfd586bf60b24080dba8fe8337ff))
+
 ## [1.0.2](https://github.com/teqbench/tbx-ngx-http/compare/v1.0.1...v1.0.2) (2026-04-06)
 
 
