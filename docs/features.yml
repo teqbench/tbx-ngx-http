@@ -1,0 +1,21 @@
+# Short, scannable feature bullets rendered in the README "At a glance" section.
+- name: Resilient base service
+  summary: Abstract TbxNgxHttpService that feature services extend to inherit retry, timeout, URL resolution, and default headers.
+- name: GET retry with exponential backoff
+  summary: Transient failures (network errors, 408, 429, 5xx) are retried with delay RETRY_DELAY * 2^(attempt - 1).
+- name: Configurable timeout
+  summary: Every request is bounded by DEFAULT_TIMEOUT (10s default); subclasses override the class property to tune per service.
+- name: Idempotency-aware retry
+  summary: Only GET retries. POST, PUT, PATCH, and DELETE skip retry to avoid duplicate writes on transient failure.
+- name: Typed request options
+  summary: TbxNgxHttpRequestOptions for params + headers (non-body methods); TbxNgxHttpBodyRequestOptions for body methods.
+- name: Per-subclass override
+  summary: DEFAULT_TIMEOUT, RETRY_COUNT, and RETRY_DELAY are protected class properties — redeclare in a subclass to override.
+- name: Exposed resilience constants
+  summary: TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS, RETRY_COUNT, RETRY_DELAY_MS, and RETRYABLE_STATUSES are exported for custom pipelines.
+- name: Default headers
+  summary: Accept application/json is set by default; callers providing options.headers replace the set entirely, not merge.
+- name: URL resolution
+  summary: Relative paths are joined to the subclass-provided baseUrl with consistent slash handling.
+- name: Broad Angular peer range
+  summary: Supports Angular 19, 20, and 21; no @teqbench runtime dependencies.
