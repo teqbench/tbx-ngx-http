@@ -34,7 +34,6 @@ This is `@teqbench/tbx-ngx-http`, an [Angular ↗](https://angular.dev/) library
 - `dist/` — Compiled output (git-ignored, only this directory is published)
 - `docs/` — Documentation (placeholder for package-specific guides)
 - `.github/workflows/` — CI/CD pipelines (ci, release, sync, dep-compat-check, claude)
-- `.github/dependabot.yml` — Automated dependency update PRs targeting `dev`
 
 ## Publishing
 

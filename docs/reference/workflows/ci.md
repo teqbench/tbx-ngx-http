@@ -81,19 +81,17 @@ PRs to `main` must come from `release/*`, `hotfix/*`, or `release-please--*` bra
 
 Uses `actions/create-github-app-token@v3` to create a short-lived token from the `teqbench-automation` GitHub App.
 
-This step is conditioned on `github.actor != 'dependabot[bot]'` and is **skipped entirely** on [Dependabot ↗](https://docs.github.com/en/code-security/dependabot) PRs. The app secrets are intentionally unavailable to Dependabot — GitHub isolates Dependabot from repository secrets as a security boundary.
-
 #### 3. Checkout Code
 
 ```yaml
 uses: actions/checkout@v4
 with:
-    submodules: ${{ github.actor != 'dependabot[bot]' }}
-    token: ${{ steps.app-token.outputs.token || github.token }}
+    submodules: true
+    token: ${{ steps.app-token.outputs.token }}
     fetch-depth: 0
 ```
 
-Uses the app token when available. Falls back to `GITHUB_TOKEN` for [Dependabot ↗](https://docs.github.com/en/code-security/dependabot) PRs. Submodules ([Claude Code ↗](https://github.com/anthropics/claude-code) skills) are checked out for non-Dependabot runs. `fetch-depth: 0` fetches full history.
+Uses the app token to check out submodules ([Claude Code ↗](https://github.com/anthropics/claude-code) skills). `fetch-depth: 0` fetches full history.
 
 #### 4. Setup Node
 
