@@ -217,6 +217,27 @@ All [TSDoc ↗](https://tsdoc.org) comments, inline code comments, and markdown 
 - Configuration snapshots in documentation must note they are examples that may not reflect the current state.
 - Custom `package.json` metadata fields (not defined by the [npm ↗](https://www.npmjs.com) spec) must be identified as custom where referenced.
 
+## Markdown Tables Convention
+
+Avoid `<table>` and pipe-syntax tables in markdown files (`README.md`, `CHANGELOG.md`, guides, etc.). Use a `<dl>`/`<dt>`/`<dd>` definition list instead.
+
+- **Why.** [GitHub ↗](https://github.com/) doesn't honor any column-width controls in rendered markdown — `<col>`, `width=` attributes, and CSS in `<style>` blocks are all stripped. Multi-column tables wrap unpredictably across viewport sizes and look inconsistent between repos. Definition lists give the same name → description shape with predictable single-column flow that renders the same everywhere [GitHub ↗](https://github.com/) previews markdown.
+
+- **Pattern.**
+
+    ```html
+    <dl>
+        <dt><a href="https://example.com">Item name ↗</a></dt>
+        <dd>One-line description of the item.</dd>
+        <dt>Next item</dt>
+        <dd>Its description.</dd>
+    </dl>
+    ```
+
+    See `.github/profile/README.md` for the canonical example used on the TeqBench organization profile page.
+
+- **When tables are still acceptable.** Only inside source code that emits HTML to a non-[GitHub ↗](https://github.com/) renderer ([Storybook ↗](https://storybook.js.org/) docs pages rendered via [MDX ↗](https://mdxjs.com/), the website's own `<tbx-markdown>` walker, etc.) — those have full control over column widths. Anything that lands in a `.md` file rendered by [GitHub ↗](https://github.com/) itself follows the `<dl>` rule.
+
 ## Commit Convention
 
 Follow **[Conventional Commits ↗](https://conventionalcommits.org/)** strictly:
@@ -251,6 +272,8 @@ Follow **[Conventional Commits ↗](https://conventionalcommits.org/)** strictly
 - Never delete branches.
 - Never modify CI workflow files without explicit instruction.
 - Never modify `release-please-config.json`, `.release-please-manifest.json`, or `CHANGELOG.md`.
+- Never modify secrets, tokens, or files containing them. Secrets are defined at the organization level on [GitHub ↗](https://github.com/); repo-local code should reference them by name only and never read or rewrite their values.
+- Never commit content intended to be private, regardless of repository visibility. Treat every commit as if the repo could become public.
 
 ## Package-Specific Guidance
 
