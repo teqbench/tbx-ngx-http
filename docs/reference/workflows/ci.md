@@ -13,10 +13,12 @@ The CI workflow is the quality gate for the repository. It runs formatting check
 
 ## Triggers
 
-| Event          | Branches      | Behavior                        |
-| -------------- | ------------- | ------------------------------- |
-| `push`         | `main`, `dev` | Full pipeline + badge gist push |
-| `pull_request` | `main`, `dev` | Full pipeline, no badge updates |
+<dl>
+    <dt><code>push</code> on <code>main</code>, <code>dev</code></dt>
+    <dd>Full pipeline + badge gist push.</dd>
+    <dt><code>pull_request</code> on <code>main</code>, <code>dev</code></dt>
+    <dd>Full pipeline, no badge updates.</dd>
+</dl>
 
 ---
 
@@ -33,12 +35,16 @@ Per-branch isolation: CI on `main` and `dev` run independently. Runs on the same
 
 ## Secrets & Variables
 
-| Name              | Type     | Scope | Purpose                                      |
-| ----------------- | -------- | ----- | -------------------------------------------- |
-| `APP_ID`          | Secret   | Repo  | GitHub App ID for generating a bot token     |
-| `APP_PRIVATE_KEY` | Secret   | Repo  | GitHub App private key                       |
-| `GIST_TOKEN`      | Secret   | Org   | PAT with `gist` scope for pushing badge data |
-| `GIST_ID`         | Variable | Org   | ID of the shared public badge gist           |
+<dl>
+    <dt><code>APP_ID</code> (Secret, Repo)</dt>
+    <dd>GitHub App ID for generating a bot token.</dd>
+    <dt><code>APP_PRIVATE_KEY</code> (Secret, Repo)</dt>
+    <dd>GitHub App private key.</dd>
+    <dt><code>GIST_TOKEN</code> (Secret, Org)</dt>
+    <dd>PAT with <code>gist</code> scope for pushing badge data.</dd>
+    <dt><code>GIST_ID</code> (Variable, Org)</dt>
+    <dd>ID of the shared public badge gist.</dd>
+</dl>
 
 The app token is used for checkout with submodules. The gist token is used to push badge JSON data to the shared gist owned by `teqbench-shields-bot`.
 
@@ -171,13 +177,18 @@ Compiles [TypeScript ↗](https://www.typescriptlang.org/) to `dist/` using `tsc
 
 Five badges are pushed as JSON to a shared public GitHub Gist using `schneegans/dynamic-badges-action@v1.7.0`. [Shields.io ↗](https://shields.io) reads the JSON and renders the badges dynamically. Only runs on **push events** (not PRs).
 
-| Badge        | Style         | Source                                            | Gist Filename                       |
-| ------------ | ------------- | ------------------------------------------------- | ----------------------------------- |
-| Coverage     | for-the-badge | `coverage-summary.json` (lines pct)               | `{repo}-{branch}-coverage.json`     |
-| Tests        | for-the-badge | `report.json` (passed/total counts)               | `{repo}-{branch}-tests.json`        |
-| Build Status | for-the-badge | `job.status` (success/failure)                    | `{repo}-{branch}-build-status.json` |
-| Build Number | for-the-badge | `github.run_number`                               | `{repo}-{branch}-build-number.json` |
-| Version      | for-the-badge | `.release-please-manifest.json` or `package.json` | `{repo}-{branch}-version.json`      |
+<dl>
+    <dt>Coverage</dt>
+    <dd>Style: <code>for-the-badge</code>. Source: <code>coverage-summary.json</code> (lines pct). Gist filename: <code>{repo}-{branch}-coverage.json</code>.</dd>
+    <dt>Tests</dt>
+    <dd>Style: <code>for-the-badge</code>. Source: <code>report.json</code> (passed/total counts). Gist filename: <code>{repo}-{branch}-tests.json</code>.</dd>
+    <dt>Build Status</dt>
+    <dd>Style: <code>for-the-badge</code>. Source: <code>job.status</code> (success/failure). Gist filename: <code>{repo}-{branch}-build-status.json</code>.</dd>
+    <dt>Build Number</dt>
+    <dd>Style: <code>for-the-badge</code>. Source: <code>github.run_number</code>. Gist filename: <code>{repo}-{branch}-build-number.json</code>.</dd>
+    <dt>Version</dt>
+    <dd>Style: <code>for-the-badge</code>. Source: <code>.release-please-manifest.json</code> or <code>package.json</code>. Gist filename: <code>{repo}-{branch}-version.json</code>.</dd>
+</dl>
 
 All badge steps run with `if: always()` so badges update even on failure. The `schneegans/dynamic-badges-action` creates gist files automatically if they don't exist — no manual gist setup is needed per repository.
 
@@ -185,10 +196,12 @@ All badge steps run with `if: always()` so badges update even on failure. The `s
 
 ## Environment Variables
 
-| Variable     | Value                          | Purpose                                               |
-| ------------ | ------------------------------ | ----------------------------------------------------- |
-| `GIST_OWNER` | `teqbench-shields-bot`         | GitHub account that owns the shared badge gist        |
-| `REPO_NAME`  | `github.event.repository.name` | Derived automatically — used to prefix gist filenames |
+<dl>
+    <dt><code>GIST_OWNER</code></dt>
+    <dd>Value: <code>teqbench-shields-bot</code>. GitHub account that owns the shared badge gist.</dd>
+    <dt><code>REPO_NAME</code></dt>
+    <dd>Value: <code>github.event.repository.name</code>. Derived automatically — used to prefix gist filenames.</dd>
+</dl>
 
 ---
 

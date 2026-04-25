@@ -13,11 +13,14 @@ The [Claude Code ↗](https://github.com/anthropics/claude-code) workflow provid
 
 ## Triggers
 
-| Event                                   | Condition                       |
-| --------------------------------------- | ------------------------------- |
-| `issue_comment` (created)               | Comment body contains `@claude` |
-| `pull_request_review_comment` (created) | Comment body contains `@claude` |
-| `issues` (opened)                       | Issue body contains `@claude`   |
+<dl>
+    <dt><code>issue_comment</code> (created)</dt>
+    <dd>Comment body contains <code>@claude</code>.</dd>
+    <dt><code>pull_request_review_comment</code> (created)</dt>
+    <dd>Comment body contains <code>@claude</code>.</dd>
+    <dt><code>issues</code> (opened)</dt>
+    <dd>Issue body contains <code>@claude</code>.</dd>
+</dl>
 
 ---
 
@@ -50,11 +53,14 @@ jobs:
 
 ## Secrets Used
 
-| Secret              | Purpose                                                                                     |
-| ------------------- | ------------------------------------------------------------------------------------------- |
-| `APP_ID`            | GitHub App ID for generating a bot token                                                    |
-| `APP_PRIVATE_KEY`   | GitHub App private key                                                                      |
-| `ANTHROPIC_API_KEY` | Authenticates with the [Anthropic API ↗](https://docs.anthropic.com/en/api/getting-started) |
+<dl>
+    <dt><code>APP_ID</code></dt>
+    <dd>GitHub App ID for generating a bot token.</dd>
+    <dt><code>APP_PRIVATE_KEY</code></dt>
+    <dd>GitHub App private key.</dd>
+    <dt><code>ANTHROPIC_API_KEY</code></dt>
+    <dd>Authenticates with the <a href="https://docs.anthropic.com/en/api/getting-started">Anthropic API ↗</a>.</dd>
+</dl>
 
 The app token is used for checkout with submodules ([Claude Code ↗](https://github.com/anthropics/claude-code) skills) and for full repository access.
 
@@ -121,44 +127,71 @@ Claude's capabilities are explicitly restricted via `--allowedTools` to prevent 
 
 ### File Tools (Built-in)
 
-| Tool        | Purpose               |
-| ----------- | --------------------- |
-| `View`      | Read file contents    |
-| `Edit`      | Modify existing files |
-| `Write`     | Create new files      |
-| `GlobTool`  | Find files by pattern |
-| `GrepTool`  | Search file contents  |
-| `BatchTool` | Batch file operations |
+<dl>
+    <dt><code>View</code></dt>
+    <dd>Read file contents.</dd>
+    <dt><code>Edit</code></dt>
+    <dd>Modify existing files.</dd>
+    <dt><code>Write</code></dt>
+    <dd>Create new files.</dd>
+    <dt><code>GlobTool</code></dt>
+    <dd>Find files by pattern.</dd>
+    <dt><code>GrepTool</code></dt>
+    <dd>Search file contents.</dd>
+    <dt><code>BatchTool</code></dt>
+    <dd>Batch file operations.</dd>
+</dl>
 
 ### Git Commands (Via Bash Allowlist)
 
-| Allowed           | Purpose                  |
-| ----------------- | ------------------------ |
-| `git status`      | Check working tree state |
-| `git diff`        | View changes             |
-| `git log`         | Browse commit history    |
-| `git branch`      | List/create branches     |
-| `git show`        | Inspect commits          |
-| `git checkout`    | Switch branches          |
-| `git add`         | Stage changes            |
-| `git commit`      | Create commits           |
-| `git push origin` | Push to remote           |
+Allowed:
 
-| Explicitly Excluded       | Reason                                     |
-| ------------------------- | ------------------------------------------ |
-| `git push --force`        | Destructive — rewrites history             |
-| `git reset`               | Destructive — can lose commits             |
-| `git rebase`              | Can rewrite history                        |
-| `git branch -D`           | Destructive — deletes branches             |
-| Arbitrary `bash` commands | Security — prevents uncontrolled execution |
+<dl>
+    <dt><code>git status</code></dt>
+    <dd>Check working tree state.</dd>
+    <dt><code>git diff</code></dt>
+    <dd>View changes.</dd>
+    <dt><code>git log</code></dt>
+    <dd>Browse commit history.</dd>
+    <dt><code>git branch</code></dt>
+    <dd>List/create branches.</dd>
+    <dt><code>git show</code></dt>
+    <dd>Inspect commits.</dd>
+    <dt><code>git checkout</code></dt>
+    <dd>Switch branches.</dd>
+    <dt><code>git add</code></dt>
+    <dd>Stage changes.</dd>
+    <dt><code>git commit</code></dt>
+    <dd>Create commits.</dd>
+    <dt><code>git push origin</code></dt>
+    <dd>Push to remote.</dd>
+</dl>
+
+Explicitly excluded:
+
+<dl>
+    <dt><code>git push --force</code></dt>
+    <dd>Destructive — rewrites history.</dd>
+    <dt><code>git reset</code></dt>
+    <dd>Destructive — can lose commits.</dd>
+    <dt><code>git rebase</code></dt>
+    <dd>Can rewrite history.</dd>
+    <dt><code>git branch -D</code></dt>
+    <dd>Destructive — deletes branches.</dd>
+    <dt>Arbitrary <code>bash</code> commands</dt>
+    <dd>Security — prevents uncontrolled execution.</dd>
+</dl>
 
 ### npm Commands (Via Bash Allowlist)
 
-| Allowed   | Purpose                                       |
-| --------- | --------------------------------------------- |
-| `npm run` | Run project scripts (test, lint, build)       |
-| `npm ci`  | Install dependencies                          |
-| `npx`     | Run [Node.js ↗](https://nodejs.org/) binaries |
+<dl>
+    <dt><code>npm run</code></dt>
+    <dd>Run project scripts (test, lint, build).</dd>
+    <dt><code>npm ci</code></dt>
+    <dd>Install dependencies.</dd>
+    <dt><code>npx</code></dt>
+    <dd>Run <a href="https://nodejs.org/">Node.js ↗</a> binaries.</dd>
+</dl>
 
 ---
 

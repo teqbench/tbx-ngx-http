@@ -175,49 +175,66 @@ this.get<Blob>('reports/monthly.pdf', {
 
 Abstract base class for feature services. Provides typed HTTP methods with built-in resilience.
 
-| Method   | Signature                                                                                      | Retries |
-| -------- | ---------------------------------------------------------------------------------------------- | ------- |
-| `get`    | `get<T>(path: string, options?: TbxNgxHttpRequestOptions): Observable<T>`                      | Yes     |
-| `post`   | `post<T>(path: string, body: unknown, options?: TbxNgxHttpBodyRequestOptions): Observable<T>`  | No      |
-| `put`    | `put<T>(path: string, body: unknown, options?: TbxNgxHttpBodyRequestOptions): Observable<T>`   | No      |
-| `patch`  | `patch<T>(path: string, body: unknown, options?: TbxNgxHttpBodyRequestOptions): Observable<T>` | No      |
-| `delete` | `delete<T>(path: string, options?: TbxNgxHttpRequestOptions): Observable<T>`                   | No      |
+<dl>
+    <dt><code>get</code> — retries on transient failure</dt>
+    <dd><code>get&lt;T&gt;(path: string, options?: TbxNgxHttpRequestOptions): Observable&lt;T&gt;</code></dd>
+    <dt><code>post</code> — no retry</dt>
+    <dd><code>post&lt;T&gt;(path: string, body: unknown, options?: TbxNgxHttpBodyRequestOptions): Observable&lt;T&gt;</code></dd>
+    <dt><code>put</code> — no retry</dt>
+    <dd><code>put&lt;T&gt;(path: string, body: unknown, options?: TbxNgxHttpBodyRequestOptions): Observable&lt;T&gt;</code></dd>
+    <dt><code>patch</code> — no retry</dt>
+    <dd><code>patch&lt;T&gt;(path: string, body: unknown, options?: TbxNgxHttpBodyRequestOptions): Observable&lt;T&gt;</code></dd>
+    <dt><code>delete</code> — no retry</dt>
+    <dd><code>delete&lt;T&gt;(path: string, options?: TbxNgxHttpRequestOptions): Observable&lt;T&gt;</code></dd>
+</dl>
 
 Overridable protected properties (redeclare in a subclass to change behavior):
 
-| Property          | Type          | Default                           | Description                                              |
-| ----------------- | ------------- | --------------------------------- | -------------------------------------------------------- |
-| `baseUrl`         | `string`      | — (abstract, must be provided)    | API root URL.                                            |
-| `DEFAULT_TIMEOUT` | `number`      | `TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS` | Request timeout in milliseconds.                         |
-| `RETRY_COUNT`     | `number`      | `TBX_NGX_HTTP_RETRY_COUNT`        | Retry attempts on GET (applies to GET only).             |
-| `RETRY_DELAY`     | `number`      | `TBX_NGX_HTTP_RETRY_DELAY_MS`     | Base delay in ms for exponential backoff.                |
-| `defaultHeaders`  | `HttpHeaders` | `Accept: application/json`        | Applied when the caller does not pass `options.headers`. |
+<dl>
+    <dt><code>baseUrl</code> (<code>string</code>)</dt>
+    <dd>API root URL. Abstract — must be provided by the subclass.</dd>
+    <dt><code>DEFAULT_TIMEOUT</code> (<code>number</code>)</dt>
+    <dd>Request timeout in milliseconds. Default: <code>TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS</code>.</dd>
+    <dt><code>RETRY_COUNT</code> (<code>number</code>)</dt>
+    <dd>Retry attempts on GET (applies to GET only). Default: <code>TBX_NGX_HTTP_RETRY_COUNT</code>.</dd>
+    <dt><code>RETRY_DELAY</code> (<code>number</code>)</dt>
+    <dd>Base delay in ms for exponential backoff. Default: <code>TBX_NGX_HTTP_RETRY_DELAY_MS</code>.</dd>
+    <dt><code>defaultHeaders</code> (<code>HttpHeaders</code>)</dt>
+    <dd>Applied when the caller does not pass <code>options.headers</code>. Default: <code>Accept: application/json</code>.</dd>
+</dl>
 
 ### TbxNgxHttpRequestOptions
 
 Options for non-body methods (`get`, `delete`).
 
-| Property   | Type                                   | Description                             |
-| ---------- | -------------------------------------- | --------------------------------------- |
-| `params?`  | `HttpParams \| Record<string, string>` | Query string parameters.                |
-| `headers?` | `HttpHeaders`                          | Replaces `defaultHeaders` when present. |
+<dl>
+    <dt><code>params?</code> (<code>HttpParams | Record&lt;string, string&gt;</code>)</dt>
+    <dd>Query string parameters.</dd>
+    <dt><code>headers?</code> (<code>HttpHeaders</code>)</dt>
+    <dd>Replaces <code>defaultHeaders</code> when present.</dd>
+</dl>
 
 ### TbxNgxHttpBodyRequestOptions
 
 Options for body methods (`post`, `put`, `patch`).
 
-| Property   | Type          | Description                             |
-| ---------- | ------------- | --------------------------------------- |
-| `headers?` | `HttpHeaders` | Replaces `defaultHeaders` when present. |
+<dl>
+    <dt><code>headers?</code> (<code>HttpHeaders</code>)</dt>
+    <dd>Replaces <code>defaultHeaders</code> when present.</dd>
+</dl>
 
 ### Constants
 
-| Constant                          | Default  | Description                                                         |
-| --------------------------------- | -------- | ------------------------------------------------------------------- |
-| `TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS` | `10_000` | Request timeout in milliseconds.                                    |
-| `TBX_NGX_HTTP_RETRY_COUNT`        | `2`      | Number of retry attempts for GET requests.                          |
-| `TBX_NGX_HTTP_RETRY_DELAY_MS`     | `1_000`  | Base delay in milliseconds for exponential backoff.                 |
-| `TBX_NGX_HTTP_RETRYABLE_STATUSES` | `Set`    | Status codes eligible for retry: `0, 408, 429, 500, 502, 503, 504`. |
+<dl>
+    <dt><code>TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS</code></dt>
+    <dd>Request timeout in milliseconds. Default: <code>10_000</code>.</dd>
+    <dt><code>TBX_NGX_HTTP_RETRY_COUNT</code></dt>
+    <dd>Number of retry attempts for GET requests. Default: <code>2</code>.</dd>
+    <dt><code>TBX_NGX_HTTP_RETRY_DELAY_MS</code></dt>
+    <dd>Base delay in milliseconds for exponential backoff. Default: <code>1_000</code>.</dd>
+    <dt><code>TBX_NGX_HTTP_RETRYABLE_STATUSES</code> (<code>Set</code>)</dt>
+    <dd>Status codes eligible for retry: <code>0, 408, 429, 500, 502, 503, 504</code>.</dd>
+</dl>
 
 ## Accessibility
 
@@ -225,13 +242,18 @@ Options for body methods (`post`, `put`, `patch`).
 
 ## Compatibility
 
-| Dependency                                                                  | Version                       |
-| --------------------------------------------------------------------------- | ----------------------------- |
-| [Angular ↗](https://angular.dev)                                            | ^19.0.0 \| ^20.0.0 \| ^21.0.0 |
-| [RxJS ↗](https://rxjs.dev)                                                  | ^7.0.0                        |
-| [http-status-codes ↗](https://github.com/prettymuchbryce/http-status-codes) | ^2.3.0                        |
-| [TypeScript ↗](https://www.typescriptlang.org)                              | ~5.9.0                        |
-| [Node.js ↗](https://nodejs.org)                                             | >=24.0.0                      |
+<dl>
+    <dt><a href="https://angular.dev">Angular ↗</a></dt>
+    <dd>^19.0.0 | ^20.0.0 | ^21.0.0</dd>
+    <dt><a href="https://rxjs.dev">RxJS ↗</a></dt>
+    <dd>^7.0.0</dd>
+    <dt><a href="https://github.com/prettymuchbryce/http-status-codes">http-status-codes ↗</a></dt>
+    <dd>^2.3.0</dd>
+    <dt><a href="https://www.typescriptlang.org">TypeScript ↗</a></dt>
+    <dd>~5.9.0</dd>
+    <dt><a href="https://nodejs.org">Node.js ↗</a></dt>
+    <dd>>=24.0.0</dd>
+</dl>
 
 ## Versioning & releases
 
