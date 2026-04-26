@@ -82,6 +82,7 @@ The consuming application must provide [`HttpClient` ↗](https://angular.dev/ap
 Create a feature service by extending `TbxNgxHttpService`, providing a `baseUrl`, and exposing typed methods.
 
 ```typescript
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TbxNgxHttpService } from '@teqbench/tbx-ngx-http';
 import { environment } from '../environments/environment';
@@ -95,7 +96,7 @@ export class UserService extends TbxNgxHttpService {
     }
 
     listUsers() {
-        return this.get<User[]>('users', { params: { page: '1' } });
+        return this.get<User[]>('users', { params: new HttpParams().set('page', '1') });
     }
 
     createUser(data: CreateUserDto) {
@@ -208,7 +209,7 @@ Overridable protected properties (redeclare in a subclass to change behavior):
 Options for non-body methods (`get`, `delete`).
 
 <dl>
-    <dt><code>params?</code> (<code>HttpParams | Record&lt;string, string&gt;</code>)</dt>
+    <dt><code>params?</code> (<code>HttpParams</code>)</dt>
     <dd>Query string parameters.</dd>
     <dt><code>headers?</code> (<code>HttpHeaders</code>)</dt>
     <dd>Replaces <code>defaultHeaders</code> when present.</dd>
@@ -261,11 +262,11 @@ This package follows [Semantic Versioning ↗](https://semver.org). Versions and
 
 ## Contributing
 
-Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for local setup, [GitHub Packages ↗](https://github.com/orgs/teqbench/packages) authentication, branch conventions, commit format, and the PR workflow.
+Contributions are welcome. See [CONTRIBUTING ↗](https://github.com/teqbench/.github/blob/main/CONTRIBUTING.md) for local setup, [GitHub Packages ↗](https://github.com/orgs/teqbench/packages) authentication, branch conventions, commit format, and the PR workflow.
 
 ## Security
 
-See [SECURITY.md](SECURITY.md) for the supported-version policy and how to report a vulnerability privately.
+See [SECURITY ↗](https://github.com/teqbench/.github/blob/main/SECURITY.md) for the supported-version policy and how to report a vulnerability privately.
 
 ## Feedback
 

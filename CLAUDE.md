@@ -233,7 +233,7 @@ Avoid `<table>` and pipe-syntax tables in markdown files (`README.md`, `CHANGELO
     </dl>
     ```
 
-    See `.github/profile/README.md` for the canonical example used on the TeqBench organization profile page.
+    See `profile/README.md` in `teqbench/.github` (a separate repository — not accessible from this repo) for the canonical example used on the TeqBench organization profile page.
 
 - **When tables are still acceptable.** Only inside source code that emits HTML to a non-[GitHub ↗](https://github.com/) renderer ([Storybook ↗](https://storybook.js.org/) docs pages rendered via [MDX ↗](https://mdxjs.com/), the website's own `<tbx-markdown>` walker, etc.) — those have full control over column widths. Anything that lands in a `.md` file rendered by [GitHub ↗](https://github.com/) itself follows the `<dl>` rule.
 

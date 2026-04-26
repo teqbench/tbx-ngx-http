@@ -7,7 +7,13 @@
 
 ## Purpose
 
-Tracks pinned dependencies that are waiting for a new version — for example, waiting for a package to release a compatible major version before it can be adopted. The workflow checks the [npm ↗](https://www.npmjs.com/) registry daily, evaluates resolution conditions, and posts status updates to a tracking issue.
+Tracks pinned dependencies that are waiting for a new version — for example, waiting for a package to release a compatible major version before it can be adopted. The workflow checks the [npm ↗](https://www.npmjs.com/) registry on a daily schedule, evaluates resolution conditions on sub-issues of a tracking epic, and posts status updates to the epic.
+
+---
+
+## Thin caller
+
+This repo's `.github/workflows/dep-compat-check.yml` is a thin caller — it declares triggers and the local epic issue number, then delegates execution to the org-wide reusable workflow at [teqbench/.github → `.github/workflows/dep-compat-check.yml` ↗](https://github.com/teqbench/.github/blob/main/.github/workflows/dep-compat-check.yml). All evaluation logic, the issue-metadata format, the resolution-condition grammar, and the status-comment format live there.
 
 ---
 
@@ -22,113 +28,21 @@ Tracks pinned dependencies that are waiting for a new version — for example, w
 
 ---
 
-## Permissions
-
-```yaml
-permissions:
-    issues: write
-```
-
-Only needs write access to issues for posting status comments.
-
----
-
-## Secrets Used
+## Inputs
 
 <dl>
-    <dt><code>GITHUB_TOKEN</code></dt>
-    <dd>Default token for API calls.</dd>
-</dl>
-
-No app token needed — this workflow only reads the [npm ↗](https://www.npmjs.com/) registry and writes issue comments.
-
----
-
-## How It Works
-
-### Configuration
-
-The workflow uses a tracking epic issue. The `EPIC` constant in the workflow file must be set to the issue number during repository setup. Setup documentation is maintained in the foundation repository and is not accessible from this repo.
-
-### Issue Metadata Format
-
-Sub-issues of the epic must include a metadata block in their body:
-
-```html
-<!-- dep-compat
-package: @angular/core
-resolution: semver-major:22
-description: Waiting for Angular 22 to support new signals API
-also-track: @angular/cli, @angular/compiler
--->
-```
-
-<dl>
-    <dt><code>package</code> (required)</dt>
-    <dd><a href="https://www.npmjs.com/">npm ↗</a> package name to check.</dd>
-    <dt><code>resolution</code> (optional)</dt>
-    <dd>Resolution condition (see below). Defaults to <code>manual</code>.</dd>
-    <dt><code>description</code> (optional)</dt>
-    <dd>Human-readable context for status reports.</dd>
-    <dt><code>also-track</code> (optional)</dt>
-    <dd>Comma-separated list of additional packages to show in the report.</dd>
-</dl>
-
-### Resolution Conditions
-
-<dl>
-    <dt><code>semver-gte:&lt;version&gt;</code></dt>
-    <dd>Resolved when latest version >= target. Status: Monitoring or Blocked.</dd>
-    <dt><code>semver-major:&lt;number&gt;</code></dt>
-    <dd>Resolved when latest major >= target. Status: Resolved or Blocked.</dd>
-    <dt><code>manual</code> (or omitted)</dt>
-    <dd>Always shows as Action Needed — requires manual evaluation.</dd>
-</dl>
-
-### Evaluation Flow
-
-1. Finds open issues with `Part of #<EPIC>` and `<!-- dep-compat ... -->` metadata.
-2. For each, queries the [npm ↗](https://www.npmjs.com/) registry for the latest version.
-3. Evaluates the resolution condition against the current version.
-4. Compares version fingerprints with the last bot comment to detect changes.
-5. Posts a summary comment if: versions changed, it's Monday, or the workflow was triggered manually.
-
-### Status Labels
-
-<dl>
-    <dt>Resolved</dt>
-    <dd>Resolution condition met — ready to integrate.</dd>
-    <dt>Blocked</dt>
-    <dd>Waiting for a version that meets the condition.</dd>
-    <dt>Action needed</dt>
-    <dd>Manual resolution — requires human evaluation.</dd>
-    <dt>Monitoring</dt>
-    <dd>Condition met but keeping an eye on it.</dd>
+    <dt><code>epic-issue-number</code></dt>
+    <dd>This repo passes <code>1</code> — the tracking epic for dependency compatibility in this repository. Update if the epic issue is recreated under a different number.</dd>
 </dl>
 
 ---
 
-## Example Status Comment
+## Secrets
 
-```
-## Dependency Compatibility — 2026-03-22
-
-1/2 resolved. 1 item(s) still need attention.
-
-| Item | Status | Detail |
-|---|---|---|
-| Angular 22 upgrade (#3) | Resolved | `@angular/core`: 22.0.1 — **v22 available!** Ready for integration. |
-| ESLint flat config (#5) | Blocked | `eslint`: 9.39.2 (need >= 10.0.0 ✗) |
-```
+`secrets: inherit` — the reusable workflow inherits org and repo secrets. The default `GITHUB_TOKEN` (with `issues: write`) is sufficient for posting status comments.
 
 ---
 
-## Noise Reduction
+## Where to look for the public API
 
-The workflow only posts a comment when:
-
-- **Version change detected** — at least one tracked package has a different version than the last check
-- **Monday** — weekly summary regardless of changes
-- **Manual trigger** — always posts when run via `workflow_dispatch`
-
-This prevents daily noise while ensuring changes are reported promptly.
+Documentation for the issue-metadata block (`<!-- dep-compat ... -->`), resolution-condition grammar (`semver-gte`, `semver-major`, `manual`), status labels, and example status comments lives with the reusable workflow at [teqbench/.github ↗](https://github.com/teqbench/.github). When writing sub-issues for the epic in this repo, follow whatever the upstream workflow currently expects — it is the authoritative source.

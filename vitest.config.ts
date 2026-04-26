@@ -25,7 +25,7 @@ export default defineConfig({
                 'src/constants/http.constants.ts',
                 // Exclude interfaces from coverage since they contain no logic
                 'src/models/http-request-options.model.ts',
-                'src/models/http-body-requestion-options.model.ts',
+                'src/models/http-body-request-options.model.ts',
             ],
         },
     },
