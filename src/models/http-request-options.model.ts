@@ -7,7 +7,8 @@ import { HttpHeaders, HttpParams } from '@angular/common/http';
  * Passed as the optional second argument to
  * {@link TbxNgxHttpService.get | get} and
  * {@link TbxNgxHttpService.delete | delete}. When `headers` is provided,
- * the service's default headers are replaced entirely (not merged).
+ * the service's default headers are replaced entirely by default; pass
+ * `mergeHeaders: true` to merge instead.
  *
  * @usage
  * Pass an instance of this interface to customize query parameters or headers

@@ -8,7 +8,8 @@ import { HttpHeaders } from '@angular/common/http';
  * {@link TbxNgxHttpService.post | post},
  * {@link TbxNgxHttpService.put | put}, and
  * {@link TbxNgxHttpService.patch | patch}. When `headers` is provided,
- * the service's default headers are replaced entirely (not merged).
+ * the service's default headers are replaced entirely by default; pass
+ * `mergeHeaders: true` to merge instead.
  *
  * @usage
  * Pass an instance of this interface to customize headers on POST, PUT, and
@@ -61,10 +62,10 @@ export interface TbxNgxHttpBodyRequestOptions {
      * Opt this body method into the retry pipeline
      *
      * @remarks
-     * POST, PUT, PATCH, and DELETE skip retry by default to avoid duplicate writes
-     * on transient failure. Set `retry: true` for endpoints the caller knows to be
-     * idempotent and safe to repeat (e.g. a PUT that fully replaces a resource by
-     * id, or a DELETE on a stable id).
+     * POST, PUT, and PATCH skip retry by default to avoid duplicate writes on
+     * transient failure. Set `retry: true` for endpoints the caller knows to be
+     * idempotent and safe to repeat (e.g. a PUT that fully replaces a resource
+     * by id, or a PATCH whose JSON-merge-patch payload is genuinely commutative).
      *
      * @public
      */
