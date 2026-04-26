@@ -52,7 +52,7 @@ class TestDataService extends TbxNgxHttpService {
  * for multi-cycle retry verification.
  *
  * This also validates the subclass override pattern documented in
- * TbxNgxHttpService's JSDoc.
+ * TbxNgxHttpService's TSDoc.
  */
 @Injectable()
 class RetryTestService extends TbxNgxHttpService {

@@ -27,12 +27,14 @@ import { StatusCodes } from 'http-status-codes';
 export const TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS = 10_000;
 
 /**
- * Number of retry attempts for idempotent requests (GET only)
+ * Number of retry attempts for the retry pipeline
  *
  * @remarks
- * Controls how many times a failed GET request is retried before the error
- * propagates to the caller. Subclasses of {@link TbxNgxHttpService} override
- * by redeclaring the `RETRY_COUNT` class property.
+ * Controls how many times a failed request is retried before the error
+ * propagates to the caller. Used by GET (which retries by default) and by
+ * POST/PUT/PATCH/DELETE when the caller opts in via `options.retry: true`.
+ * Subclasses of {@link TbxNgxHttpService} override by redeclaring the
+ * `RETRY_COUNT` class property.
  *
  * @usage
  * Import directly when building a custom retry strategy outside of

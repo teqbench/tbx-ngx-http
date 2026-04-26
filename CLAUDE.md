@@ -4,7 +4,7 @@ This file provides guidance for [Claude Code ↗](https://github.com/anthropics/
 
 ## Package Overview
 
-This is `@teqbench/tbx-ngx-http`, an [Angular ↗](https://angular.dev/) library providing base HTTP communication services and resilience constants. It offers an abstract `TbxNgxHttpService` that feature services extend to get automatic retries with exponential backoff on GET requests, timeout handling, consistent URL resolution, and default headers. Resilience constants (`TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS`, `TBX_NGX_HTTP_RETRY_COUNT`, `TBX_NGX_HTTP_RETRY_DELAY_MS`, `TBX_NGX_HTTP_RETRYABLE_STATUSES`) are exported for direct use.
+This is `@teqbench/tbx-ngx-http`, an [Angular ↗](https://angular.dev/) library providing base HTTP communication services and resilience constants. It offers an abstract `TbxNgxHttpService` that feature services extend to get automatic retries with exponential backoff (on GET by default, on mutating methods via `options.retry: true`), timeout handling, consistent URL resolution, and default headers. Resilience constants (`TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS`, `TBX_NGX_HTTP_RETRY_COUNT`, `TBX_NGX_HTTP_RETRY_DELAY_MS`, `TBX_NGX_HTTP_RETRYABLE_STATUSES`) are exported for direct use.
 
 ## Tech Stack
 

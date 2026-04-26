@@ -30,7 +30,7 @@
 
 The service exposes typed `get`, `post`, `put`, `patch`, and `delete` methods backed by two dedicated option interfaces — `TbxNgxHttpRequestOptions` for non-body methods (params + headers) and `TbxNgxHttpBodyRequestOptions` for body methods (headers only). GET goes through the retry operator by default; mutating methods (POST, PUT, PATCH, DELETE) skip retry by default because they are not safely repeatable. Either default can be overridden per call with `options.retry`. Timeouts apply to every method uniformly.
 
-The retry strategy uses exponential backoff (`RETRY_DELAY * 2^(attempt - 1)`) and consults a fixed set of retryable statuses — `0` (network error), `408`, `429`, `500`, `502`, `503`, `504`. Non-retryable HTTP errors (4xx client errors other than 408/429) are re-thrown immediately. Non-`HttpErrorResponse` failures, including [`TimeoutError` ↗](https://rxjs.dev/api/index/class/TimeoutError) from the upstream operator, are always retried on GET. All four resilience parameters (timeout, retry count, retry delay, retryable statuses) are also exported as standalone constants for consumers building custom retry pipelines outside of `TbxNgxHttpService`.
+The retry strategy uses exponential backoff (`RETRY_DELAY * 2^(attempt - 1)`) and consults a fixed set of retryable statuses — `0` (network error), `408`, `429`, `500`, `502`, `503`, `504`. Non-retryable HTTP errors (4xx client errors other than 408/429) are re-thrown immediately. Non-`HttpErrorResponse` failures, including [`TimeoutError` ↗](https://rxjs.dev/api/index/class/TimeoutError) from the upstream operator, are always retried whenever the retry pipeline runs (GET by default, mutating methods on opt-in). All four resilience parameters (timeout, retry count, retry delay, retryable statuses) are also exported as standalone constants for consumers building custom retry pipelines outside of `TbxNgxHttpService`.
 
 The package supports [Angular ↗](https://angular.dev) 19, 20, and 21, carries no `@teqbench` runtime dependencies, and depends only on [`http-status-codes` ↗](https://github.com/prettymuchbryce/http-status-codes) at runtime for the canonical status-code enum.
 
@@ -222,7 +222,7 @@ Overridable protected properties (redeclare in a subclass to change behavior):
     <dt><code>DEFAULT_TIMEOUT</code> (<code>number</code>)</dt>
     <dd>Request timeout in milliseconds. Default: <code>TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS</code>.</dd>
     <dt><code>RETRY_COUNT</code> (<code>number</code>)</dt>
-    <dd>Retry attempts on GET (applies to GET only). Default: <code>TBX_NGX_HTTP_RETRY_COUNT</code>.</dd>
+    <dd>Retry attempts for the retry pipeline (GET by default; mutating methods on <code>options.retry: true</code>). Default: <code>TBX_NGX_HTTP_RETRY_COUNT</code>.</dd>
     <dt><code>RETRY_DELAY</code> (<code>number</code>)</dt>
     <dd>Base delay in ms for exponential backoff. Default: <code>TBX_NGX_HTTP_RETRY_DELAY_MS</code>.</dd>
     <dt><code>defaultHeaders</code> (<code>HttpHeaders</code>)</dt>
@@ -263,7 +263,7 @@ Options for body methods (`post`, `put`, `patch`).
     <dt><code>TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS</code></dt>
     <dd>Request timeout in milliseconds. Default: <code>10_000</code>.</dd>
     <dt><code>TBX_NGX_HTTP_RETRY_COUNT</code></dt>
-    <dd>Number of retry attempts for GET requests. Default: <code>2</code>.</dd>
+    <dd>Number of retry attempts for the retry pipeline. Used by GET (default) and by mutating methods opted in via <code>options.retry: true</code>. Default: <code>2</code>.</dd>
     <dt><code>TBX_NGX_HTTP_RETRY_DELAY_MS</code></dt>
     <dd>Base delay in milliseconds for exponential backoff. Default: <code>1_000</code>.</dd>
     <dt><code>TBX_NGX_HTTP_RETRYABLE_STATUSES</code> (<code>Set</code>)</dt>

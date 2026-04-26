@@ -5,7 +5,8 @@
  * This barrel file provides a centralized entry point for base HTTP communication
  * services and resilience constants. Feature services extend
  * {@link TbxNgxHttpService} to get automatic retries with exponential backoff
- * on GET requests, timeout handling, consistent URL resolution, and default headers.
+ * (on GET by default, on mutating methods via `options.retry: true`), timeout
+ * handling, consistent URL resolution, and default headers.
  *
  * Resilience constants ({@link TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS},
  * {@link TBX_NGX_HTTP_RETRY_COUNT}, {@link TBX_NGX_HTTP_RETRY_DELAY_MS},

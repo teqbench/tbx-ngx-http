@@ -93,11 +93,13 @@ export abstract class TbxNgxHttpService {
     protected readonly DEFAULT_TIMEOUT: number = TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS;
 
     /**
-     * Number of retry attempts for GET requests
+     * Number of retry attempts for the retry pipeline
      *
      * @remarks
-     * Defaults to {@link TBX_NGX_HTTP_RETRY_COUNT}. Subclasses override
-     * by redeclaring the property.
+     * Applies to GET (which retries by default) and to POST/PUT/PATCH/DELETE
+     * when the caller opts in via `options.retry: true`. Defaults to
+     * {@link TBX_NGX_HTTP_RETRY_COUNT}. Subclasses override by redeclaring the
+     * property.
      *
      * @public
      */
@@ -325,8 +327,9 @@ export abstract class TbxNgxHttpService {
      * Non-HttpErrorResponse errors — including `TimeoutError` from the upstream
      * `timeout()` operator — are always retried. This is intentional: GET requests
      * are idempotent, and a timeout is a transient failure that may succeed on the
-     * next attempt. Mutating methods (POST, PUT, PATCH, DELETE) do not use this
-     * operator, so timeouts on those methods are never retried.
+     * next attempt. Mutating methods (POST, PUT, PATCH, DELETE) only invoke this
+     * operator when the caller passes `options.retry: true`; in that case timeout
+     * retries apply identically to GET.
      *
      * Backoff formula: `RETRY_DELAY * 2^(attempt - 1)`
      *
