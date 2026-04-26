@@ -28,7 +28,7 @@
 
 `@teqbench/tbx-ngx-http` provides an abstract base HTTP service for [Angular ↗](https://angular.dev) feature services. Rather than re-implementing retry, timeout, URL resolution, and default-header logic in every service that talks to the backend, feature services extend `TbxNgxHttpService` and inherit a consistent resilience envelope over [`HttpClient` ↗](https://angular.dev/api/common/http/HttpClient).
 
-The service exposes typed `get`, `post`, `put`, `patch`, and `delete` methods backed by two dedicated option interfaces — `TbxNgxHttpRequestOptions` for non-body methods (params + headers) and `TbxNgxHttpBodyRequestOptions` for body methods (headers only). Only GET requests go through the retry operator; mutating methods intentionally skip retry because POST/PUT/PATCH/DELETE are not safely repeatable on transient failure. Timeouts apply to every method uniformly.
+The service exposes typed `get`, `post`, `put`, `patch`, and `delete` methods backed by two dedicated option interfaces — `TbxNgxHttpRequestOptions` for non-body methods (params + headers) and `TbxNgxHttpBodyRequestOptions` for body methods (headers only). GET goes through the retry operator by default; mutating methods (POST, PUT, PATCH, DELETE) skip retry by default because they are not safely repeatable. Either default can be overridden per call with `options.retry`. Timeouts apply to every method uniformly.
 
 The retry strategy uses exponential backoff (`RETRY_DELAY * 2^(attempt - 1)`) and consults a fixed set of retryable statuses — `0` (network error), `408`, `429`, `500`, `502`, `503`, `504`. Non-retryable HTTP errors (4xx client errors other than 408/429) are re-thrown immediately. Non-`HttpErrorResponse` failures, including [`TimeoutError` ↗](https://rxjs.dev/api/index/class/TimeoutError) from the upstream operator, are always retried on GET. All four resilience parameters (timeout, retry count, retry delay, retryable statuses) are also exported as standalone constants for consumers building custom retry pipelines outside of `TbxNgxHttpService`.
 
@@ -39,11 +39,12 @@ The package supports [Angular ↗](https://angular.dev) 19, 20, and 21, carries 
 - **Resilient base service** — abstract `TbxNgxHttpService` that feature services extend to inherit retry, timeout, URL resolution, and default headers.
 - **GET retry with exponential backoff** — transient failures (network errors, 408, 429, 5xx) are retried with delay `RETRY_DELAY * 2^(attempt - 1)`.
 - **Configurable timeout** — every request is bounded by `DEFAULT_TIMEOUT` (10s default); subclasses override the class property to tune per service.
-- **Idempotency-aware retry** — only GET retries. POST, PUT, PATCH, and DELETE skip retry to avoid duplicate writes on transient failure.
+- **Idempotency-aware retry** — GET retries by default; POST, PUT, PATCH, and DELETE skip retry by default. Either default can be overridden per-call with `options.retry`.
 - **Typed request options** — `TbxNgxHttpRequestOptions` for params + headers (non-body methods); `TbxNgxHttpBodyRequestOptions` for body methods.
+- **Header merge or replace** — caller `options.headers` replaces defaults by default; pass `options.mergeHeaders: true` to merge (caller wins, defaults fill gaps).
 - **Per-subclass override** — `DEFAULT_TIMEOUT`, `RETRY_COUNT`, and `RETRY_DELAY` are protected class properties — redeclare in a subclass to override.
 - **Exposed resilience constants** — `TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS`, `RETRY_COUNT`, `RETRY_DELAY_MS`, and `RETRYABLE_STATUSES` are exported for custom pipelines.
-- **Default headers** — `Accept: application/json` is set by default; callers providing `options.headers` replace the set entirely, not merge.
+- **Default headers** — `Accept: application/json` is set by default; callers providing `options.headers` replace the set entirely, or pass `options.mergeHeaders: true` to merge instead.
 - **URL resolution** — relative paths are joined to the subclass-provided `baseUrl` with consistent slash handling.
 - **Broad [Angular ↗](https://angular.dev) peer range** — supports [Angular ↗](https://angular.dev) 19, 20, and 21; no `@teqbench` runtime dependencies.
 
@@ -150,7 +151,7 @@ this.http.get<User[]>('/api/users').pipe(
 );
 ```
 
-### Headers: replace, don't merge
+### Headers: replace, don't merge (default)
 
 Passing `options.headers` replaces the default `Accept: application/json` entirely — the caller owns the full header set.
 
@@ -160,13 +161,37 @@ this.get<Blob>('reports/monthly.pdf', {
 });
 ```
 
+### Headers: merge with defaults
+
+Pass `options.mergeHeaders: true` to keep defaults the caller did not set. Caller-provided keys still win on conflict.
+
+```typescript
+this.get<User>('me', {
+    headers: new HttpHeaders({ Authorization: 'Bearer token' }),
+    mergeHeaders: true,
+});
+// Sends: Authorization: Bearer token, Accept: application/json
+```
+
+### Override retry per call
+
+Opt out of retry on a single GET, or opt into retry on a body method when the caller knows the endpoint is idempotent.
+
+```typescript
+// Single fast GET — no retry on transient failure
+this.get<Status>('health', { retry: false });
+
+// PUT that fully replaces a resource by id — safe to repeat
+this.put<User>(`users/${id}`, payload, { retry: true });
+```
+
 ## Concepts
 
 - **Base HTTP service** — the abstract `TbxNgxHttpService` that consumers extend to gain timeout, retry, URL resolution, and default-header behavior over [Angular ↗](https://angular.dev) [`HttpClient` ↗](https://angular.dev/api/common/http/HttpClient).
 - **Feature service** — a consumer-defined subclass of `TbxNgxHttpService` that provides a `baseUrl` and exposes typed methods for a specific backend surface.
 - **Resilience constants** — exported default values for timeout, retry count, retry delay, and the set of retryable statuses; can be imported directly when building custom pipelines.
 - **Retryable status** — one of `0` (network error), `408`, `429`, `500`, `502`, `503`, `504` — transient failures worth retrying with backoff.
-- **Idempotency-aware retry** — the rule that only GET requests retry automatically; POST, PUT, PATCH, and DELETE skip retry to prevent duplicate writes on transient failure.
+- **Idempotency-aware retry** — the rule that GET retries automatically while POST, PUT, PATCH, and DELETE skip retry by default. Either default can be overridden per call with `options.retry` for endpoints the caller knows to be idempotent.
 - **Exponential backoff** — a retry delay strategy where the wait doubles on each attempt — `delay = RETRY_DELAY * 2^(attempt - 1)`.
 - **Per-subclass override** — the pattern of redeclaring a protected class property (`DEFAULT_TIMEOUT`, `RETRY_COUNT`, `RETRY_DELAY`) in a subclass to change resilience behavior for one feature service.
 
@@ -177,15 +202,15 @@ this.get<Blob>('reports/monthly.pdf', {
 Abstract base class for feature services. Provides typed HTTP methods with built-in resilience.
 
 <dl>
-    <dt><code>get</code> — retries on transient failure</dt>
+    <dt><code>get</code> — retries by default; pass <code>options.retry: false</code> to disable</dt>
     <dd><code>get&lt;T&gt;(path: string, options?: TbxNgxHttpRequestOptions): Observable&lt;T&gt;</code></dd>
-    <dt><code>post</code> — no retry</dt>
+    <dt><code>post</code> — no retry by default; pass <code>options.retry: true</code> to opt in</dt>
     <dd><code>post&lt;T&gt;(path: string, body: unknown, options?: TbxNgxHttpBodyRequestOptions): Observable&lt;T&gt;</code></dd>
-    <dt><code>put</code> — no retry</dt>
+    <dt><code>put</code> — no retry by default; pass <code>options.retry: true</code> to opt in</dt>
     <dd><code>put&lt;T&gt;(path: string, body: unknown, options?: TbxNgxHttpBodyRequestOptions): Observable&lt;T&gt;</code></dd>
-    <dt><code>patch</code> — no retry</dt>
+    <dt><code>patch</code> — no retry by default; pass <code>options.retry: true</code> to opt in</dt>
     <dd><code>patch&lt;T&gt;(path: string, body: unknown, options?: TbxNgxHttpBodyRequestOptions): Observable&lt;T&gt;</code></dd>
-    <dt><code>delete</code> — no retry</dt>
+    <dt><code>delete</code> — no retry by default; pass <code>options.retry: true</code> to opt in</dt>
     <dd><code>delete&lt;T&gt;(path: string, options?: TbxNgxHttpRequestOptions): Observable&lt;T&gt;</code></dd>
 </dl>
 
@@ -212,7 +237,11 @@ Options for non-body methods (`get`, `delete`).
     <dt><code>params?</code> (<code>HttpParams</code>)</dt>
     <dd>Query string parameters.</dd>
     <dt><code>headers?</code> (<code>HttpHeaders</code>)</dt>
-    <dd>Replaces <code>defaultHeaders</code> when present.</dd>
+    <dd>Replaces <code>defaultHeaders</code> when present (or merges, when <code>mergeHeaders</code> is true).</dd>
+    <dt><code>mergeHeaders?</code> (<code>boolean</code>)</dt>
+    <dd>Merge <code>headers</code> with <code>defaultHeaders</code> instead of replacing. Caller-provided keys win on conflict; default keys not set by the caller are preserved. Default: <code>false</code>.</dd>
+    <dt><code>retry?</code> (<code>boolean</code>)</dt>
+    <dd>Override the method's default retry behavior. GET defaults to <code>true</code>; DELETE defaults to <code>false</code>.</dd>
 </dl>
 
 ### TbxNgxHttpBodyRequestOptions
@@ -221,7 +250,11 @@ Options for body methods (`post`, `put`, `patch`).
 
 <dl>
     <dt><code>headers?</code> (<code>HttpHeaders</code>)</dt>
-    <dd>Replaces <code>defaultHeaders</code> when present.</dd>
+    <dd>Replaces <code>defaultHeaders</code> when present (or merges, when <code>mergeHeaders</code> is true).</dd>
+    <dt><code>mergeHeaders?</code> (<code>boolean</code>)</dt>
+    <dd>Merge <code>headers</code> with <code>defaultHeaders</code> instead of replacing. Caller-provided keys win on conflict; default keys not set by the caller are preserved. Default: <code>false</code>.</dd>
+    <dt><code>retry?</code> (<code>boolean</code>)</dt>
+    <dd>Opt this body method into the retry pipeline. Default: <code>false</code>. Set <code>true</code> for endpoints the caller knows to be idempotent.</dd>
 </dl>
 
 ### Constants

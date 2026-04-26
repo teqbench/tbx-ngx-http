@@ -722,4 +722,146 @@ describe('TbxNgxHttpService', () => {
             expect(error).toBeDefined();
         });
     });
+
+    // ── Per-call retry override ───────────────────────────────────────────
+
+    describe('Per-call retry override', () => {
+        beforeEach(() => {
+            vi.useFakeTimers();
+        });
+
+        afterEach(() => {
+            vi.useRealTimers();
+        });
+
+        it('should NOT retry GET when options.retry is false', () => {
+            let error: unknown;
+            service.testGet({ retry: false }).subscribe({ error: (e) => (error = e) });
+
+            httpMock.expectOne(TEST_URL).flush(null, {
+                status: StatusCodes.SERVICE_UNAVAILABLE,
+                statusText: ReasonPhrases.SERVICE_UNAVAILABLE,
+            });
+
+            vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS * 10);
+            httpMock.expectNone(TEST_URL);
+            expect(error).toBeDefined();
+        });
+
+        it('should retry POST on 503 when options.retry is true', () => {
+            service.testPost({}, { retry: true }).subscribe({ error: () => {} });
+
+            httpMock.expectOne(TEST_URL).flush(null, {
+                status: StatusCodes.SERVICE_UNAVAILABLE,
+                statusText: ReasonPhrases.SERVICE_UNAVAILABLE,
+            });
+
+            vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS);
+            httpMock.expectOne(TEST_URL).flush({ success: true });
+        });
+
+        it('should retry PUT on 502 when options.retry is true', () => {
+            service.testPut({ id: 1 }, { retry: true }).subscribe({ error: () => {} });
+
+            httpMock.expectOne(TEST_URL).flush(null, {
+                status: StatusCodes.BAD_GATEWAY,
+                statusText: ReasonPhrases.BAD_GATEWAY,
+            });
+
+            vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS);
+            httpMock.expectOne(TEST_URL).flush({ success: true });
+        });
+
+        it('should retry PATCH on 504 when options.retry is true', () => {
+            service.testPatch({ id: 1 }, { retry: true }).subscribe({ error: () => {} });
+
+            httpMock.expectOne(TEST_URL).flush(null, {
+                status: StatusCodes.GATEWAY_TIMEOUT,
+                statusText: ReasonPhrases.GATEWAY_TIMEOUT,
+            });
+
+            vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS);
+            httpMock.expectOne(TEST_URL).flush({ success: true });
+        });
+
+        it('should retry DELETE on 503 when options.retry is true', () => {
+            service.testDelete({ retry: true }).subscribe({ error: () => {} });
+
+            httpMock.expectOne(TEST_URL).flush(null, {
+                status: StatusCodes.SERVICE_UNAVAILABLE,
+                statusText: ReasonPhrases.SERVICE_UNAVAILABLE,
+            });
+
+            vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS);
+            httpMock.expectOne(TEST_URL).flush({ success: true });
+        });
+
+        it('should NOT retry POST when options.retry is false (explicit default)', () => {
+            let error: unknown;
+            service.testPost({}, { retry: false }).subscribe({ error: (e) => (error = e) });
+
+            httpMock.expectOne(TEST_URL).flush(null, {
+                status: StatusCodes.SERVICE_UNAVAILABLE,
+                statusText: ReasonPhrases.SERVICE_UNAVAILABLE,
+            });
+
+            vi.advanceTimersByTime(TBX_NGX_HTTP_RETRY_DELAY_MS * 10);
+            httpMock.expectNone(TEST_URL);
+            expect(error).toBeDefined();
+        });
+    });
+
+    // ── Header merging ────────────────────────────────────────────────────
+
+    describe('Header merging', () => {
+        it('should merge defaults with caller headers when mergeHeaders is true', () => {
+            const callerHeaders = new HttpHeaders({ Authorization: 'Bearer token' });
+            service.testGet({ headers: callerHeaders, mergeHeaders: true }).subscribe();
+
+            const req = httpMock.expectOne(TEST_URL);
+            // Caller header preserved
+            expect(req.request.headers.get('Authorization')).toBe('Bearer token');
+            // Default header filled in for keys the caller did not set
+            expect(req.request.headers.get('Accept')).toBe('application/json');
+            req.flush({ success: true });
+        });
+
+        it('should let caller header win over default when key collides during merge', () => {
+            const callerHeaders = new HttpHeaders({ Accept: 'text/csv' });
+            service.testGet({ headers: callerHeaders, mergeHeaders: true }).subscribe();
+
+            const req = httpMock.expectOne(TEST_URL);
+            expect(req.request.headers.get('Accept')).toBe('text/csv');
+            req.flush('a,b');
+        });
+
+        it('should still replace defaults when mergeHeaders is omitted (existing behavior)', () => {
+            const callerHeaders = new HttpHeaders({ Authorization: 'Bearer token' });
+            service.testGet({ headers: callerHeaders }).subscribe();
+
+            const req = httpMock.expectOne(TEST_URL);
+            expect(req.request.headers.get('Authorization')).toBe('Bearer token');
+            // Default Accept is dropped because caller did not opt into merge
+            expect(req.request.headers.get('Accept')).toBeNull();
+            req.flush({ success: true });
+        });
+
+        it('should apply mergeHeaders to body methods', () => {
+            const callerHeaders = new HttpHeaders({ Authorization: 'Bearer token' });
+            service.testPost({}, { headers: callerHeaders, mergeHeaders: true }).subscribe();
+
+            const req = httpMock.expectOne(TEST_URL);
+            expect(req.request.headers.get('Authorization')).toBe('Bearer token');
+            expect(req.request.headers.get('Accept')).toBe('application/json');
+            req.flush({ success: true });
+        });
+
+        it('should ignore mergeHeaders when caller did not provide headers', () => {
+            service.testGet({ mergeHeaders: true }).subscribe();
+
+            const req = httpMock.expectOne(TEST_URL);
+            expect(req.request.headers.get('Accept')).toBe('application/json');
+            req.flush({ success: true });
+        });
+    });
 });

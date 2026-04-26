@@ -40,9 +40,38 @@ export interface TbxNgxHttpRequestOptions {
      */
     params?: HttpParams;
     /**
-     * {@link https://angular.dev/api/common/http/HttpHeaders | HttpHeaders} for the request, replaces default headers when provided
+     * {@link https://angular.dev/api/common/http/HttpHeaders | HttpHeaders} for the request
+     *
+     * @remarks
+     * By default, when `headers` is provided the service's default headers are
+     * replaced entirely. Set `mergeHeaders: true` to merge instead — caller-provided
+     * keys win, default keys fill any gaps.
      *
      * @public
      */
     headers?: HttpHeaders;
+    /**
+     * Merge `headers` with the service's default headers instead of replacing them
+     *
+     * @remarks
+     * When `true`, caller-provided header keys take precedence over defaults; any
+     * default keys not set by the caller are preserved. When `false` or omitted,
+     * `headers` (when provided) replaces the defaults entirely. Has no effect when
+     * `headers` is not provided.
+     *
+     * @public
+     */
+    mergeHeaders?: boolean;
+    /**
+     * Override the service's default retry behavior for this request
+     *
+     * @remarks
+     * GET defaults to `true` (retries on transient failures). DELETE defaults to
+     * `false`. Set `retry: true` on a DELETE call when the underlying endpoint is
+     * idempotent and safe to repeat; set `retry: false` on a GET to disable retries
+     * for a single call.
+     *
+     * @public
+     */
+    retry?: boolean;
 }

@@ -277,7 +277,7 @@ Follow **[Conventional Commits ↗](https://conventionalcommits.org/)** strictly
 ## Package-Specific Guidance
 
 - `TbxNgxHttpService` is abstract — it cannot be instantiated directly. Feature services extend it and provide a `baseUrl`.
-- Only GET requests include the retry operator. Mutating methods (POST, PUT, PATCH, DELETE) intentionally skip retries.
+- GET retries by default; POST, PUT, PATCH, and DELETE skip retry by default. Either default can be overridden per call with `options.retry`.
 - The retry operator uses exponential backoff: `RETRY_DELAY * 2^(attempt - 1)`.
 - `TBX_NGX_HTTP_RETRYABLE_STATUSES` defines which HTTP status codes trigger retries (0, 408, 429, 500, 502, 503, 504).
 - Dependencies: `@angular/common` (HttpClient), `@angular/core` (inject), `rxjs`, `http-status-codes`.
