@@ -78,7 +78,8 @@
   "overridesPinned": {
     "//": [
       "@angular/build pulls vite versions affected by CVEs (GHSA-4w7w-66w2-5vf9, GHSA-v2wj-q39q-566r, GHSA-p9ff-h696-f583).",
-      "Override pins vite to 7.3.2 directly. Re-evaluate and remove once @angular/build updates upstream to a clean vite range."
+      "Override pins vite to 7.3.2 directly. Re-evaluate and remove once @angular/build updates upstream to a clean vite range.",
+      "Tracked by issue #81 under epic #1."
     ]
   },
   "lint-staged": {
