@@ -20,8 +20,9 @@ import type { TbxNgxHttpBodyRequestOptions } from '../models/http-body-request-o
  * (timeout, exponential-backoff retry on transient errors).
  *
  * Feature services extend this class, provide the base URL, and call
- * its typed methods. Only GET requests include the retry operator; mutating
- * methods (POST, PUT, PATCH, DELETE) intentionally skip retries.
+ * its typed methods. GET retries by default; POST, PUT, PATCH, and DELETE
+ * skip retry by default. Either default can be overridden per call with
+ * `options.retry`.
  *
  * Subclasses can override resilience values by redeclaring the class property.
  *
@@ -92,11 +93,13 @@ export abstract class TbxNgxHttpService {
     protected readonly DEFAULT_TIMEOUT: number = TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS;
 
     /**
-     * Number of retry attempts for GET requests
+     * Number of retry attempts for the retry pipeline
      *
      * @remarks
-     * Defaults to {@link TBX_NGX_HTTP_RETRY_COUNT}. Subclasses override
-     * by redeclaring the property.
+     * Applies to GET (which retries by default) and to POST/PUT/PATCH/DELETE
+     * when the caller opts in via `options.retry: true`. Defaults to
+     * {@link TBX_NGX_HTTP_RETRY_COUNT}. Subclasses override by redeclaring the
+     * property.
      *
      * @public
      */
@@ -122,8 +125,9 @@ export abstract class TbxNgxHttpService {
      * this header signals that the service speaks JSON.
      *
      * When a caller passes `options.headers`, the defaults are replaced
-     * entirely (not merged). This keeps behavior predictable — if a caller
-     * provides headers, they own the full set.
+     * entirely. Callers can opt into merging with `options.mergeHeaders: true`,
+     * in which case caller-provided keys win and any default keys the caller
+     * did not set are preserved.
      *
      * @public
      */
@@ -135,35 +139,39 @@ export abstract class TbxNgxHttpService {
      * Execute a GET request
      *
      * @remarks
-     * Includes retries with exponential backoff because GET is idempotent
-     * and safe to repeat on transient failure (5xx, network errors).
+     * Retries on transient failure (5xx, network errors) by default because GET
+     * is idempotent and safe to repeat. Pass `options.retry: false` to disable
+     * retry for a single call.
      *
      * @typeParam T - Expected response body type.
      * @param path - Relative path appended to {@link TbxNgxHttpService.baseUrl | baseUrl}.
-     * @param options - Optional query parameters and headers.
+     * @param options - Optional query parameters, headers, header-merge flag, and retry override.
      * @returns An Observable emitting the typed response body.
      *
      * @public
      */
     protected get<T>(path: string, options?: TbxNgxHttpRequestOptions): Observable<T> {
-        return this.http
+        const stream = this.http
             .get<T>(this.url(path), {
                 params: options?.params,
-                headers: options?.headers ?? this.defaultHeaders,
+                headers: this.resolveHeaders(options?.headers, options?.mergeHeaders),
             })
-            .pipe(timeout(this.DEFAULT_TIMEOUT), this.withRetry());
+            .pipe(timeout(this.DEFAULT_TIMEOUT));
+        return (options?.retry ?? true) ? stream.pipe(this.withRetry()) : stream;
     }
 
     /**
      * Execute a POST request
      *
      * @remarks
-     * Retries are disabled to prevent duplicate record creation (non-idempotent).
+     * Retries are disabled by default to prevent duplicate record creation
+     * (POST is not idempotent). Pass `options.retry: true` only when the
+     * underlying endpoint is known to be idempotent.
      *
      * @typeParam T - Expected response body type.
      * @param path - Relative path appended to {@link TbxNgxHttpService.baseUrl | baseUrl}.
      * @param body - Request payload.
-     * @param options - Optional headers.
+     * @param options - Optional headers, header-merge flag, and retry opt-in.
      * @returns An Observable emitting the typed response body.
      *
      * @public
@@ -173,11 +181,12 @@ export abstract class TbxNgxHttpService {
         body: unknown,
         options?: TbxNgxHttpBodyRequestOptions
     ): Observable<T> {
-        return this.http
+        const stream = this.http
             .post<T>(this.url(path), body, {
-                headers: options?.headers ?? this.defaultHeaders,
+                headers: this.resolveHeaders(options?.headers, options?.mergeHeaders),
             })
             .pipe(timeout(this.DEFAULT_TIMEOUT));
+        return options?.retry ? stream.pipe(this.withRetry()) : stream;
     }
 
     /**
@@ -185,12 +194,14 @@ export abstract class TbxNgxHttpService {
      *
      * @remarks
      * Retries are disabled by default to maintain strict idempotency safety
-     * across varying backend implementations.
+     * across varying backend implementations. Pass `options.retry: true` for
+     * endpoints the caller knows to be safe to repeat (e.g. a PUT that fully
+     * replaces a resource by id).
      *
      * @typeParam T - Expected response body type.
      * @param path - Relative path appended to {@link TbxNgxHttpService.baseUrl | baseUrl}.
      * @param body - Request payload.
-     * @param options - Optional headers.
+     * @param options - Optional headers, header-merge flag, and retry opt-in.
      * @returns An Observable emitting the typed response body.
      *
      * @public
@@ -200,23 +211,26 @@ export abstract class TbxNgxHttpService {
         body: unknown,
         options?: TbxNgxHttpBodyRequestOptions
     ): Observable<T> {
-        return this.http
+        const stream = this.http
             .put<T>(this.url(path), body, {
-                headers: options?.headers ?? this.defaultHeaders,
+                headers: this.resolveHeaders(options?.headers, options?.mergeHeaders),
             })
             .pipe(timeout(this.DEFAULT_TIMEOUT));
+        return options?.retry ? stream.pipe(this.withRetry()) : stream;
     }
 
     /**
      * Execute a PATCH request (partial update)
      *
      * @remarks
-     * Retries are disabled as concurrent partial updates can lead to race conditions.
+     * Retries are disabled by default because concurrent partial updates can
+     * lead to race conditions. Pass `options.retry: true` only when the caller
+     * is certain the patch is safe to repeat.
      *
      * @typeParam T - Expected response body type.
      * @param path - Relative path appended to {@link TbxNgxHttpService.baseUrl | baseUrl}.
      * @param body - Request payload.
-     * @param options - Optional headers.
+     * @param options - Optional headers, header-merge flag, and retry opt-in.
      * @returns An Observable emitting the typed response body.
      *
      * @public
@@ -226,34 +240,69 @@ export abstract class TbxNgxHttpService {
         body: unknown,
         options?: TbxNgxHttpBodyRequestOptions
     ): Observable<T> {
-        return this.http
+        const stream = this.http
             .patch<T>(this.url(path), body, {
-                headers: options?.headers ?? this.defaultHeaders,
+                headers: this.resolveHeaders(options?.headers, options?.mergeHeaders),
             })
             .pipe(timeout(this.DEFAULT_TIMEOUT));
+        return options?.retry ? stream.pipe(this.withRetry()) : stream;
     }
 
     /**
      * Execute a DELETE request
      *
      * @remarks
-     * Retries are disabled to avoid 404/410 errors on subsequent automated
-     * attempts if the first request actually succeeded but the response was lost.
+     * Retries are disabled by default to avoid 404/410 errors on subsequent
+     * automated attempts if the first request actually succeeded but the
+     * response was lost. Pass `options.retry: true` for endpoints with stable
+     * ids that tolerate repeat delete attempts.
      *
      * @typeParam T - Expected response body type.
      * @param path - Relative path appended to {@link TbxNgxHttpService.baseUrl | baseUrl}.
-     * @param options - Optional query parameters and headers.
+     * @param options - Optional query parameters, headers, header-merge flag, and retry opt-in.
      * @returns An Observable emitting the typed response body.
      *
      * @public
      */
     protected delete<T>(path: string, options?: TbxNgxHttpRequestOptions): Observable<T> {
-        return this.http
+        const stream = this.http
             .delete<T>(this.url(path), {
                 params: options?.params,
-                headers: options?.headers ?? this.defaultHeaders,
+                headers: this.resolveHeaders(options?.headers, options?.mergeHeaders),
             })
             .pipe(timeout(this.DEFAULT_TIMEOUT));
+        return options?.retry ? stream.pipe(this.withRetry()) : stream;
+    }
+
+    /**
+     * Resolve the header set for a request.
+     *
+     * @remarks
+     * No caller headers → defaults. Caller headers without merge → caller wins
+     * outright (defaults are dropped). Caller headers with `merge: true` →
+     * caller keys take precedence and any default keys the caller did not set
+     * are appended.
+     *
+     * @param callerHeaders - Headers passed via `options.headers`, if any.
+     * @param merge - Whether to merge with defaults instead of replacing them.
+     * @returns The resolved header set to send with the request.
+     */
+    private resolveHeaders(callerHeaders?: HttpHeaders, merge?: boolean): HttpHeaders {
+        if (!callerHeaders) {
+            return this.defaultHeaders;
+        }
+        if (!merge) {
+            return callerHeaders;
+        }
+        let resolved = callerHeaders;
+        for (const key of this.defaultHeaders.keys()) {
+            if (!resolved.has(key)) {
+                for (const value of this.defaultHeaders.getAll(key) ?? []) {
+                    resolved = resolved.append(key, value);
+                }
+            }
+        }
+        return resolved;
     }
 
     /**
@@ -278,8 +327,9 @@ export abstract class TbxNgxHttpService {
      * Non-HttpErrorResponse errors — including `TimeoutError` from the upstream
      * `timeout()` operator — are always retried. This is intentional: GET requests
      * are idempotent, and a timeout is a transient failure that may succeed on the
-     * next attempt. Mutating methods (POST, PUT, PATCH, DELETE) do not use this
-     * operator, so timeouts on those methods are never retried.
+     * next attempt. Mutating methods (POST, PUT, PATCH, DELETE) only invoke this
+     * operator when the caller passes `options.retry: true`; in that case timeout
+     * retries apply identically to GET.
      *
      * Backoff formula: `RETRY_DELAY * 2^(attempt - 1)`
      *
