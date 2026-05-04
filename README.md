@@ -276,18 +276,15 @@ Options for body methods (`post`, `put`, `patch`).
 
 ## Compatibility
 
-<dl>
-    <dt><a href="https://angular.dev">Angular ↗</a></dt>
-    <dd>^19.0.0 | ^20.0.0 | ^21.0.0</dd>
-    <dt><a href="https://rxjs.dev">RxJS ↗</a></dt>
-    <dd>^7.0.0</dd>
-    <dt><a href="https://github.com/prettymuchbryce/http-status-codes">http-status-codes ↗</a></dt>
-    <dd>^2.3.0</dd>
-    <dt><a href="https://www.typescriptlang.org">TypeScript ↗</a></dt>
-    <dd>~5.9.0</dd>
-    <dt><a href="https://nodejs.org">Node.js ↗</a></dt>
-    <dd>>=24.0.0</dd>
-</dl>
+<!-- Kept as a pipe table until teqbench/.github#22 lands; the centralized CI README version-check regex extracts versions from this exact shape. -->
+
+| Dependency                                                                  | Version                       |
+| --------------------------------------------------------------------------- | ----------------------------- |
+| [Angular ↗](https://angular.dev)                                            | ^19.0.0 \| ^20.0.0 \| ^21.0.0 |
+| [RxJS ↗](https://rxjs.dev)                                                  | ^7.0.0                        |
+| [http-status-codes ↗](https://github.com/prettymuchbryce/http-status-codes) | ^2.3.0                        |
+| [TypeScript ↗](https://www.typescriptlang.org)                              | ~5.9.0                        |
+| [Node.js ↗](https://nodejs.org)                                             | >=24.0.0                      |
 
 ## Versioning & releases
 
