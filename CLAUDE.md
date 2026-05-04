@@ -141,9 +141,27 @@ Member-level comment structure (properties, methods):
 
 Follow this order within a [TSDoc ↗](https://tsdoc.org/) comment:
 
-Top-level exports: summary line → `@remarks` → `@typeParam` / `@param` / `@returns` → `@usage` → `@example` → `@category` (repeatable) → `@displayName` → `@order` → `@since` → `@related` (repeatable) → `@public` / `@internal`
+Top-level exports:
 
-Members (properties, methods): summary line → `@remarks` → `@param` / `@returns` (methods only) → `@order` → `@public` / `@internal`
+summary line
+@remarks
+@typeParam / @param / @returns
+@usage
+@example
+@category (repeatable)
+@displayName
+@order
+@since
+@related (repeatable)
+@public / @internal
+
+Members (properties, methods):
+
+summary line
+@remarks
+@param / @returns (methods only)
+@order
+@public / @internal
 
 ### Reference Implementation
 
