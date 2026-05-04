@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.2.0](https://github.com/teqbench/tbx-ngx-http/compare/v1.1.0...v1.2.0) (2026-05-04)
+
+
+### Features
+
+* add per-call retry override and header merge options ([d6ebbde](https://github.com/teqbench/tbx-ngx-http/commit/d6ebbded165c6eb5ea45ffa41d95b38cb344e7d6))
+
+
+### Bug Fixes
+
+* **deps:** patch picomatch to resolve high-severity advisories ([c60b8fb](https://github.com/teqbench/tbx-ngx-http/commit/c60b8fbbc27ba7b3b30f0aa20f8c4cb43d19e36a))
+* **docs:** describe per-package docs pipeline inputs in CLAUDE.md ([960d9ec](https://github.com/teqbench/tbx-ngx-http/commit/960d9ec8e14f383b734d3600df805b54d53d8941))
+* **docs:** hyperlink Conventional Commits in workflow guidance ([1f69d92](https://github.com/teqbench/tbx-ngx-http/commit/1f69d92b66678d9a7e0f2a4484538d21bfb56c72))
+* **docs:** keep README Compatibility as a pipe table for CI version extraction ([f6ae7e3](https://github.com/teqbench/tbx-ngx-http/commit/f6ae7e3960c71f41cac625e23bac9b4c6c0c4fa6))
+* **docs:** list actual emitted APF entry-point keys ([178e667](https://github.com/teqbench/tbx-ngx-http/commit/178e6676933e46f96f40a6e0c832e412b48e83f8))
+* **docs:** normalize external doc URLs to no trailing slash ([f7504d4](https://github.com/teqbench/tbx-ngx-http/commit/f7504d4ae8ee3bf17832dbebd4c0cf390318ed52))
+* **docs:** note central Renovate dependency updates in CLAUDE.md ([69f82de](https://github.com/teqbench/tbx-ngx-http/commit/69f82de7c3bd7e8e794e229f1570c3f19e997c0d))
+* **docs:** note that [@returns](https://github.com/returns) is omitted for void returns ([2aa9308](https://github.com/teqbench/tbx-ngx-http/commit/2aa93089f7375cbc1d73bec984891540129db16b))
+* **docs:** remove md files now provided by teqbench/.github ([50e773d](https://github.com/teqbench/tbx-ngx-http/commit/50e773d08b8f50d1ea41dab30813469673589f31))
+* **docs:** use vertical list for TSDoc tag ordering ([c25f169](https://github.com/teqbench/tbx-ngx-http/commit/c25f1691c92d91ad583acd05d9966767af016e1f))
+* package updates, CLAUDE.md alignment, docs cleanup ([1313323](https://github.com/teqbench/tbx-ngx-http/commit/13133230f4d48c98a5c5e3a3511ce1fde7722a04))
+
 ## [1.1.0](https://github.com/teqbench/tbx-ngx-http/compare/v1.0.2...v1.1.0) (2026-04-13)
 
 
