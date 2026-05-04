@@ -279,7 +279,7 @@ Follow **[Conventional Commits ↗](https://conventionalcommits.org/)** strictly
 
 - Create feature or bugfix branches off `dev` when implementing issues.
 - Write clean, well-tested code that passes lint, typecheck, and tests.
-- Use conventional commit messages.
+- Use [Conventional Commits ↗](https://www.conventionalcommits.org) messages.
 - Create PRs targeting `dev` (never directly target `main`).
 - Keep PRs focused and atomic — one issue per PR.
 
