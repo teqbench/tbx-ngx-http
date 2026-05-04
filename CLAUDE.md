@@ -4,27 +4,27 @@ This file provides guidance for [Claude Code ↗](https://github.com/anthropics/
 
 ## Package Overview
 
-This is `@teqbench/tbx-ngx-http`, an [Angular ↗](https://angular.dev/) library providing base HTTP communication services and resilience constants. It offers an abstract `TbxNgxHttpService` that feature services extend to get automatic retries with exponential backoff (on GET by default, on mutating methods via `options.retry: true`), timeout handling, consistent URL resolution, and default headers. Resilience constants (`TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS`, `TBX_NGX_HTTP_RETRY_COUNT`, `TBX_NGX_HTTP_RETRY_DELAY_MS`, `TBX_NGX_HTTP_RETRYABLE_STATUSES`) are exported for direct use.
+This is `@teqbench/tbx-ngx-http`, an [Angular ↗](https://angular.dev) library providing base HTTP communication services and resilience constants. It offers an abstract `TbxNgxHttpService` that feature services extend to get automatic retries with exponential backoff (on GET by default, on mutating methods via `options.retry: true`), timeout handling, consistent URL resolution, and default headers. Resilience constants (`TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS`, `TBX_NGX_HTTP_RETRY_COUNT`, `TBX_NGX_HTTP_RETRY_DELAY_MS`, `TBX_NGX_HTTP_RETRYABLE_STATUSES`) are exported for direct use.
 
 ## Tech Stack
 
-- **Language:** [TypeScript ↗](https://www.typescriptlang.org/) 5.9+ (strict mode, [ES2022 ↗](https://262.ecma-international.org/13.0/) target, bundler module resolution)
-- **Testing:** [Vitest ↗](https://vitest.dev/) (globals enabled)
-- **Linting:** [ESLint ↗](https://eslint.org/) flat config with typescript-eslint
-- **Formatting:** [Prettier ↗](https://prettier.io/) (enforced via pre-commit hook and CI)
+- **Language:** [TypeScript ↗](https://www.typescriptlang.org) 5.9+ (strict mode, [ES2022 ↗](https://262.ecma-international.org/13.0/) target, bundler module resolution)
+- **Testing:** [Vitest ↗](https://vitest.dev) (globals enabled)
+- **Linting:** [ESLint ↗](https://eslint.org) flat config with typescript-eslint
+- **Formatting:** [Prettier ↗](https://prettier.io) (enforced via pre-commit hook and CI)
 - **Git Hooks:** [Husky ↗](https://typicode.github.io/husky/) + [lint-staged ↗](https://github.com/lint-staged/lint-staged)
-- **Versioning:** [Release Please ↗](https://github.com/googleapis/release-please) ([Conventional Commits ↗](https://conventionalcommits.org/))
+- **Versioning:** [Release Please ↗](https://github.com/googleapis/release-please) ([Conventional Commits ↗](https://www.conventionalcommits.org))
 - **Registry:** [GitHub Packages ↗](https://github.com/orgs/teqbench/packages) (`@teqbench` scope)
 
 ## Key Commands
 
 - `npm ci` — Install dependencies (use this, not `npm install`)
-- `npm run build` — Compile [TypeScript ↗](https://www.typescriptlang.org/) to `dist/`
-- `npm test` — Run tests with [Vitest ↗](https://vitest.dev/)
+- `npm run build` — Compile [TypeScript ↗](https://www.typescriptlang.org) to `dist/`
+- `npm test` — Run tests with [Vitest ↗](https://vitest.dev)
 - `npm run test:coverage` — Run tests with coverage enforcement (used in CI)
-- `npm run typecheck` — Full [TypeScript ↗](https://www.typescriptlang.org/) type-check (`tsc --noEmit`)
-- `npm run lint` — Run [ESLint ↗](https://eslint.org/)
-- `npm run format` — Format all files with [Prettier ↗](https://prettier.io/)
+- `npm run typecheck` — Full [TypeScript ↗](https://www.typescriptlang.org) type-check (`tsc --noEmit`)
+- `npm run lint` — Run [ESLint ↗](https://eslint.org)
+- `npm run format` — Format all files with [Prettier ↗](https://prettier.io)
 - `npm run format:check` — Check formatting (CI mode)
 
 ## Project Structure
@@ -44,7 +44,7 @@ This is `@teqbench/tbx-ngx-http`, an [Angular ↗](https://angular.dev/) library
 
 ## TSDoc Convention
 
-All exported [TypeScript ↗](https://www.typescriptlang.org/) declarations must have [TSDoc ↗](https://tsdoc.org/) comments validated by `eslint-plugin-tsdoc`. Custom tags are defined in `tsdoc.json` and consumed downstream by [API Extractor ↗](https://api-extractor.com/) and the AI HTML documentation generator.
+All exported [TypeScript ↗](https://www.typescriptlang.org) declarations must have [TSDoc ↗](https://tsdoc.org) comments validated by `eslint-plugin-tsdoc`. Custom tags are defined in `tsdoc.json` and consumed downstream by [API Extractor ↗](https://api-extractor.com) and the AI HTML documentation generator.
 
 ### Standard Tags (always use)
 
@@ -52,7 +52,7 @@ All exported [TypeScript ↗](https://www.typescriptlang.org/) declarations must
 - `@typeParam` — Document generic type parameters (not `@template`).
 - `@param` — Document function/method parameters.
 - `@returns` — Document return values. Omit for `void` returns.
-- `@example` — Code examples in fenced [TypeScript ↗](https://www.typescriptlang.org/) blocks.
+- `@example` — Code examples in fenced [TypeScript ↗](https://www.typescriptlang.org) blocks.
 - `@public` / `@internal` — Release tag on every export. Use `@public` unless the export is not part of the package API surface.
 - `@packageDocumentation` — Required on every barrel file (`index.ts`) to describe the package entry point. Use `{@link ExportName}` to cross-reference primary exports.
 - `@see` — Reference to related external resources or docs.
@@ -139,7 +139,7 @@ Member-level comment structure (properties, methods):
 
 ### Tag Ordering
 
-Follow this order within a [TSDoc ↗](https://tsdoc.org/) comment:
+Follow this order within a [TSDoc ↗](https://tsdoc.org) comment:
 
 Top-level exports:
 
@@ -178,7 +178,7 @@ Every prose mention of an external specification, standard, or technology in doc
 ### Format
 
 - **Markdown:** `[Name ↗](url)` with the ↗ (U+2197) character inside the link text for external resources. Internal/relative links do not use ↗.
-- **[TSDoc ↗](https://tsdoc.org/):** `{@link url | Name}` inline syntax in every section where an external technology appears — summary, `@remarks`, `@usage`, `@param`, `@returns`, and member-level docs. For each distinct external resource referenced in a top-level export's summary, add a `@see {@link url | Name}` tag in the tag section.
+- **[TSDoc ↗](https://tsdoc.org):** `{@link url | Name}` inline syntax in every section where an external technology appears — summary, `@remarks`, `@usage`, `@param`, `@returns`, and member-level docs. For each distinct external resource referenced in a top-level export's summary, add a `@see {@link url | Name}` tag in the tag section.
 
 ### Rules
 
@@ -258,7 +258,7 @@ Avoid `<table>` and pipe-syntax tables in markdown files (`README.md`, `CHANGELO
 
 ## Commit Convention
 
-Follow **[Conventional Commits ↗](https://conventionalcommits.org/)** strictly:
+Follow **[Conventional Commits ↗](https://www.conventionalcommits.org)** strictly:
 
 - `feat(scope): ...` — New feature (minor bump)
 - `fix(scope): ...` — Bug fix (patch bump)
