@@ -51,7 +51,7 @@ All exported [TypeScript ↗](https://www.typescriptlang.org/) declarations must
 - `@remarks` — Extended description, separated from the summary line.
 - `@typeParam` — Document generic type parameters (not `@template`).
 - `@param` — Document function/method parameters.
-- `@returns` — Document return values.
+- `@returns` — Document return values. Omit for `void` returns.
 - `@example` — Code examples in fenced [TypeScript ↗](https://www.typescriptlang.org/) blocks.
 - `@public` / `@internal` — Release tag on every export. Use `@public` unless the export is not part of the package API surface.
 - `@packageDocumentation` — Required on every barrel file (`index.ts`) to describe the package entry point. Use `{@link ExportName}` to cross-reference primary exports.
