@@ -8,7 +8,7 @@
 - term: Retryable status
   definition: One of 0 (network error), 408, 429, 500, 502, 503, 504 — transient failures worth retrying with backoff.
 - term: Idempotency-aware retry
-  definition: The rule that only GET requests retry automatically; POST, PUT, PATCH, and DELETE skip retry to prevent duplicate writes on transient failure.
+  definition: The rule that GET retries automatically while POST, PUT, PATCH, and DELETE skip retry by default. Either default can be overridden per call via options.retry for endpoints the caller knows to be idempotent.
 - term: Exponential backoff
   definition: A retry delay strategy where the wait doubles on each attempt — delay = RETRY_DELAY * 2^(attempt - 1).
 - term: Per-subclass override

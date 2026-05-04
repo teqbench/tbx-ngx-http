@@ -6,7 +6,7 @@
 - name: Configurable timeout
   summary: Every request is bounded by DEFAULT_TIMEOUT (10s default); subclasses override the class property to tune per service.
 - name: Idempotency-aware retry
-  summary: Only GET retries. POST, PUT, PATCH, and DELETE skip retry to avoid duplicate writes on transient failure.
+  summary: GET retries by default. POST, PUT, PATCH, and DELETE skip retry by default. Per-call options.retry overrides either default for endpoints known to be idempotent.
 - name: Typed request options
   summary: TbxNgxHttpRequestOptions for params + headers (non-body methods); TbxNgxHttpBodyRequestOptions for body methods.
 - name: Per-subclass override
@@ -14,7 +14,7 @@
 - name: Exposed resilience constants
   summary: TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS, RETRY_COUNT, RETRY_DELAY_MS, and RETRYABLE_STATUSES are exported for custom pipelines.
 - name: Default headers
-  summary: Accept application/json is set by default; callers providing options.headers replace the set entirely, not merge.
+  summary: Accept application/json is set by default; callers providing options.headers replace the set entirely, or pass mergeHeaders true to merge with defaults.
 - name: URL resolution
   summary: Relative paths are joined to the subclass-provided baseUrl with consistent slash handling.
 - name: Broad Angular peer range

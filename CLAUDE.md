@@ -4,27 +4,27 @@ This file provides guidance for [Claude Code ↗](https://github.com/anthropics/
 
 ## Package Overview
 
-This is `@teqbench/tbx-ngx-http`, an [Angular ↗](https://angular.dev/) library providing base HTTP communication services and resilience constants. It offers an abstract `TbxNgxHttpService` that feature services extend to get automatic retries with exponential backoff on GET requests, timeout handling, consistent URL resolution, and default headers. Resilience constants (`TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS`, `TBX_NGX_HTTP_RETRY_COUNT`, `TBX_NGX_HTTP_RETRY_DELAY_MS`, `TBX_NGX_HTTP_RETRYABLE_STATUSES`) are exported for direct use.
+This is `@teqbench/tbx-ngx-http`, an [Angular ↗](https://angular.dev) library providing base HTTP communication services and resilience constants. It offers an abstract `TbxNgxHttpService` that feature services extend to get automatic retries with exponential backoff (on GET by default, on mutating methods via `options.retry: true`), timeout handling, consistent URL resolution, and default headers. Resilience constants (`TBX_NGX_HTTP_DEFAULT_TIMEOUT_MS`, `TBX_NGX_HTTP_RETRY_COUNT`, `TBX_NGX_HTTP_RETRY_DELAY_MS`, `TBX_NGX_HTTP_RETRYABLE_STATUSES`) are exported for direct use.
 
 ## Tech Stack
 
-- **Language:** [TypeScript ↗](https://www.typescriptlang.org/) 5.9+ (strict mode, [ES2022 ↗](https://262.ecma-international.org/13.0/) target, bundler module resolution)
-- **Testing:** [Vitest ↗](https://vitest.dev/) (globals enabled)
-- **Linting:** [ESLint ↗](https://eslint.org/) flat config with typescript-eslint
-- **Formatting:** [Prettier ↗](https://prettier.io/) (enforced via pre-commit hook and CI)
+- **Language:** [TypeScript ↗](https://www.typescriptlang.org) 5.9+ (strict mode, [ES2022 ↗](https://262.ecma-international.org/13.0/) target, bundler module resolution)
+- **Testing:** [Vitest ↗](https://vitest.dev) (globals enabled)
+- **Linting:** [ESLint ↗](https://eslint.org) flat config with typescript-eslint
+- **Formatting:** [Prettier ↗](https://prettier.io) (enforced via pre-commit hook and CI)
 - **Git Hooks:** [Husky ↗](https://typicode.github.io/husky/) + [lint-staged ↗](https://github.com/lint-staged/lint-staged)
-- **Versioning:** [Release Please ↗](https://github.com/googleapis/release-please) ([Conventional Commits ↗](https://conventionalcommits.org/))
+- **Versioning:** [Release Please ↗](https://github.com/googleapis/release-please) ([Conventional Commits ↗](https://www.conventionalcommits.org))
 - **Registry:** [GitHub Packages ↗](https://github.com/orgs/teqbench/packages) (`@teqbench` scope)
 
 ## Key Commands
 
 - `npm ci` — Install dependencies (use this, not `npm install`)
-- `npm run build` — Compile [TypeScript ↗](https://www.typescriptlang.org/) to `dist/`
-- `npm test` — Run tests with [Vitest ↗](https://vitest.dev/)
+- `npm run build` — Compile [TypeScript ↗](https://www.typescriptlang.org) to `dist/`
+- `npm test` — Run tests with [Vitest ↗](https://vitest.dev)
 - `npm run test:coverage` — Run tests with coverage enforcement (used in CI)
-- `npm run typecheck` — Full [TypeScript ↗](https://www.typescriptlang.org/) type-check (`tsc --noEmit`)
-- `npm run lint` — Run [ESLint ↗](https://eslint.org/)
-- `npm run format` — Format all files with [Prettier ↗](https://prettier.io/)
+- `npm run typecheck` — Full [TypeScript ↗](https://www.typescriptlang.org) type-check (`tsc --noEmit`)
+- `npm run lint` — Run [ESLint ↗](https://eslint.org)
+- `npm run format` — Format all files with [Prettier ↗](https://prettier.io)
 - `npm run format:check` — Check formatting (CI mode)
 
 ## Project Structure
@@ -32,27 +32,27 @@ This is `@teqbench/tbx-ngx-http`, an [Angular ↗](https://angular.dev/) library
 - `src/` — Source code (all `.ts` files live here)
 - `src/index.ts` — Barrel file (public API exports)
 - `dist/` — Compiled output (git-ignored, only this directory is published)
-- `docs/` — Documentation (placeholder for package-specific guides)
+- `docs/` — Per-package docs pipeline inputs (`overview.md`, `concepts.yml`, `features.yml`, `accessibility.md`) used to build the README and published with the package via `ng-package.json` assets. Also contains `reference/workflows/` describing each CI/CD pipeline.
 - `.github/workflows/` — CI/CD pipelines (ci, release, sync, dep-compat-check, claude)
-- `.github/dependabot.yml` — Automated dependency update PRs targeting `dev`
+- Dependency updates run centrally via [Renovate ↗](https://docs.renovatebot.com/) (org-level workflow + `renovate-config.js` in `teqbench/.github`); no per-repo config is required
 
 ## Publishing
 
 - Packages are published to [GitHub Packages ↗](https://github.com/orgs/teqbench/packages) (`@teqbench` scope) via the release workflow.
 - Coverage thresholds are enforced in CI: 80% lines/functions/statements, 75% branches, per file.
-- **Build tooling:** [ng-packagr ↗](https://github.com/ng-packagr/ng-packagr) is used to build [Angular Package Format ↗](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/edit) (APF) output. It uses bundler module resolution internally, so source files use extensionless relative imports (e.g., `'./foo.service'`). The `ng-package.json` at the repo root configures the entry point and output directory. [ng-packagr ↗](https://github.com/ng-packagr/ng-packagr) generates its own `package.json` inside `dist/` with the correct APF entry points (`module`, `types`, `exports`). The release workflow publishes from `dist/` (`npm publish ./dist`) so consumers resolve against [ng-packagr ↗](https://github.com/ng-packagr/ng-packagr)'s `package.json` directly — the root `package.json` does not need `main`, `types`, or `exports` fields.
+- **Build tooling:** [ng-packagr ↗](https://github.com/ng-packagr/ng-packagr) is used to build [Angular Package Format ↗](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/edit) (APF) output. It uses bundler module resolution internally, so source files use extensionless relative imports (e.g., `'./foo.service'`). The `ng-package.json` at the repo root configures the entry point and output directory. [ng-packagr ↗](https://github.com/ng-packagr/ng-packagr) generates its own `package.json` inside `dist/` with the correct APF entry points (`module`, `typings`, `exports`). The release workflow publishes from `dist/` (`npm publish ./dist`) so consumers resolve against [ng-packagr ↗](https://github.com/ng-packagr/ng-packagr)'s `package.json` directly — the root `package.json` does not need `main`, `types`, or `exports` fields.
 
 ## TSDoc Convention
 
-All exported [TypeScript ↗](https://www.typescriptlang.org/) declarations must have [TSDoc ↗](https://tsdoc.org/) comments validated by `eslint-plugin-tsdoc`. Custom tags are defined in `tsdoc.json` and consumed downstream by [API Extractor ↗](https://api-extractor.com/) and the AI HTML documentation generator.
+All exported [TypeScript ↗](https://www.typescriptlang.org) declarations must have [TSDoc ↗](https://tsdoc.org) comments validated by `eslint-plugin-tsdoc`. Custom tags are defined in `tsdoc.json` and consumed downstream by [API Extractor ↗](https://api-extractor.com) and the AI HTML documentation generator.
 
 ### Standard Tags (always use)
 
 - `@remarks` — Extended description, separated from the summary line.
 - `@typeParam` — Document generic type parameters (not `@template`).
 - `@param` — Document function/method parameters.
-- `@returns` — Document return values.
-- `@example` — Code examples in fenced [TypeScript ↗](https://www.typescriptlang.org/) blocks.
+- `@returns` — Document return values. Omit for `void` returns.
+- `@example` — Code examples in fenced [TypeScript ↗](https://www.typescriptlang.org) blocks.
 - `@public` / `@internal` — Release tag on every export. Use `@public` unless the export is not part of the package API surface.
 - `@packageDocumentation` — Required on every barrel file (`index.ts`) to describe the package entry point. Use `{@link ExportName}` to cross-reference primary exports.
 - `@see` — Reference to related external resources or docs.
@@ -139,11 +139,29 @@ Member-level comment structure (properties, methods):
 
 ### Tag Ordering
 
-Follow this order within a [TSDoc ↗](https://tsdoc.org/) comment:
+Follow this order within a [TSDoc ↗](https://tsdoc.org) comment:
 
-Top-level exports: summary line → `@remarks` → `@typeParam` / `@param` / `@returns` → `@usage` → `@example` → `@category` (repeatable) → `@displayName` → `@order` → `@since` → `@related` (repeatable) → `@public` / `@internal`
+Top-level exports:
 
-Members (properties, methods): summary line → `@remarks` → `@param` / `@returns` (methods only) → `@order` → `@public` / `@internal`
+summary line
+@remarks
+@typeParam / @param / @returns
+@usage
+@example
+@category (repeatable)
+@displayName
+@order
+@since
+@related (repeatable)
+@public / @internal
+
+Members (properties, methods):
+
+summary line
+@remarks
+@param / @returns (methods only)
+@order
+@public / @internal
 
 ### Reference Implementation
 
@@ -160,7 +178,7 @@ Every prose mention of an external specification, standard, or technology in doc
 ### Format
 
 - **Markdown:** `[Name ↗](url)` with the ↗ (U+2197) character inside the link text for external resources. Internal/relative links do not use ↗.
-- **[TSDoc ↗](https://tsdoc.org/):** `{@link url | Name}` inline syntax in every section where an external technology appears — summary, `@remarks`, `@usage`, `@param`, `@returns`, and member-level docs. For each distinct external resource referenced in a top-level export's summary, add a `@see {@link url | Name}` tag in the tag section.
+- **[TSDoc ↗](https://tsdoc.org):** `{@link url | Name}` inline syntax in every section where an external technology appears — summary, `@remarks`, `@usage`, `@param`, `@returns`, and member-level docs. For each distinct external resource referenced in a top-level export's summary, add a `@see {@link url | Name}` tag in the tag section.
 
 ### Rules
 
@@ -217,9 +235,30 @@ All [TSDoc ↗](https://tsdoc.org) comments, inline code comments, and markdown 
 - Configuration snapshots in documentation must note they are examples that may not reflect the current state.
 - Custom `package.json` metadata fields (not defined by the [npm ↗](https://www.npmjs.com) spec) must be identified as custom where referenced.
 
+## Markdown Tables Convention
+
+Avoid `<table>` and pipe-syntax tables in markdown files (`README.md`, `CHANGELOG.md`, guides, etc.). Use a `<dl>`/`<dt>`/`<dd>` definition list instead.
+
+- **Why.** [GitHub ↗](https://github.com/) doesn't honor any column-width controls in rendered markdown — `<col>`, `width=` attributes, and CSS in `<style>` blocks are all stripped. Multi-column tables wrap unpredictably across viewport sizes and look inconsistent between repos. Definition lists give the same name → description shape with predictable single-column flow that renders the same everywhere [GitHub ↗](https://github.com/) previews markdown.
+
+- **Pattern.**
+
+    ```html
+    <dl>
+        <dt><a href="https://example.com">Item name ↗</a></dt>
+        <dd>One-line description of the item.</dd>
+        <dt>Next item</dt>
+        <dd>Its description.</dd>
+    </dl>
+    ```
+
+    See `profile/README.md` in `teqbench/.github` (a separate repository — not accessible from this repo) for the canonical example used on the TeqBench organization profile page.
+
+- **When tables are still acceptable.** Only inside source code that emits HTML to a non-[GitHub ↗](https://github.com/) renderer ([Storybook ↗](https://storybook.js.org/) docs pages rendered via [MDX ↗](https://mdxjs.com/), the website's own `<tbx-markdown>` walker, etc.) — those have full control over column widths. Anything that lands in a `.md` file rendered by [GitHub ↗](https://github.com/) itself follows the `<dl>` rule.
+
 ## Commit Convention
 
-Follow **[Conventional Commits ↗](https://conventionalcommits.org/)** strictly:
+Follow **[Conventional Commits ↗](https://www.conventionalcommits.org)** strictly:
 
 - `feat(scope): ...` — New feature (minor bump)
 - `fix(scope): ...` — Bug fix (patch bump)
@@ -240,7 +279,7 @@ Follow **[Conventional Commits ↗](https://conventionalcommits.org/)** strictly
 
 - Create feature or bugfix branches off `dev` when implementing issues.
 - Write clean, well-tested code that passes lint, typecheck, and tests.
-- Use conventional commit messages.
+- Use [Conventional Commits ↗](https://www.conventionalcommits.org) messages.
 - Create PRs targeting `dev` (never directly target `main`).
 - Keep PRs focused and atomic — one issue per PR.
 
@@ -251,11 +290,13 @@ Follow **[Conventional Commits ↗](https://conventionalcommits.org/)** strictly
 - Never delete branches.
 - Never modify CI workflow files without explicit instruction.
 - Never modify `release-please-config.json`, `.release-please-manifest.json`, or `CHANGELOG.md`.
+- Never modify secrets, tokens, or files containing them. Secrets are defined at the organization level on [GitHub ↗](https://github.com/); repo-local code should reference them by name only and never read or rewrite their values.
+- Never commit content intended to be private, regardless of repository visibility. Treat every commit as if the repo could become public.
 
 ## Package-Specific Guidance
 
 - `TbxNgxHttpService` is abstract — it cannot be instantiated directly. Feature services extend it and provide a `baseUrl`.
-- Only GET requests include the retry operator. Mutating methods (POST, PUT, PATCH, DELETE) intentionally skip retries.
+- GET retries by default; POST, PUT, PATCH, and DELETE skip retry by default. Either default can be overridden per call with `options.retry`.
 - The retry operator uses exponential backoff: `RETRY_DELAY * 2^(attempt - 1)`.
 - `TBX_NGX_HTTP_RETRYABLE_STATUSES` defines which HTTP status codes trigger retries (0, 408, 429, 500, 502, 503, 504).
 - Dependencies: `@angular/common` (HttpClient), `@angular/core` (inject), `rxjs`, `http-status-codes`.
