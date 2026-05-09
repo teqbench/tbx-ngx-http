@@ -71,7 +71,7 @@
   },
   "overrides": {
     "@angular/build": {
-      "vite": "7.3.2"
+      "vite": "8.0.11"
     }
   },
   "overridesPinned": {
