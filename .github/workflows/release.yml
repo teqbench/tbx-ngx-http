@@ -13,5 +13,5 @@ concurrency:
 
 jobs:
   release:
-    uses: teqbench/.github/.github/workflows/release.yml@main
+    uses: teqbench/.github/.github/workflows/release.yml@c25cfde7a8048a76c72c259b0efd15ddc32510df # main
     secrets: inherit
