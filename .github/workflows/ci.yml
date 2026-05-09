@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   ci:
-    uses: teqbench/.github/.github/workflows/ci.yml@main
+    uses: teqbench/.github/.github/workflows/ci.yml@v2.6.0
     with:
       gist-id: ${{ vars.GIST_ID }}
     secrets: inherit
