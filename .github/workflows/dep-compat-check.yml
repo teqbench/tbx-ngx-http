@@ -12,7 +12,7 @@ on:
 
 jobs:
   check:
-    uses: teqbench/.github/.github/workflows/dep-compat-check.yml@v2.6.0
+    uses: teqbench/.github/.github/workflows/dep-compat-check.yml@v2.9.3
     with:
       epic-issue-number: 1
     secrets: inherit
