@@ -24,5 +24,5 @@ jobs:
       (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
       (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
       (github.event_name == 'issues' && contains(github.event.issue.body, '@claude'))
-    uses: teqbench/.github/.github/workflows/claude.yml@v2.6.0
+    uses: teqbench/.github/.github/workflows/claude.yml@v2.9.3
     secrets: inherit
