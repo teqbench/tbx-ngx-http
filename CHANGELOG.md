@@ -5,14 +5,14 @@
 
 ### Bug Fixes
 
-* **ci:** pin reusable workflows to [@v2](https://github.com/v2).9.3 ([d743152](https://github.com/teqbench/tbx-ngx-http/commit/d743152c47349cf8035df6382488778262847d4f)), closes [#28](https://github.com/teqbench/tbx-ngx-http/issues/28)
+* **ci:** pin reusable workflows to v2.9.3 ([d743152](https://github.com/teqbench/tbx-ngx-http/commit/d743152c47349cf8035df6382488778262847d4f)), closes [#28](https://github.com/teqbench/tbx-ngx-http/issues/28)
 
 ## [1.2.1](https://github.com/teqbench/tbx-ngx-http/compare/v1.2.0...v1.2.1) (2026-05-09)
 
 
 ### Bug Fixes
 
-* **ci:** pin reusable workflows to [@v2](https://github.com/v2).6.0 ([35b86d6](https://github.com/teqbench/tbx-ngx-http/commit/35b86d67d1229b78e8b99d623ea9afb370a998a3))
+* **ci:** pin reusable workflows to v2.6.0 ([35b86d6](https://github.com/teqbench/tbx-ngx-http/commit/35b86d67d1229b78e8b99d623ea9afb370a998a3))
 
 ## [1.2.0](https://github.com/teqbench/tbx-ngx-http/compare/v1.1.0...v1.2.0) (2026-05-04)
 
@@ -31,7 +31,7 @@
 * **docs:** list actual emitted APF entry-point keys ([178e667](https://github.com/teqbench/tbx-ngx-http/commit/178e6676933e46f96f40a6e0c832e412b48e83f8))
 * **docs:** normalize external doc URLs to no trailing slash ([f7504d4](https://github.com/teqbench/tbx-ngx-http/commit/f7504d4ae8ee3bf17832dbebd4c0cf390318ed52))
 * **docs:** note central Renovate dependency updates in CLAUDE.md ([69f82de](https://github.com/teqbench/tbx-ngx-http/commit/69f82de7c3bd7e8e794e229f1570c3f19e997c0d))
-* **docs:** note that [@returns](https://github.com/returns) is omitted for void returns ([2aa9308](https://github.com/teqbench/tbx-ngx-http/commit/2aa93089f7375cbc1d73bec984891540129db16b))
+* **docs:** note that returns is omitted for void returns ([2aa9308](https://github.com/teqbench/tbx-ngx-http/commit/2aa93089f7375cbc1d73bec984891540129db16b))
 * **docs:** remove md files now provided by teqbench/.github ([50e773d](https://github.com/teqbench/tbx-ngx-http/commit/50e773d08b8f50d1ea41dab30813469673589f31))
 * **docs:** use vertical list for TSDoc tag ordering ([c25f169](https://github.com/teqbench/tbx-ngx-http/commit/c25f1691c92d91ad583acd05d9966767af016e1f))
 * package updates, CLAUDE.md alignment, docs cleanup ([1313323](https://github.com/teqbench/tbx-ngx-http/commit/13133230f4d48c98a5c5e3a3511ce1fde7722a04))

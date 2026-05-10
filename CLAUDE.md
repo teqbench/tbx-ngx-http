@@ -267,6 +267,17 @@ Follow **[Conventional Commits ↗](https://www.conventionalcommits.org)** stric
 - `refactor(scope): ...` — Refactor
 - `chore(scope): ...` — Maintenance
 
+### No Bare At-Prefixed Tokens
+
+Do not write the at-symbol followed by a non-slashed identifier in commit subjects or bodies. The release-please changelog renderer ([conventional-changelog-conventionalcommits ↗](https://github.com/conventional-changelog/conventional-changelog) v6 `writerOpts.transform`) rewrites such tokens as broken GitHub user-mention links, splitting version strings into links to non-existent users.
+
+- Version refs: write `v2.9.3`, not preceded by the at-symbol.
+- Scope/org refs in prose: write `teqbench`, not preceded by the at-symbol.
+- TSDoc tag refs in prose: write `related`, `example`, `since`, `category`, `returns`, `link` — not preceded by the at-symbol.
+- Fully-qualified scoped package paths that contain a forward slash remain safe; the renderer short-circuits them.
+
+Markdown formatting does not escape this rewrite: backticks and code spans in commit messages do not protect.
+
 ## Branching & Workflow
 
 - `main` — Production. Only receives merges from `release/*`, `hotfix/*`, or `release-please--*` branches.
