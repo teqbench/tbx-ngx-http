@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.3](https://github.com/teqbench/tbx-ngx-http/compare/v1.2.2...v1.2.3) (2026-05-10)
+
+
+### Bug Fixes
+
+* **changelog:** strip broken at-mention autolinks from history ([22fe6b6](https://github.com/teqbench/tbx-ngx-http/commit/22fe6b6c9d5718dfe7439d3ddcc8825759968eb0))
+* **changelog:** strip broken at-mention autolinks from history ([6097504](https://github.com/teqbench/tbx-ngx-http/commit/6097504543a7bcc0fc0593668cf6724163e63e67))
+
 ## [1.2.2](https://github.com/teqbench/tbx-ngx-http/compare/v1.2.1...v1.2.2) (2026-05-10)
 
 
