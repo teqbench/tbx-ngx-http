@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/teqbench/tbx-ngx-http/compare/v1.2.1...v1.2.2) (2026-05-10)
+
+
+### Bug Fixes
+
+* **ci:** pin reusable workflows to [@v2](https://github.com/v2).9.3 ([d743152](https://github.com/teqbench/tbx-ngx-http/commit/d743152c47349cf8035df6382488778262847d4f)), closes [#28](https://github.com/teqbench/tbx-ngx-http/issues/28)
+
 ## [1.2.1](https://github.com/teqbench/tbx-ngx-http/compare/v1.2.0...v1.2.1) (2026-05-09)
 
 
