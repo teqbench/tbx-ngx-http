@@ -307,6 +307,7 @@ Full org-wide rules: see [`teqbench/.github` CLAUDE.md ↗](https://github.com/t
 - Never modify `release-please-config.json`, `.release-please-manifest.json`, or `CHANGELOG.md`.
 - Never modify secrets, tokens, or files containing them. Secrets are defined at the organization level on [GitHub ↗](https://github.com/); repo-local code should reference them by name only and never read or rewrite their values.
 - Never commit content intended to be private, regardless of repository visibility. Treat every commit as if the repo could become public.
+
 ## Package-Specific Guidance
 
 - `TbxNgxHttpService` is abstract — it cannot be instantiated directly. Feature services extend it and provide a `baseUrl`.
