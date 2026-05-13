@@ -280,23 +280,27 @@ Markdown formatting does not escape this rewrite: backticks and code spans in co
 
 ## Branching & Workflow
 
-- `main` — Production. Only receives merges from `release/*`, `hotfix/*`, or `release-please--*` branches.
-- `dev` — Integration branch. Receives merges from `feature/*` and `bugfix/*` branches.
-- Create feature/bugfix branches off `dev`, PR back to `dev`.
-- Use `release/*` branches to carry `dev` to `main`.
-- Use `hotfix/*` branches off `main` for urgent fixes.
+Follows GitHub Flow:
+
+- `main` is the only long-lived branch.
+- Create short-lived branches off `main` for any work — `feature/*`, `bugfix/*`, `chore/*`. Branches live hours to days, not weeks.
+- Open a PR to `main`. CI is the merge gate.
+- Renovate PRs target `main`; trusted-tier dependency updates auto-merge once CI is green.
+- release-please runs on `main` and opens release PRs for `feat:` / `fix:` commits. Merging a release PR tags the release and publishes.
+- Hotfixes are normal PRs to `main` — no separate `hotfix/*` ceremony.
+
+Full org-wide rules: see [`teqbench/.github` CLAUDE.md ↗](https://github.com/teqbench/.github/blob/main/CLAUDE.md).
 
 ### What Claude Should Do
 
-- Create feature or bugfix branches off `dev` when implementing issues.
+- Create branches off `main`, PR back to `main`.
 - Write clean, well-tested code that passes lint, typecheck, and tests.
 - Use [Conventional Commits ↗](https://www.conventionalcommits.org) messages.
-- Create PRs targeting `dev` (never directly target `main`).
-- Keep PRs focused and atomic — one issue per PR.
+- Keep PRs focused and atomic — one concern per PR.
 
 ### What Claude Should NOT Do
 
-- Never push directly to `main` or `dev`.
+- Never push directly to `main`.
 - Never force-push to any branch.
 - Never delete branches.
 - Never modify CI workflow files without explicit instruction.
